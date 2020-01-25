@@ -1,6 +1,6 @@
 import Cell from "./cell";
 
-export default class Board {
+export default class Grid {
     constructor(preset, row = null, col = null) {
         this.grid = [];
         this.preset = preset;
@@ -19,18 +19,26 @@ export default class Board {
             case 1:
                 this.preset1();
                 break;
-        
+            case 2:
+                this.preset2();
+                break;
             default:
                 break;
         }
     }
 
     preset1() {
-        let row1 = [this.constructCell('fftf'), this.constructCell('fftf')]
-        let row2 = [this.constructCell('tftf'), this.constructCell('tftf')]
-        let row3 = [this.constructCell('fttf'), this.constructCell('tfft')]
-        let row4 = [this.constructCell('tfff'), this.constructCell('ffff')]
+        let row1 = [this.constructCell('fftf'), this.constructCell('fftf')];
+        let row2 = [this.constructCell('tfff'), this.constructCell('tftf')];
+        let row3 = [this.constructCell('fttf'), this.constructCell('tfft')];
+        let row4 = [this.constructCell('tfff'), this.constructCell('ffff')];
         this.grid = [row1, row2, row3, row4];
+    }
+
+    preset2() {
+        let row1 = [this.constructCell('ffff'), this.constructCell('ffff')];
+        let row2 = [this.constructCell('ffff'), this.constructCell('ffff')];
+        this.grid = [row1, row2];
     }
 
     constructCell(cell) {
@@ -42,6 +50,7 @@ export default class Board {
                     break;
                 case 'f':
                     input.push(false);
+                    break;
                 default:
                     break;
             }
