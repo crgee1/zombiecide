@@ -3,11 +3,15 @@ import Board from '../board/canvas';
 
 export default function Game() {
     useEffect(() => {
-        const board = new Board(2);
+        const board = new Board(1);
+        board.spawnZombie(0, 0)
+        document.getElementById('root').addEventListener('click', function (e) {
+            board.spawnZombie(e.clientX, e.clientY)
+        })
     }, [])
 
     return (
-        <div>
+        <div id='game'>
 
         </div>
     )

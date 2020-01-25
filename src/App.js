@@ -4,10 +4,9 @@ import Player from './components/piece/player';
 import Game from './components/game/game';
 
 function App() {
-  let player = new Player(0,0,3, 'Phil');
   return (
     <div className="App">
-      <canvas id='canvas' height="600" width="300" style={{backgroundColor: "lightGray"}}>
+      <canvas id='canvas' height="1000" width="1000">
       </canvas>
       <Game/>
     </div>

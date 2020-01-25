@@ -1,8 +1,9 @@
 export default class Piece {
-    constructor(x, y, numActions) {
+    constructor(x, y, numActions, ctx) {
         this.posX = x;
         this.posY = y;
         this.numActions = numActions
+        this.ctx = ctx
     }
 
     move(direction) {
