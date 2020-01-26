@@ -2,8 +2,9 @@ import Piece from "./piece";
 import pic from '../../assets/images/zombie.png'
 
 export default class Zombie extends Piece {
-    constructor(x, y, ctx, numActions = 1) {
-        super(x, y, numActions, ctx);
+    constructor(x, y, gridX, gridY, ctx, type = 'walker', numActions = 1) {
+        super(x, y, gridX, gridY, numActions, ctx);
+        console.log(this.ctx)
         this.image = new Image();
         this.image.src = pic
         this.size = 200;
@@ -12,10 +13,17 @@ export default class Zombie extends Piece {
         this.destinationY = this.posY;
     }
 
-    
-
     moveDown() {
         this.destinationY = this.posY + 100;
+    }
+    moveRight() {
+        this.destinationX = this.posX + 100;
+    }
+    moveUp() {
+        this.destinationY = this.posY - 100;
+    }
+    moveLeft() {
+        this.destinationX = this.posX - 100;
     }
 
     draw() {
@@ -25,6 +33,12 @@ export default class Zombie extends Piece {
         }
         if (this.destinationY > this.posY) {
             this.posY++;
+        }
+        if (this.destinationX > this.posX) {
+            this.posX++;
+        }
+        if (this.destinationX < this.posX) {
+            this.posX--;
         }
     }
 }

@@ -13,7 +13,7 @@ export default class Board {
         this.players = [];
 
         this.placePlayers();
-        this.spawnZombie(130,10, 1 , this.ctx)
+        this.spawnZombie(130,10, 0, 1)
 
         this.animate = this.animate.bind(this);
     }
@@ -31,12 +31,13 @@ export default class Board {
     }
 
     placePlayers() {
-        const player = new Player(30, 350, this.ctx, 'slayer')
+        const player = new Player(30, 350, 3, 0, this.ctx, 'slayer')
         this.players.push(player)
     }
 
-    spawnZombie(x, y) {
-        let zombie = new Zombie(x, y, this.ctx);
+    spawnZombie(x, y, gridX, gridY) {
+        let zombie = new Zombie(x, y, 0, 1, this.ctx);
+        this.grid.layout[gridX][gridY].add(zombie);
         this.zombies.push(zombie);
     }
 }

@@ -2,8 +2,8 @@ import Piece from './piece';
 import slayerPic from '../../assets/images/slayer.png'
 
 export default class Player extends Piece {
-    constructor(x, y, ctx, name, numActions = 3) {
-        super(x, y, numActions, ctx);
+    constructor(x, y, gridX, gridY, ctx, name, numActions = 3) {
+        super(x, y, gridX, gridY, numActions, ctx);
         this.image = new Image();
         
         switch (name) {

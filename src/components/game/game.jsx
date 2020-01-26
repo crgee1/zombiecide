@@ -9,16 +9,25 @@ export default function Game() {
         setBoard(canvas);
     }, []);
 
-    const move = () => {
-        board.zombies.forEach(zombie => {
-            zombie.moveDown();
-        })
-
+    const moveUp = () => {
+        board.zombies[0].moveUp();
+    }
+    const moveRight = () => {
+        board.zombies[0].moveRight();
+    }
+    const moveDown = () => {
+        board.zombies[0].moveDown();
+    }
+    const moveLeft = () => {
+        board.zombies[0].moveLeft();
     }
 
     return (
         <div id='game'>
-            <button onClick={move}>Move</button>
+            <button onClick={moveUp}>Move Up</button>
+            <button onClick={moveRight}>Move Right</button>
+            <button onClick={moveDown}>Move Down</button>
+            <button onClick={moveLeft}>Move Left</button>
         </div>
     )
 }

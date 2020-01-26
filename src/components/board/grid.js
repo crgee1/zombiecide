@@ -2,13 +2,13 @@ import Cell from "./cell";
 
 export default class Grid {
     constructor(preset, ctx, row = null, col = null) {
-        this.grid = [];
+        this.layout = [];
         this.preset = preset;
         this.ctx = ctx;
         if (row && col) {
             for (let i = 0; i < row; i++) {
                 let rowArr = new Array(col).fill(new Cell());
-                this.grid.push(rowArr);
+                this.layout.push(rowArr);
             }
         } else {
             this.setUp()
@@ -18,7 +18,7 @@ export default class Grid {
     draw() {
         this.ctx.strokeWidth = '2px';
         this.ctx.strokeStyle = 'black';
-        this.grid.forEach((row, i) => {
+        this.layout.forEach((row, i) => {
             row.forEach((cell, j) => {
                 let x = j * 100;
                 let y = i * 100;
@@ -80,20 +80,20 @@ export default class Grid {
     }
 
     preset1() {
-        let row1 = [this.constructCell('fftf'), this.constructCell('fftf')];
-        let row2 = [this.constructCell('tfff'), this.constructCell('tftf')];
-        let row3 = [this.constructCell('fttf'), this.constructCell('tfft')];
-        let row4 = [this.constructCell('tfff'), this.constructCell('ffff')];
-        this.grid = [row1, row2, row3, row4];
+        let row1 = [this.constructCell('fftf', 0, 0), this.constructCell('fftf', 0, 1)];
+        let row2 = [this.constructCell('tfff', 1, 0), this.constructCell('tftf', 1, 1)];
+        let row3 = [this.constructCell('fttf', 2, 0), this.constructCell('tfft', 2, 1)];
+        let row4 = [this.constructCell('tfff', 3, 0), this.constructCell('ffff', 3, 1)];
+        this.layout = [row1, row2, row3, row4];
     }
 
     preset2() {
         let row1 = [this.constructCell('ffff'), this.constructCell('ffff')];
         let row2 = [this.constructCell('ffff'), this.constructCell('ffff')];
-        this.grid = [row1, row2];
+        this.layout = [row1, row2];
     }
 
-    constructCell(cell) {
+    constructCell(cell, row, col) {
         let input = [];
         cell.split('').forEach(side => {
             switch (side) {
@@ -107,6 +107,6 @@ export default class Grid {
                     break;
             }
         }) 
-        return new Cell(...input)
+        return new Cell(...input, row, col)
     }
 }
