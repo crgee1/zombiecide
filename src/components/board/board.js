@@ -40,4 +40,8 @@ export default class Board {
         this.grid.layout[gridX][gridY].add(zombie);
         this.zombies.push(zombie);
     }
+
+    graph() {
+        return this.grid.makeGraph(this.grid.layout[1][1], this.grid.layout[3][0])
+    }
 }

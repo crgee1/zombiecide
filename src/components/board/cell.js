@@ -7,6 +7,9 @@ export default class Cell {
         this.right = right;
         this.down = down;
         this.left = left;
+        this.row = row;
+        this.col = col;
+        this.name = 'cell'+row+col;
 
         this.players = [];
         this.zombies = [];

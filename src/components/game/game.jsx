@@ -5,6 +5,7 @@ export default function Game() {
     const [board, setBoard] = useState();
     useEffect(() => {
         let canvas = new Board(1);
+        console.log(canvas.graph());
         canvas.animate();
         setBoard(canvas);
     }, []);

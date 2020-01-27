@@ -1,4 +1,5 @@
 import Cell from "./cell";
+import dijkstra from "./dijkstra";
 
 export default class Grid {
     constructor(preset, ctx, row = null, col = null) {
@@ -108,5 +109,65 @@ export default class Grid {
             }
         }) 
         return new Cell(...input, row, col)
+    }
+
+    makeGraph(startCell, endCell) {
+        let result = {finish: {}};
+        let queue = [startCell];
+        while (queue.length > 0) {
+            let cell = queue.pop();
+            let obj = {};
+            let name;
+
+            if (cell.up) {
+                name = `cell${cell.row-1}${cell.col}`;
+                if (name === startCell.name) name = 'start';
+                if (name === endCell.name) name = 'finish';
+                if (name !== 'start') obj[name] = 1;
+                
+                if (!result[name]) queue.push(this.layout[cell.row-1][cell.col])
+            }
+            if (cell.right) {
+                name = `cell${cell.row}${cell.col+1}`;
+                if (name === startCell.name) name = 'start';
+                if (name === endCell.name) name = 'finish';
+                if (name !== 'start') obj[name] = 1;
+                
+                if (!result[name]) queue.push(this.layout[cell.row][cell.col+1])
+            }
+            if (cell.down) {
+                name = `cell${cell.row+1}${cell.col}`;
+                if (name === startCell.name) name = 'start';
+                if (name === endCell.name) name = 'finish';
+                if (name !== 'start') obj[name] = 1;
+                
+                if (!result[name]) queue.push(this.layout[cell.row+1][cell.col])
+            }
+            if (cell.left) {
+                name = `cell${cell.row}${cell.col-1}`;
+                if (name === startCell.name) name = 'start';
+                if (name === endCell.name) name = 'finish';
+                if (name !== 'start') obj[name] = 1;
+                
+                if (!result[name]) queue.push(this.layout[cell.row][cell.col-1])
+            }
+            if (cell === startCell) {
+                result['start'] = obj;
+            } else {
+                result[cell.name] = obj;
+            }
+        }
+
+        let nextStep = dijkstra(result).path[1];
+        let row = nextStep[4];
+        let col = nextStep[5];
+        let direction;
+
+        if (row > startCell.row) direction = 'down';
+        if (row < startCell.row) direction = 'up';
+        if (col < startCell.col) direction = 'right';
+        if (col > startCell.col) direction = 'left';
+
+        return direction;
     }
 }
