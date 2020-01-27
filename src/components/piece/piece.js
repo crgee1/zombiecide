@@ -1,9 +1,9 @@
 export default class Piece {
-    constructor(x, y, gridX, gridY, numActions, ctx) {
+    constructor(x, y, row, col, numActions, ctx) {
         this.posX = x;
         this.posY = y;
-        this.gridX = gridX;
-        this.gridY = gridY;
+        this.row = row;
+        this.col = col;
         this.numActions = numActions
         this.ctx = ctx
     }

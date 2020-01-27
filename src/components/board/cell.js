@@ -10,6 +10,7 @@ export default class Cell {
 
         this.players = [];
         this.zombies = [];
+        this.noise = 0;
     }
 
     add(unit) {
@@ -31,5 +32,13 @@ export default class Cell {
         if (index > -1) {
             arr.splice(index, 1);
         }
+    }
+
+    calculateNoise() {
+        return this.noise + this.players.length;
+    }
+
+    resetNoise() {
+        this.noise = 0;
     }
 }
