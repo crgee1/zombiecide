@@ -13,6 +13,7 @@ export default class Player extends Piece {
         this.maxActions = numActions;
         this.size = 45;
         this.exp = 0;
+        this.level = 1;
         this.items = [];
         
         switch (name) {
@@ -39,6 +40,20 @@ export default class Player extends Piece {
         }
 
         this.name = name;
+    }
+
+    gainExp(exp) {
+        let oldExp = this.exp;
+        let newExp = this.exp + exp;
+
+        if (oldExp < 43 && newExp >= 43) {
+            this.level++;
+        } else if (oldExp < 19 && newExp >= 19) {
+            this.level++;
+        } else if (oldExp < 7 && newExp >= 7) {
+            this.level++;
+            this.maxActions++;
+        } 
     }
 
     addGrid(grid) {

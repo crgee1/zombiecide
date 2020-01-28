@@ -6,14 +6,7 @@ export default class Grid {
         this.layout = [];
         this.preset = preset;
         this.ctx = ctx;
-        if (row && col) {
-            for (let i = 0; i < row; i++) {
-                let rowArr = new Array(col).fill(new Cell());
-                this.layout.push(rowArr);
-            }
-        } else {
-            this.setUp()
-        }
+        this.setUp()
 
         this.rows = this.layout.length;
         this.cols = this.layout[0].length;
@@ -171,7 +164,7 @@ export default class Grid {
     }
 
     preset2() {
-        let row1 = [this.constructCell('fttf', 0, 0, 'room'), this.constructCell('fttt', 0, 1, 'room'), this.constructCell('fftt', 0, 2, 'room'), this.constructCell('fftf', 0, 3, 'street')];
+        let row1 = [this.constructCell('fttf', 0, 0, 'room'), this.constructCell('fttt', 0, 1, 'room'), this.constructCell('fdtt', 0, 2, 'room'), this.constructCell('fftd', 0, 3, 'street')];
         let row2 = [this.constructCell('ttff', 1, 0, 'room'), this.constructCell('ttft', 1, 1, 'room'), this.constructCell('tfft', 1, 2, 'room'), this.constructCell('tftf', 1, 3, 'street')];
         let row3 = [this.constructCell('ftdf', 2, 0, 'street'), this.constructCell('ftft', 2, 1, 'street'), this.constructCell('ftft', 2, 2, 'street'), this.constructCell('tftt', 2, 3, 'street')];
         let row4 = [this.constructCell('dttf', 3, 0, 'room'), this.constructCell('fttt', 3, 1, 'room'), this.constructCell('fftt', 3, 2, 'room'), this.constructCell('tftf', 3, 3, 'street')];

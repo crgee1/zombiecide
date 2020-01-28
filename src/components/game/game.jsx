@@ -7,6 +7,8 @@ export default function Game(props) {
     const [players, setPlayers] = useState([]);
     const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
     const [numActions, setNumActions] = useState(3);
+    const [items, setItems] = useState();
+    const [searched, setSearched] = useState(false);
 
     const { preset } = props;
 
@@ -30,7 +32,7 @@ export default function Game(props) {
         document.getElementById('canvas').addEventListener('click', function (e) {
             let row = Math.floor(e.clientY / 100);
             let col = Math.floor(e.clientX / 100);
-            console.log(canvas.grid.layout[row][col]);
+            if (canvas.grid.layout[row]) console.log(canvas.grid.layout[row][col]);
         })
     }, []);
 
@@ -58,6 +60,7 @@ export default function Game(props) {
 
     const nextTurn = () => {
         currentPlayer.reset();
+        setSearched(false);
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
         setCurrentPlayerIdx((currentPlayerIdx + 1) % players.length);
     }
@@ -84,6 +87,20 @@ export default function Game(props) {
                     break;
             }
         }
+    }
+
+    const search = () => {
+        setSearched(true);
+    }
+
+    const displaySearchBtn = () => {
+        if (!board || searched) return;
+        let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
+        if (cell.type !== 'room') return;
+
+        return (
+            <button>Search</button>
+        )
     }
 
     const displayDirectionBtn = (direction) => {
@@ -142,8 +159,9 @@ export default function Game(props) {
         if (numActions > 0) return (
             <div className="toolbar">
                 {displayDirectionBtns()}
-                <button onClick={moveZombies}>Move Zombies</button>
+                {displaySearchBtn()}
                 {displayDoorBtn()}
+                <button onClick={moveZombies}>Move Zombies</button>
                 <button onClick={nextTurn}>End Turn</button>
             </div>
         );
