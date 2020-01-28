@@ -38,6 +38,7 @@ export default class Grid {
                     this.ctx.stroke();
                     this.ctx.strokeStyle = 'black';
                     this.ctx.beginPath();
+                    this.ctx.moveTo(x + 66, y);
                     this.ctx.lineTo(x + 100, y);
                     this.ctx.stroke();
                     break;
@@ -71,7 +72,7 @@ export default class Grid {
                     this.ctx.stroke();
                     this.ctx.strokeStyle = 'black';
                     this.ctx.beginPath();
-
+                    this.ctx.moveTo(x + 33, y + 100);
                     this.ctx.lineTo(x, y + 100);
                     this.ctx.stroke();
                     break;
@@ -171,9 +172,9 @@ export default class Grid {
 
     preset2() {
         let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fttt', 0, 1), this.constructCell('fftt', 0, 2), this.constructCell('fftf', 0, 3)];
-        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tdft', 1, 2), this.constructCell('tftd', 1, 3)];
-        let row3 = [this.constructCell('ftff', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
-        let row4 = [this.constructCell('fttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
+        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tfft', 1, 2), this.constructCell('tftf', 1, 3)];
+        let row3 = [this.constructCell('ftdf', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
+        let row4 = [this.constructCell('dttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
         let row5 = [this.constructCell('ttff', 4, 0), this.constructCell('ttft', 4, 1), this.constructCell('tfft', 4, 2), this.constructCell('tfff', 4, 3)];
         this.layout = [row1, row2, row3, row4, row5];
     }
@@ -216,7 +217,7 @@ export default class Grid {
             let obj = {};
             let name;
 
-            if (cell.up) {
+            if (cell.up && cell.up !== 'doorClose') {
                 name = `cell${cell.row-1}${cell.col}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';
@@ -224,7 +225,7 @@ export default class Grid {
                 
                 if (!result[name]) queue.push(this.layout[cell.row-1][cell.col])
             }
-            if (cell.right) {
+            if (cell.right && cell.right !== 'doorClose') {
                 name = `cell${cell.row}${cell.col+1}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';
@@ -232,7 +233,7 @@ export default class Grid {
                 
                 if (!result[name]) queue.push(this.layout[cell.row][cell.col+1])
             }
-            if (cell.down) {
+            if (cell.down && cell.down !== 'doorClose') {
                 name = `cell${cell.row+1}${cell.col}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';
@@ -240,7 +241,7 @@ export default class Grid {
                 
                 if (!result[name]) queue.push(this.layout[cell.row+1][cell.col])
             }
-            if (cell.left) {
+            if (cell.left && cell.left !== 'doorClose') {
                 name = `cell${cell.row}${cell.col-1}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';

@@ -11,7 +11,7 @@ export default class Board {
         this.players = players;
         this.setup(preset);
         
-
+        players.forEach(player => this.grid.layout[player.row][player.col].add(player))
         this.animate = this.animate.bind(this);
     }
 
@@ -136,9 +136,10 @@ export default class Board {
 
     returnLoudestCell() {
         let loudestCell = this.grid.layout[0][0];
-        for (let row = 0; row < this.rows; row++) {
-            for (let col = 0; col < this.cols; col++) {
+        for (let row = 0; row < this.grid.rows; row++) {
+            for (let col = 0; col < this.grid.cols; col++) {
                 let cell = this.grid.layout[row][col];
+                if (cell.calculateNoise() > 1) console.log('here')
                 if (cell.calculateNoise() > loudestCell.calculateNoise()) loudestCell = cell;
             }
         }
