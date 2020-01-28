@@ -10,7 +10,7 @@ export default function Game() {
         document.getElementById('canvas').addEventListener('click', function(e) {
             let row = Math.floor(e.clientY / 100);
             let col = Math.floor(e.clientX / 100);
-            canvas.moveZombies(row,col);
+            canvas.moveZombies();
             canvas.nextTurn();
             console.log(canvas.grid.layout[row][col])
         })
@@ -29,12 +29,18 @@ export default function Game() {
         board.zombies[0].moveLeft();
     }
 
+    const moveZombies = () => {
+        board.moveZombies();
+        board.nextTurn();
+    }
+
     return (
         <div id='game'>
             <button onClick={moveUp}>Move Up</button>
             <button onClick={moveRight}>Move Right</button>
             <button onClick={moveDown}>Move Down</button>
             <button onClick={moveLeft}>Move Left</button>
+            <button onClick={moveZombies}>Move Zombies</button>
         </div>
     )
 }

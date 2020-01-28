@@ -117,17 +117,6 @@ export default class Grid {
         return new Cell(...input, row, col)
     }
 
-    returnLoudestCell() {
-        let loudestCell = this.layout[0][0];
-        for (let row = 0; row < this.rows; row++) {
-            for (let col = 0; col < this.cols; col++) {
-                let cell = this.layout[row][col];
-                if (cell.calculateNoise() > loudestCell.calculateNoise()) loudestCell = cell;
-            }
-        }
-        return loudestCell;
-    }
-
     makeGraphAndPath(startCell, endCell) {
         if (startCell === endCell) return 'attack';
         let result = {finish: {}};

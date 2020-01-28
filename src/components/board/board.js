@@ -44,7 +44,8 @@ export default class Board {
         this.spawnZombie(250,230,2,2)
         this.spawnZombie(310,360,3,3)
         this.placePlayers(25, 207,2,0)
-        this.placePlayers(325, 7,0,3)
+        this.placePlayers(300, 7,0,3)
+        this.placePlayers(345, 25,0,3)
         this.placePlayers(325, 427,4,3)
     }
 
@@ -90,29 +91,26 @@ export default class Board {
         }
     }
 
-    findTarget(startCell) {
-        // while()
-    }
-
-    moveZombies(endRow, endCol) {
-        let layout = this.grid.layout
+    moveZombies() {
+        let layout = this.grid.layout;
         for (let row = 0; row < layout.length; row++) {
             for (let col = 0; col < layout[0].length; col++) {
                 let cell = layout[row][col];
-                if (cell.zombies.length > 0) {
-                    let direction = this.nextDirection(row, col, endRow, endCol);
-                    let length = cell.zombies.length;
-
+                let length = cell.zombies.length;
+                if (length > 0) {
+                    let target = this.findTarget(cell);
+                    let direction = this.nextDirection(row, col, target.row, target.col);
+    
                     switch (direction) {
                         case 'up':
                             for (let i = 0; i < length; i++) {
                                 cell.zombies[0].moveUp()
-                            }                            
+                            }
                             break;
                         case 'right':
                             for (let i = 0; i < length; i++) {
                                 cell.zombies[0].moveRight()
-                            }                            
+                            }
                             break;
                         case 'down':
                             for (let i = 0; i < length; i++) {
@@ -122,7 +120,7 @@ export default class Board {
                         case 'left':
                             for (let i = 0; i < length; i++) {
                                 cell.zombies[0].moveLeft()
-                            }                            
+                            }
                             break;
                         case 'attack':
                             break;
@@ -132,5 +130,75 @@ export default class Board {
                 }
             }
         }
+    }
+
+    findTarget(startCell) {
+        if (startCell.players.length > 0) return startCell;
+        let loudestSeenCell = this.returnLoudestSeenCell(startCell);
+        return !loudestSeenCell ? this.returnLoudestCell() : loudestSeenCell;
+    }
+
+    returnLoudestCell() {
+        let loudestCell = this.grid.layout[0][0];
+        for (let row = 0; row < this.rows; row++) {
+            for (let col = 0; col < this.cols; col++) {
+                let cell = this.grid.layout[row][col];
+                if (cell.calculateNoise() > loudestCell.calculateNoise()) loudestCell = cell;
+            }
+        }
+        return loudestCell;
+    }
+
+    returnLoudestSeenCell(startCell) {
+        let loudestSeenCell = null;
+        let row = startCell.row;
+        let col = startCell.col;
+        let up = startCell.up;
+        let right = startCell.right;
+        let down = startCell.down;
+        let left = startCell.left;
+
+        while (up) {
+            row--;
+            let cell = this.grid.layout[row][col];
+            if (cell.calculateNoise() > 0) {
+                if (!loudestSeenCell || cell.calculateNoise() > loudestSeenCell.calculateNoise()) {
+                    loudestSeenCell = cell;
+                }
+            }
+            up = cell.up;
+        }
+        while (right) {
+            col++;
+            let cell = this.grid.layout[row][col];
+            if (cell.calculateNoise() > 0) {
+                if (!loudestSeenCell || cell.calculateNoise() > loudestSeenCell.calculateNoise()) {
+                    loudestSeenCell = cell;
+                }
+            }
+            right = cell.right;
+        }
+        while (down) {
+            row++;
+            let cell = this.grid.layout[row][col];
+            if (cell.calculateNoise() > 0) {
+                if (!loudestSeenCell || cell.calculateNoise() > loudestSeenCell.calculateNoise()) {
+                    loudestSeenCell = cell;
+                }
+            }
+            down = cell.down;
+        }
+        while (left) {
+            col--;
+            let cell = this.grid.layout[row][col];
+            if (cell.calculateNoise() > 0) {
+                if (!loudestSeenCell || cell.calculateNoise() > loudestSeenCell.calculateNoise()) {
+                    loudestSeenCell = cell;
+                }
+            }
+            left = cell.left;
+        }
+
+        return loudestSeenCell;
     }
 }
