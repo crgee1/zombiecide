@@ -111,7 +111,8 @@ export default class Grid {
         return new Cell(...input, row, col)
     }
 
-    makeGraph(startCell, endCell) {
+    makeGraphAndPath(startCell, endCell) {
+        if (startCell === endCell) return 'attack';
         let result = {finish: {}};
         let queue = [startCell];
         while (queue.length > 0) {
@@ -158,15 +159,26 @@ export default class Grid {
             }
         }
 
-        let nextStep = dijkstra(result).path[1];
-        let row = nextStep[4];
-        let col = nextStep[5];
+        let dijkstraObj = dijkstra(result);
+        let distance = dijkstraObj.distances;
+        let row;
+        let col;
         let direction;
 
+        if (distance === 1) {
+            row = endCell.name[4];
+            col = endCell.name[5];
+        } else {
+            let nextStep = dijkstraObj.path[1];
+            row = nextStep[4];
+            col = nextStep[5];
+        }
+
+        
         if (row > startCell.row) direction = 'down';
         if (row < startCell.row) direction = 'up';
-        if (col < startCell.col) direction = 'right';
-        if (col > startCell.col) direction = 'left';
+        if (col < startCell.col) direction = 'left';
+        if (col > startCell.col) direction = 'right';
 
         return direction;
     }

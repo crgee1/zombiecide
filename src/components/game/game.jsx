@@ -5,9 +5,15 @@ export default function Game() {
     const [board, setBoard] = useState();
     useEffect(() => {
         let canvas = new Board(1);
-        console.log(canvas.graph());
         canvas.animate();
         setBoard(canvas);
+        document.getElementById('canvas').addEventListener('click', function(e) {
+            let row = Math.floor(e.clientY / 100);
+            let col = Math.floor(e.clientX / 100);
+            canvas.moveZombies(row,col);
+            canvas.nextTurn();
+            console.log(canvas.grid.layout[row][col])
+        })
     }, []);
 
     const moveUp = () => {
