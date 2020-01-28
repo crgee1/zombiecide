@@ -5,9 +5,12 @@ import Player from '../piece/player';
 export default function Game(props) {
     const [board, setBoard] = useState();
     const [players, setPlayers] = useState([]);
-    const [currentPlayer, setCurrentPlayer] = useState(0);
+    const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
+    const [numActions, setNumActions] = useState(3);
 
     const { preset } = props;
+
+    const currentPlayer = players[currentPlayerIdx];
 
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
@@ -32,16 +35,20 @@ export default function Game(props) {
     }, []);
 
     const moveUp = () => {
-        players[currentPlayer].moveUp();
+        currentPlayer.moveUp();
+        setNumActions(currentPlayer.numActions);
     }
     const moveRight = () => {
-        players[currentPlayer].moveRight();
+        currentPlayer.moveRight();
+        setNumActions(currentPlayer.numActions);
     }
     const moveDown = () => {
-        players[currentPlayer].moveDown();
+        currentPlayer.moveDown();
+        setNumActions(currentPlayer.numActions);
     }
     const moveLeft = () => {
-        players[currentPlayer].moveLeft();
+        currentPlayer.moveLeft();
+        setNumActions(currentPlayer.numActions);
     }
 
     const moveZombies = () => {
@@ -50,26 +57,98 @@ export default function Game(props) {
     }
 
     const nextTurn = () => {
-        players[currentPlayer].reset();
-        setCurrentPlayer((currentPlayer + 1) % players.length);
+        currentPlayer.reset();
+        setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
+        setCurrentPlayerIdx((currentPlayerIdx + 1) % players.length);
+    }
+
+    const openDoor = (direction) => {
+        return () => {
+            setNumActions(--currentPlayer.numActions);
+            let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
+            cell[direction] = 'doorOpen';
+            switch (direction) {
+                case 'up':
+                    board.grid.layout[currentPlayer.row-1][currentPlayer.col].down = 'doorOpen' 
+                    break;
+                case 'right':
+                    board.grid.layout[currentPlayer.row][currentPlayer.col+1].left = 'doorOpen' 
+                    break;
+                case 'down':
+                    board.grid.layout[currentPlayer.row+1][currentPlayer.col].up = 'doorOpen' 
+                    break;
+                case 'left':
+                    board.grid.layout[currentPlayer.row][currentPlayer.col - 1].right = 'doorOpen'
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    const displayDirectionBtn = (direction) => {
+        if (!board) return;
+        let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
+        if (cell[direction] === false || cell[direction] === 'doorClose') return;
+        switch (direction) {
+            case 'up':
+                return <button onClick={moveUp}>Move Up</button>;
+            case 'right':
+                return <button onClick={moveRight}>Move Right</button>;
+            case 'down':
+                return <button onClick={moveDown}>Move Down</button>;
+            case 'left':
+                return <button onClick={moveLeft}>Move Left</button>;
+            default:
+                break;
+        }
     }
 
     const displayDirectionBtns = () => {
         return (
             <React.Fragment>
-                <button onClick={moveUp}>Move Up</button>
-                <button onClick={moveRight}>Move Right</button>
-                <button onClick={moveDown}>Move Down</button>
-                <button onClick={moveLeft}>Move Left</button>
+                {displayDirectionBtn('up')}
+                {displayDirectionBtn('right')}
+                {displayDirectionBtn('down')}
+                {displayDirectionBtn('left')}
+            </React.Fragment>
+        )
+    }
+
+    const displayDoorBtn = () => {
+        if (!board) return;
+        let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
+        if (!Object.values(cell).some(value => value === 'doorClose')) return;
+        let direction;
+        
+        if (cell.up === 'doorClose') {
+            direction = 'up'
+        } else if (cell.right === 'doorClose') {
+            direction = 'right'
+        } else if (cell.down === 'doorClose') {
+            direction = 'down'
+        } else if (cell.left === 'doorClose') {
+            direction = 'left'
+        }
+
+        return (
+            <React.Fragment>
+                <button onClick={openDoor(direction)}>Open Door</button>
             </React.Fragment>
         )
     }
 
     const displayToolbar = () => {
-        return (
+        if (numActions > 0) return (
             <div className="toolbar">
                 {displayDirectionBtns()}
                 <button onClick={moveZombies}>Move Zombies</button>
+                {displayDoorBtn()}
+                <button onClick={nextTurn}>End Turn</button>
+            </div>
+        );
+        return (
+            <div className="toolbar">
                 <button onClick={nextTurn}>End Turn</button>
             </div>
         )
@@ -77,7 +156,8 @@ export default function Game(props) {
 
     return (
         <div id='game'>
-            <header>{players[currentPlayer] ? players[currentPlayer].name : null}</header>
+            <header>{currentPlayer ? currentPlayer.name : null}</header>
+            <header>{numActions}</header>
             {displayToolbar()}
         </div>
     )

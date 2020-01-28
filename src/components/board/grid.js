@@ -171,11 +171,11 @@ export default class Grid {
     }
 
     preset2() {
-        let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fttt', 0, 1), this.constructCell('fftt', 0, 2), this.constructCell('fftf', 0, 3)];
-        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tfft', 1, 2), this.constructCell('tftf', 1, 3)];
-        let row3 = [this.constructCell('ftdf', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
-        let row4 = [this.constructCell('dttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
-        let row5 = [this.constructCell('ttff', 4, 0), this.constructCell('ttft', 4, 1), this.constructCell('tfft', 4, 2), this.constructCell('tfff', 4, 3)];
+        let row1 = [this.constructCell('fttf', 0, 0, 'room'), this.constructCell('fttt', 0, 1, 'room'), this.constructCell('fftt', 0, 2, 'room'), this.constructCell('fftf', 0, 3, 'street')];
+        let row2 = [this.constructCell('ttff', 1, 0, 'room'), this.constructCell('ttft', 1, 1, 'room'), this.constructCell('tfft', 1, 2, 'room'), this.constructCell('tftf', 1, 3, 'street')];
+        let row3 = [this.constructCell('ftdf', 2, 0, 'street'), this.constructCell('ftft', 2, 1, 'street'), this.constructCell('ftft', 2, 2, 'street'), this.constructCell('tftt', 2, 3, 'street')];
+        let row4 = [this.constructCell('dttf', 3, 0, 'room'), this.constructCell('fttt', 3, 1, 'room'), this.constructCell('fftt', 3, 2, 'room'), this.constructCell('tftf', 3, 3, 'street')];
+        let row5 = [this.constructCell('ttff', 4, 0, 'room'), this.constructCell('ttft', 4, 1, 'room'), this.constructCell('tfft', 4, 2, 'room'), this.constructCell('tfff', 4, 3, 'street')];
         this.layout = [row1, row2, row3, row4, row5];
     }
 
@@ -188,7 +188,7 @@ export default class Grid {
         this.layout = [row1, row2, row3, row4, row5];
     }
 
-    constructCell(cell, row, col) {
+    constructCell(cell, row, col, type) {
         let input = [];
         cell.split('').forEach(side => {
             switch (side) {
@@ -205,7 +205,7 @@ export default class Grid {
                     break;
             }
         }) 
-        return new Cell(...input, row, col)
+        return new Cell(...input, row, col, type)
     }
 
     makeGraphAndPath(startCell, endCell) {

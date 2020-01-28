@@ -12,6 +12,8 @@ export default class Player extends Piece {
         this.image = new Image();
         this.maxActions = numActions;
         this.size = 45;
+        this.exp = 0;
+        this.items = [];
         
         switch (name) {
             case 'slayer':

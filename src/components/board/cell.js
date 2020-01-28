@@ -2,7 +2,7 @@ import Zombie from "../piece/zombie";
 import Player from "../piece/player";
 
 export default class Cell {
-    constructor(up = true, right = true, down = true, left = true, row, col) {
+    constructor(up = true, right = true, down = true, left = true, row, col, type) {
         this.up = up;
         this.right = right;
         this.down = down;
@@ -10,6 +10,7 @@ export default class Cell {
         this.row = row;
         this.col = col;
         this.name = 'cell'+row+col;
+        this.type = type;
 
         this.players = [];
         this.zombies = [];
