@@ -1,27 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import Board from '../board/board';
 import Player from '../piece/player';
+import EquipmentDeck from '../deck/equipment_deck';
+import ItemItem from '../item/item_item';
 
 export default function Game(props) {
     const [board, setBoard] = useState();
     const [players, setPlayers] = useState([]);
     const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
     const [numActions, setNumActions] = useState(3);
-    const [items, setItems] = useState();
+    // const [items, setItems] = useState();
     const [searched, setSearched] = useState(false);
+    const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
 
-    const { preset } = props;
+    // const { preset } = props;
 
     const currentPlayer = players[currentPlayerIdx];
 
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
-        const player1 = new Player(25, 207, 2, 0, ctx, 'slayer');
-        const player2 = new Player(25, 237, 2, 0, ctx, 'amazon');
-        const player3 = new Player(300, 7, 0, 3, ctx, 'rouge');
-        const player4 = new Player(345, 25, 0, 3, ctx, 'mage');
+
+        const player1 = new Player(25, 227, 2, 0, ctx, 'slayer');
+        const player2 = new Player(25, 257, 2, 0, ctx, 'amazon');
+        const player3 = new Player(325, 35, 0, 3, ctx, 'rouge');
+        const player4 = new Player(365, 25, 0, 3, ctx, 'mage');
         const player5 = new Player(325, 427, 4, 3, ctx, 'bard');
-        const player6 = new Player(360, 417, 4, 3, ctx, 'warrior');
+        const player6 = new Player(360, 437, 4, 3, ctx, 'warrior');
+        let startingItemsArr = new EquipmentDeck().dealStartingItems();
+        player1.addItem(startingItemsArr[0]);
+        player2.addItem(startingItemsArr[1]);
+        player3.addItem(startingItemsArr[2]);
+        player4.addItem(startingItemsArr[3]);
+        player5.addItem(startingItemsArr[4]);
+        player6.addItem(startingItemsArr[5]);
         let playersArr = [player1, player2, player3, player4, player5, player6];
         setPlayers(playersArr);
         let canvas = new Board(2, playersArr, ctx);
@@ -30,11 +41,17 @@ export default function Game(props) {
         setBoard(canvas);
 
         document.getElementById('canvas').addEventListener('click', function (e) {
-            let row = Math.floor(e.clientY / 100);
-            let col = Math.floor(e.clientX / 100);
-            if (canvas.grid.layout[row]) console.log(canvas.grid.layout[row][col]);
+            let row = e.clientY;
+            let col = e.clientX;
+            console.log(col,row)
+            // if (canvas.grid.layout[row]) console.log(canvas.grid.layout[row][col]);
+            for (let i = 0; i < canvas.zombies.length; i++) {
+                let zombie = canvas.zombies[i];
+                console.log(zombie.contains(col,row))
+            }
+            // console.log(equipmentDeck.draw());
         })
-    }, []);
+    }, [equipmentDeck]);
 
     const moveUp = () => {
         currentPlayer.moveUp();
@@ -90,6 +107,10 @@ export default function Game(props) {
     }
 
     const search = () => {
+        let item = equipmentDeck.draw();
+        setEquipmentDeck(equipmentDeck);
+        currentPlayer.addItem(item);
+        setNumActions(--currentPlayer.numActions);
         setSearched(true);
     }
 
@@ -99,7 +120,7 @@ export default function Game(props) {
         if (cell.type !== 'room') return;
 
         return (
-            <button>Search</button>
+            <button onClick={search}>Search</button>
         )
     }
 
@@ -155,6 +176,18 @@ export default function Game(props) {
         )
     }
 
+    const displayItems = () => {
+        if (!currentPlayer) return;
+        return currentPlayer.items.map((item, i) => {
+            return (
+                <ItemItem
+                    key={i}
+                    item={item}
+                />
+            )
+        })
+    }
+
     const displayToolbar = () => {
         if (numActions > 0) return (
             <div className="toolbar">
@@ -174,9 +207,14 @@ export default function Game(props) {
 
     return (
         <div id='game'>
-            <header>{currentPlayer ? currentPlayer.name : null}</header>
-            <header>{numActions}</header>
-            {displayToolbar()}
+            <div>
+                <header>{currentPlayer ? currentPlayer.name : null}</header>
+                <header>{numActions}</header>
+                {displayToolbar()}
+            </div>
+            <div>
+                {displayItems()}
+            </div>
         </div>
     )
 }

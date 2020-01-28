@@ -5,6 +5,7 @@ import rougePic from '../../assets/images/rouge.png'
 import amazonPic from '../../assets/images/amazon.png'
 import bardPic from '../../assets/images/bard.png'
 import warriorPic from '../../assets/images/warrior.png'
+import Weapon from '../item/weapon';
 
 export default class Player extends Piece {
     constructor(x, y, row, col, ctx, name, numActions = 3) {
@@ -15,7 +16,7 @@ export default class Player extends Piece {
         this.exp = 0;
         this.level = 1;
         this.items = [];
-        
+        this.name = name;
         switch (name) {
             case 'slayer':
                 this.image.src = slayerPic;
@@ -38,8 +39,11 @@ export default class Player extends Piece {
             default:
                 break;
         }
+        if (name === 'slayer') this.items = [new Weapon('pistol', 0, 1, 1, 4, 1, true, false)];
+    }
 
-        this.name = name;
+    addItem(item) {
+        this.items.push(item);
     }
 
     gainExp(exp) {

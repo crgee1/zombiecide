@@ -127,7 +127,7 @@ export default class Grid {
     }
 
     draw() {
-        this.ctx.strokeWidth = '2px';
+        this.ctx.lineWidth = 2;
         this.layout.forEach((row, i) => {
             row.forEach((cell, j) => {
                 let x = j * 100;

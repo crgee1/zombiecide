@@ -1,0 +1,14 @@
+.item-container {
+    display: inline-block;
+    margin-right: 5px;
+    background-color: beige;
+    width: 100px;
+    height: 100px;
+}
+
+.item {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
