@@ -25,7 +25,6 @@ export default class Board {
             case 2:
                 this.preset2()
                 break;
-        
             default:
                 break;
         }
@@ -44,6 +43,9 @@ export default class Board {
         this.spawnZombie(310,230,2,3)
         this.spawnZombie(250,230,2,2)
         this.spawnZombie(310,360,3,3)
+        this.placePlayers(25, 207,2,0)
+        this.placePlayers(325, 7,0,3)
+        this.placePlayers(325, 427,4,3)
     }
 
     clear() {
@@ -86,6 +88,10 @@ export default class Board {
                 }
             }
         }
+    }
+
+    findTarget(startCell) {
+        // while()
     }
 
     moveZombies(endRow, endCol) {
