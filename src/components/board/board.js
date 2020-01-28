@@ -44,6 +44,7 @@ export default class Board {
         this.spawnZombie(250,230,2,2)
         this.spawnZombie(310,360,3,3)
         this.placePlayers(25, 207,2,0)
+        this.placePlayers(25, 237,2,0)
         this.placePlayers(300, 7,0,3)
         this.placePlayers(345, 25,0,3)
         this.placePlayers(325, 427,4,3)
@@ -168,6 +169,8 @@ export default class Board {
             }
             up = cell.up;
         }
+        row = startCell.row;
+
         while (right) {
             col++;
             let cell = this.grid.layout[row][col];
@@ -178,6 +181,8 @@ export default class Board {
             }
             right = cell.right;
         }
+        col = startCell.col;
+
         while (down) {
             row++;
             let cell = this.grid.layout[row][col];
@@ -188,6 +193,8 @@ export default class Board {
             }
             down = cell.down;
         }
+        row = startCell.row;
+
         while (left) {
             col--;
             let cell = this.grid.layout[row][col];

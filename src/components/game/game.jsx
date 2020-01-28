@@ -10,8 +10,6 @@ export default function Game() {
         document.getElementById('canvas').addEventListener('click', function(e) {
             let row = Math.floor(e.clientY / 100);
             let col = Math.floor(e.clientX / 100);
-            canvas.moveZombies();
-            canvas.nextTurn();
             console.log(canvas.grid.layout[row][col])
         })
     }, []);
