@@ -4,8 +4,8 @@ export default class Piece {
         this.posY = y;
         this.row = row;
         this.col = col;
-        this.numActions = numActions
-        this.ctx = ctx
+        this.numActions = numActions;
+        this.ctx = ctx;
     }
 
     move(direction) {
@@ -24,6 +24,22 @@ export default class Piece {
                 break;
             default:
                 break;
+        }
+    }
+
+    draw() {
+        this.ctx.drawImage(this.image, this.posX, this.posY, this.size, this.size);
+        if (this.destinationY < this.posY) {
+            this.posY--;
+        }
+        if (this.destinationY > this.posY) {
+            this.posY++;
+        }
+        if (this.destinationX > this.posX) {
+            this.posX++;
+        }
+        if (this.destinationX < this.posX) {
+            this.posX--;
         }
     }
 }

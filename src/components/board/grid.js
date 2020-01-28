@@ -19,53 +19,131 @@ export default class Grid {
         this.cols = this.layout[0].length;
     }
 
+    drawSide(side, door, x ,y) {
+        if (door === 'doorOpen' || door === 'doorClose') {
+            let color = door === 'doorOpen' ? 'yellow' : 'red';
+            this.ctx.setLineDash([]);
+            
+            switch (side) {
+                case 'up':
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y)
+                    this.ctx.lineTo(x + 33, y);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = color;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 33, y);
+                    this.ctx.lineTo(x + 66, y);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.lineTo(x + 100, y);
+                    this.ctx.stroke();
+                    break;
+                case 'right':
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 100, y);
+                    this.ctx.lineTo(x + 100, y + 33);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = color;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 100, y + 33);
+                    this.ctx.lineTo(x + 100, y + 66);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 100, y + 66);
+                    this.ctx.lineTo(x + 100, y + 100);
+                    this.ctx.stroke();
+                    break;
+                case 'down':
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 100, y + 100);
+                    this.ctx.lineTo(x + 66, y + 100);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = color;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 66, y + 100);
+                    this.ctx.lineTo(x + 33, y + 100);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+
+                    this.ctx.lineTo(x, y + 100);
+                    this.ctx.stroke();
+                    break;
+                case 'left':
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y + 100);
+                    this.ctx.lineTo(x, y + 66);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = color;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y + 66);
+                    this.ctx.lineTo(x, y + 33);
+                    this.ctx.stroke();
+                    this.ctx.strokeStyle = 'black';
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y + 33);
+                    this.ctx.lineTo(x, y);
+                    this.ctx.stroke();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            if (!door) {
+                this.ctx.setLineDash([]);
+            } else {
+                this.ctx.setLineDash([5, 15]);
+            }
+            switch (side) {
+                case 'up':
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y);
+                    this.ctx.lineTo(x + 100, y);
+                    this.ctx.stroke();
+                    break;
+                case 'right':
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 100, y);
+                    this.ctx.lineTo(x + 100, y + 100);
+                    this.ctx.stroke();
+                    break;
+                case 'down':
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + 100, y + 100);
+                    this.ctx.lineTo(x, y + 100);
+                    this.ctx.stroke();
+                    break;
+                case 'left':
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y + 100);
+                    this.ctx.lineTo(x, y)
+                    this.ctx.stroke();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     draw() {
         this.ctx.strokeWidth = '2px';
-        this.ctx.strokeStyle = 'black';
         this.layout.forEach((row, i) => {
             row.forEach((cell, j) => {
                 let x = j * 100;
                 let y = i * 100;
-
-                if (!cell.up) {
-                    this.ctx.setLineDash([]);
-                } else {
-                    this.ctx.setLineDash([5, 15]);
-                }
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y)
-                this.ctx.lineTo(x + 100, y)
-                this.ctx.stroke();
-
-                if (!cell.right) {
-                    this.ctx.setLineDash([]);
-                } else {
-                    this.ctx.setLineDash([5, 15]);
-                }
-                this.ctx.beginPath();
-                this.ctx.moveTo(x + 100, y)
-                this.ctx.lineTo(x + 100, y + 100)
-                this.ctx.stroke();
-
-                if (!cell.down) {
-                    this.ctx.setLineDash([]);
-                } else {
-                    this.ctx.setLineDash([5, 15]);
-                }
-                this.ctx.beginPath();
-                this.ctx.moveTo(x + 100, y + 100)
-                this.ctx.lineTo(x, y + 100)
-                this.ctx.stroke();
-
-                if (!cell.left) {
-                    this.ctx.setLineDash([]);
-                } else {
-                    this.ctx.setLineDash([5, 15]);
-                }
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y + 100)
-                this.ctx.lineTo(x, y)
-                this.ctx.stroke();
+                
+                this.ctx.strokeStyle = 'black';
+                this.drawSide('up', cell.up, x, y);
+                this.drawSide('right', cell.right, x, y);
+                this.drawSide('down', cell.down, x, y);
+                this.drawSide('left', cell.left, x, y);
             })
         });
     }
@@ -93,6 +171,15 @@ export default class Grid {
 
     preset2() {
         let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fttt', 0, 1), this.constructCell('fftt', 0, 2), this.constructCell('fftf', 0, 3)];
+        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tdft', 1, 2), this.constructCell('tftd', 1, 3)];
+        let row3 = [this.constructCell('ftff', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
+        let row4 = [this.constructCell('fttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
+        let row5 = [this.constructCell('ttff', 4, 0), this.constructCell('ttft', 4, 1), this.constructCell('tfft', 4, 2), this.constructCell('tfff', 4, 3)];
+        this.layout = [row1, row2, row3, row4, row5];
+    }
+
+    preset3() {
+        let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fttt', 0, 1), this.constructCell('fftt', 0, 2), this.constructCell('fftf', 0, 3)];
         let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tfft', 1, 2), this.constructCell('tftf', 1, 3)];
         let row3 = [this.constructCell('ftff', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
         let row4 = [this.constructCell('fttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
@@ -109,6 +196,9 @@ export default class Grid {
                     break;
                 case 'f':
                     input.push(false);
+                    break;
+                case 'd':
+                    input.push('doorClose');
                     break;
                 default:
                     break;

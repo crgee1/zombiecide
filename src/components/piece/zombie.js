@@ -9,6 +9,7 @@ export default class Zombie extends Piece {
         this.size = 200;
         this.grid = grid;
         this.type = type;
+        this.size = 35;
 
         this.destinationX = this.posX;
         this.destinationY = this.posY;
@@ -66,22 +67,6 @@ export default class Zombie extends Piece {
             this.destinationX = this.posX - 100;
             this.col -= 1;
             this.addToCell();
-        }
-    }
-
-    draw() {
-        this.ctx.drawImage(this.image, this.posX, this.posY, 35, 35);
-        if (this.destinationY < this.posY) {
-            this.posY--;
-        }
-        if (this.destinationY > this.posY) {
-            this.posY++;
-        }
-        if (this.destinationX > this.posX) {
-            this.posX++;
-        }
-        if (this.destinationX < this.posX) {
-            this.posX--;
         }
     }
 }

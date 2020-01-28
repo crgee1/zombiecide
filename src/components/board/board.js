@@ -3,13 +3,13 @@ import Zombie from "../piece/zombie";
 import Player from "../piece/player";
 
 export default class Board {
-    constructor(preset) { 
+    constructor(preset, players, ctx) { 
         this.canvas = document.getElementById('canvas');
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx = ctx;
         this.grid = new Grid(preset, this.ctx);
         this.zombies = [];
-        this.players = [];
-        this.setup(preset)
+        this.players = players;
+        this.setup(preset);
         
 
         this.animate = this.animate.bind(this);
@@ -39,15 +39,10 @@ export default class Board {
     }
 
     preset2() {
-        this.spawnZombie(310,110,1,3)
-        this.spawnZombie(310,230,2,3)
-        this.spawnZombie(250,230,2,2)
-        this.spawnZombie(310,360,3,3)
-        this.placePlayers(25, 207,2,0)
-        this.placePlayers(25, 237,2,0)
-        this.placePlayers(300, 7,0,3)
-        this.placePlayers(345, 25,0,3)
-        this.placePlayers(325, 427,4,3)
+        this.spawnZombie(310,110,1,3);
+        this.spawnZombie(310,230,2,3);
+        this.spawnZombie(250,230,2,2);
+        this.spawnZombie(310,360,3,3);
     }
 
     clear() {
@@ -62,8 +57,8 @@ export default class Board {
         this.players.forEach(player => player.draw());
     }
 
-    placePlayers(x, y, gridX, gridY) {
-        const player = new Player(x, y, gridX, gridY, this.ctx, 'slayer');
+    placePlayers(x, y, gridX, gridY, name) {
+        const player = new Player(x, y, gridX, gridY, this.ctx, name);
         this.grid.layout[gridX][gridY].add(player);
         this.players.push(player);
     }
