@@ -4,7 +4,7 @@ import Board from '../board/board';
 export default function Game() {
     const [board, setBoard] = useState();
     useEffect(() => {
-        let canvas = new Board(1);
+        let canvas = new Board(2);
         canvas.animate();
         setBoard(canvas);
         document.getElementById('canvas').addEventListener('click', function(e) {

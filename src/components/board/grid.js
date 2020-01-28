@@ -89,9 +89,12 @@ export default class Grid {
     }
 
     preset2() {
-        let row1 = [this.constructCell('ffff'), this.constructCell('ffff')];
-        let row2 = [this.constructCell('ffff'), this.constructCell('ffff')];
-        this.layout = [row1, row2];
+        let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fttt', 0, 1), this.constructCell('fftt', 0, 2), this.constructCell('fftf', 0, 3)];
+        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tfft', 1, 2), this.constructCell('tftf', 1, 3)];
+        let row3 = [this.constructCell('ftff', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
+        let row4 = [this.constructCell('fttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
+        let row5 = [this.constructCell('ttff', 4, 0), this.constructCell('ttft', 4, 1), this.constructCell('tfft', 4, 2), this.constructCell('tfff', 4, 3)];
+        this.layout = [row1, row2, row3, row4, row5];
     }
 
     constructCell(cell, row, col) {

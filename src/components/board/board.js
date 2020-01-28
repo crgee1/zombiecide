@@ -7,16 +7,43 @@ export default class Board {
         this.canvas = document.getElementById('canvas');
         this.ctx = this.canvas.getContext('2d');
         this.grid = new Grid(preset, this.ctx);
-
         this.zombies = [];
         this.players = [];
-
-        this.placePlayers(30, 350, 3, 0,);
-        this.spawnZombie(130,10, 0, 1)
-        this.spawnZombie(150,10, 0, 1)
-        this.spawnZombie(10,210, 2, 0)
+        this.setup(preset)
+        
 
         this.animate = this.animate.bind(this);
+    }
+
+    setup(preset) {
+        this.grid = new Grid(preset, this.ctx);
+
+        switch (preset) {
+            case 1:
+                this.preset1()
+                break;
+            case 2:
+                this.preset2()
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    preset1() {
+        this.spawnZombie(110, 10, 0, 1);
+        this.spawnZombie(150, 10, 0, 1);
+        this.spawnZombie(35, 260, 2, 0);
+        this.placePlayers(30, 350, 3, 0);
+        
+    }
+
+    preset2() {
+        this.spawnZombie(310,110,1,3)
+        this.spawnZombie(310,230,2,3)
+        this.spawnZombie(250,230,2,2)
+        this.spawnZombie(310,360,3,3)
     }
 
     clear() {
