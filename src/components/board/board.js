@@ -10,6 +10,7 @@ export default class Board {
         this.zombies = [];
         this.players = players;
         this.setup(preset);
+        this.playerIdx = 0;
         
         players.forEach(player => this.grid.layout[player.row][player.col].add(player))
         this.animate = this.animate.bind(this);
@@ -39,9 +40,9 @@ export default class Board {
     }
 
     preset2() {
-        // this.spawnZombie(340,120,1,3);
-        // this.spawnZombie(370,270,2,3);
-        // this.spawnZombie(250,230,2,2);
+        this.spawnZombie(340,120,1,3);
+        this.spawnZombie(370,270,2,3);
+        this.spawnZombie(250,230,2,2);
         this.spawnZombie(320,380,3,3);
     }
 
@@ -67,6 +68,10 @@ export default class Board {
         let zombie = new Zombie(x, y, gridX, gridY, this.ctx, this.grid);
         this.grid.layout[gridX][gridY].add(zombie);
         this.zombies.push(zombie);
+    }
+
+    activePlayer() {
+        return this.players[this.playerIdx];
     }
 
     nextDirection(startRow, startCol, endRow, endCol) {
@@ -203,5 +208,48 @@ export default class Board {
         }
 
         return loudestSeenCell;
+    }
+
+    withinRange(minRange, maxRange, row, col) {
+        let distance = minRange;
+        let startCell = this.grid.layout[row][col];
+        let cellArr = minRange === 0 ? [startCell] : [];
+
+        if (maxRange > 0 && startCell.up && startCell.up !== 'doorClose') {
+            let upCell = this.grid.layout[row-minRange][col];
+            while (distance <= maxRange && upCell) {
+                if (distance > 0) cellArr.push(upCell);
+                distance++;
+                upCell = (upCell.up && upCell.up !== 'doorClose') ? this.grid.layout[upCell.row - 1][col] : null;
+            }
+        }
+        distance = minRange
+        if (maxRange > 0 && startCell.right && startCell.right !== 'doorClose') {
+            let rightCell = this.grid.layout[row][col+minRange];
+            while (distance <= maxRange && rightCell) {
+                if (distance > 0) cellArr.push(rightCell);
+                distance++;
+                rightCell = (rightCell.right && rightCell.right !== 'doorClose') ? this.grid.layout[row][rightCell.col+1] : null;
+            }
+        }
+        distance = minRange
+        if (maxRange > 0 && startCell.down && startCell.down !== 'doorClose') {
+            let downCell = this.grid.layout[row+minRange][col];
+            while (distance <= maxRange && downCell) {
+                if (distance > 0) cellArr.push(downCell);
+                distance++;
+                downCell = (downCell.down && downCell.down !== 'doorClose') ? this.grid.layout[downCell.row + 1][col] : null;
+            }
+        }
+        distance = minRange
+        if (maxRange > 0 && startCell.left && startCell.left !== 'doorClose') {
+            let leftCell = this.grid.layout[row][col-minRange];
+            while (distance <= maxRange && leftCell) {
+                if (distance > 0) cellArr.push(leftCell);
+                distance++;
+                leftCell = (leftCell.left && leftCell.left !== 'doorClose') ? this.grid.layout[row][leftCell.col - 1] : null;
+            }
+        }
+        return cellArr;
     }
 }

@@ -46,6 +46,10 @@ export default class Player extends Piece {
         this.items.push(item);
     }
 
+    onHandWeapon() {
+        return this.player.items[0];
+    }
+
     gainExp(exp) {
         let oldExp = this.exp;
         let newExp = this.exp + exp;

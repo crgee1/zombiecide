@@ -86,7 +86,7 @@ export default class Zombie extends Piece {
             this.posX--;
         }
 
-        if (!this.target) {
+        if (this.target) {
             this.ctx.strokeStyle = 'red';
             this.ctx.beginPath();
             this.ctx.arc(this.posX, this.posY, this.size/1.5, 0, 2 * Math.PI);

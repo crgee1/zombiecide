@@ -12,6 +12,7 @@ export default function Game(props) {
     // const [items, setItems] = useState();
     const [searched, setSearched] = useState(false);
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
+    const [weapon, setWeapon] = useState();
 
     // const { preset } = props;
 
@@ -33,6 +34,7 @@ export default function Game(props) {
         player4.addItem(startingItemsArr[3]);
         player5.addItem(startingItemsArr[4]);
         player6.addItem(startingItemsArr[5]);
+        setWeapon(player1.items[0]);
         let playersArr = [player1, player2, player3, player4, player5, player6];
         setPlayers(playersArr);
         let canvas = new Board(2, playersArr, ctx);
@@ -41,17 +43,28 @@ export default function Game(props) {
         setBoard(canvas);
 
         document.getElementById('canvas').addEventListener('click', function (e) {
-            let row = e.clientY;
-            let col = e.clientX;
-            console.log(col,row)
-            // if (canvas.grid.layout[row]) console.log(canvas.grid.layout[row][col]);
-            for (let i = 0; i < canvas.zombies.length; i++) {
-                let zombie = canvas.zombies[i];
-                console.log(zombie.contains(col,row))
+            let y = e.clientY;
+            let x = e.clientX;
+            let row = Math.floor(y/100);
+            let col = Math.floor(x/100);
+            let player = canvas.activePlayer();
+            let weapon = player.items[0];
+            let rangeArr = canvas.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
+            let targetCell = canvas.grid.layout[row][col];
+            if (rangeArr.includes(targetCell)) {
+                for (let i = 0; i < targetCell.zombies.length; i++) {
+                    let zombie = targetCell.zombies[i];
+                    if (zombie.contains(x,y)) {
+                        zombie.target = !zombie.target;
+                    }
+                }
             }
-            // console.log(equipmentDeck.draw());
         })
     }, [equipmentDeck]);
+
+    useEffect(() => {
+        if (board) board.playerIdx = currentPlayerIdx;
+    }, [currentPlayerIdx, board])
 
     const moveUp = () => {
         currentPlayer.moveUp();
@@ -78,6 +91,7 @@ export default function Game(props) {
     const nextTurn = () => {
         currentPlayer.reset();
         setSearched(false);
+        setWeapon(players[(currentPlayerIdx + 1) % players.length].items[0]);
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
         setCurrentPlayerIdx((currentPlayerIdx + 1) % players.length);
     }
