@@ -25,12 +25,12 @@ export default function Game(props) {
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
 
-        const player1 = new Player(25, 227, 2, 0, ctx, 'slayer');
-        const player2 = new Player(25, 257, 2, 0, ctx, 'amazon');
-        const player3 = new Player(325, 35, 0, 3, ctx, 'rouge');
-        const player4 = new Player(365, 25, 0, 3, ctx, 'mage');
-        const player5 = new Player(325, 427, 4, 3, ctx, 'bard');
-        const player6 = new Player(360, 437, 4, 3, ctx, 'warrior');
+        const player1 = new Player(350, 330, 3, 3, ctx, 'slayer');
+        const player2 = new Player(320, 330, 3, 3, ctx, 'amazon');
+        const player3 = new Player(360, 380, 3, 3, ctx, 'rouge');
+        const player4 = new Player(385, 330, 3, 3, ctx, 'mage');
+        const player5 = new Player(320, 380, 3, 3, ctx, 'bard');
+        const player6 = new Player(390, 380, 3, 3, ctx, 'warrior');
         let startingItemsArr = new EquipmentDeck().dealStartingItems();
         player1.addItem(startingItemsArr[0]);
         player2.addItem(startingItemsArr[1]);
@@ -41,7 +41,7 @@ export default function Game(props) {
         // setWeapon(player1.items[0]);
         let playersArr = [player1, player2, player3, player4, player5, player6];
         setPlayers(playersArr);
-        let canvas = new Board(2, playersArr, ctx);
+        let canvas = new Board(3, playersArr, ctx);
         playersArr.forEach(player => player.addGrid(canvas.grid));
         canvas.animate();
         setBoard(canvas);

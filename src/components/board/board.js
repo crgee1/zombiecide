@@ -28,6 +28,9 @@ export default class Board {
             case 2:
                 this.preset2()
                 break;
+            case 3:
+                this.preset3()
+                break;
             default:
                 break;
         }
@@ -46,6 +49,13 @@ export default class Board {
         this.spawnZombie(370,270,2,3);
         this.spawnZombie(250,230,2,2);
         this.spawnZombie(320,380,3,3);
+    }
+
+    preset3() {
+        this.spawnZombie(260,480,4,2);
+        this.spawnZombie(370,270,2,3);
+        this.spawnZombie(250,230,2,2);
+        this.spawnZombie(420,380,3,4);
     }
 
     clear() {

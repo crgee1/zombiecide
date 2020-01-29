@@ -150,6 +150,9 @@ export default class Grid {
             case 2:
                 this.preset2();
                 break;
+            case 3:
+                this.preset3();
+                break;
             default:
                 break;
         }
@@ -173,12 +176,14 @@ export default class Grid {
     }
 
     preset3() {
-        let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fttt', 0, 1), this.constructCell('fftt', 0, 2), this.constructCell('fftf', 0, 3)];
-        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('ttft', 1, 1), this.constructCell('tfft', 1, 2), this.constructCell('tftf', 1, 3)];
-        let row3 = [this.constructCell('ftff', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('ftft', 2, 2), this.constructCell('tftt', 2, 3)];
-        let row4 = [this.constructCell('fttf', 3, 0), this.constructCell('fttt', 3, 1), this.constructCell('fftt', 3, 2), this.constructCell('tftf', 3, 3)];
-        let row5 = [this.constructCell('ttff', 4, 0), this.constructCell('ttft', 4, 1), this.constructCell('tfft', 4, 2), this.constructCell('tfff', 4, 3)];
-        this.layout = [row1, row2, row3, row4, row5];
+        let row1 = [this.constructCell('fttf', 0, 0), this.constructCell('fftt', 0, 1), this.constructCell('fftf', 0, 2), this.constructCell('fttf', 0, 3), this.constructCell('fttt', 0, 4), this.constructCell('fttt', 0, 5), this.constructCell('fftt', 0, 6)];
+        let row2 = [this.constructCell('ttff', 1, 0), this.constructCell('tdft', 1, 1), this.constructCell('tdtd', 1, 2), this.constructCell('ttfd', 1, 3), this.constructCell('ttft', 1, 4), this.constructCell('ttdt', 1, 5), this.constructCell('tfft', 1, 6)];
+        let row3 = [this.constructCell('ftff', 2, 0), this.constructCell('ftft', 2, 1), this.constructCell('tttt', 2, 2), this.constructCell('ftdt', 2, 3), this.constructCell('fttt', 2, 4), this.constructCell('dtdt', 2, 5), this.constructCell('ffft', 2, 6)];
+        let row4 = [this.constructCell('ftff', 3, 0), this.constructCell('ffdt', 3, 1), this.constructCell('tftf', 3, 2), this.constructCell('dfdf', 3, 3), this.constructCell('tftf', 3, 4), this.constructCell('dtff', 3, 5), this.constructCell('ffft', 3, 6)];
+        let row5 = [this.constructCell('ftff', 4, 0), this.constructCell('dtdt', 4, 1), this.constructCell('ttft', 4, 2), this.constructCell('dtft', 4, 3), this.constructCell('tttt', 4, 4), this.constructCell('ftft', 4, 5), this.constructCell('ffft', 4, 6)];
+        let row6 = [this.constructCell('ftff', 5, 0), this.constructCell('dtft', 5, 1), this.constructCell('ftft', 5, 2), this.constructCell('fdft', 5, 3), this.constructCell('tdtd', 5, 4), this.constructCell('fttd', 5, 5), this.constructCell('fftt', 5, 6)];
+        let row7 = [this.constructCell('ftff', 6, 0), this.constructCell('ftft', 6, 1), this.constructCell('ftft', 6, 2), this.constructCell('ftft', 6, 3), this.constructCell('tfft', 6, 4), this.constructCell('ttff', 6, 5), this.constructCell('tfft', 6, 6)];
+        this.layout = [row1, row2, row3, row4, row5, row6, row7];
     }
 
     constructCell(cell, row, col, type) {

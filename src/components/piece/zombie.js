@@ -1,5 +1,5 @@
 import Piece from "./piece";
-import pic from '../../assets/images/zombie.png'
+import pic from '../../assets/images/model/zombie.png'
 
 export default class Zombie extends Piece {
     constructor(x, y, row, col, ctx, grid, type = 'walker', numActions = 1) {
