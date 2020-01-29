@@ -53,9 +53,9 @@ export default class Board {
 
     preset3() {
         this.spawnZombie(260,480,4,2);
-        this.spawnZombie(370,270,2,3);
-        this.spawnZombie(250,230,2,2);
-        this.spawnZombie(420,380,3,4);
+        // this.spawnZombie(370,270,2,3);
+        // this.spawnZombie(250,230,2,2);
+        // this.spawnZombie(420,380,3,4);
     }
 
     clear() {

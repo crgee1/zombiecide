@@ -255,6 +255,8 @@ export default class Grid {
         }
 
         let dijkstraObj = dijkstra(result);
+        console.log(result)
+        console.log(dijkstraObj)
         let distance = dijkstraObj.distances;
         let row;
         let col;
