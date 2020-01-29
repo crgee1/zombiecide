@@ -16,6 +16,7 @@ export default class Player extends Piece {
         this.exp = 0;
         this.level = 1;
         this.items = [];
+        this.wounds = 0;
         this.name = name;
         switch (name) {
             case 'slayer':

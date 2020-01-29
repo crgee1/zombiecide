@@ -93,17 +93,21 @@ export default function Game(props) {
     }
 
     const moveZombies = () => {
+        let playerArr = [...players];
+        let firstPlayer = playerArr.shift();
+        setPlayers([...playerArr, firstPlayer])
         board.moveZombies();
         board.nextTurn();
     }
 
     const nextTurn = () => {
+        if (currentPlayerIdx === players.length-1) moveZombies();
         currentPlayer.reset();
         setSearched(false);
         board.resetTargeted();
         // setWeapon(players[(currentPlayerIdx + 1) % players.length].items[0]);
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
-        setCurrentPlayerIdx((currentPlayerIdx + 1) % players.length);
+        setCurrentPlayerIdx(prevState => (prevState + 1) % players.length);
     }
 
     const openDoor = (direction) => {
@@ -144,6 +148,11 @@ export default function Game(props) {
         let result = diceArr.pop();
         setDice(diceArr);
         if (result) board.killZombies();
+    }
+
+    const makeNoise = () => {
+        setNumActions(--currentPlayer.numActions);
+        board.grid.layout[currentPlayer.row][currentPlayer.col].noise++;
     }
 
     const displayDice = () => {
@@ -257,7 +266,7 @@ export default function Game(props) {
                 {displaySearchBtn()}
                 {displayDoorBtn()}
                 {displayAttack()}
-                <button onClick={moveZombies}>Move Zombies</button>
+                <button onClick={makeNoise}>Make Noise</button>
                 <button onClick={nextTurn}>End Turn</button>
             </div>
         );

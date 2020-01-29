@@ -84,6 +84,7 @@ export default class Board {
     nextTurn() {
         this.zombies.forEach(zombie => zombie.reset());
         this.bloods = [];
+        this.resetNoise();
         // let layout = this.grid.layout
         // for (let row = 0; row < layout.length; row++) {
         //     for (let col = 0; col < layout[0].length; col++) {
