@@ -38,6 +38,16 @@ export default class Cell {
         }
     }
 
+    killZombies() {
+        for (let i = 0; i < this.zombies.length; i++) {
+            let zombie = this.zombies[i];
+            if (zombie.targeted) {
+                this.zombies.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
     calculateNoise() {
         return this.noise + this.players.length;
     }

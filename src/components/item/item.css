@@ -1,6 +1,7 @@
 .item-container {
     display: inline-block;
-    margin-right: 5px;
+    border: 1px solid black;
+    margin: 5px;
     background-color: beige;
     width: 100px;
     height: 100px;

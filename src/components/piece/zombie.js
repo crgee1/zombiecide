@@ -6,11 +6,10 @@ export default class Zombie extends Piece {
         super(x, y, row, col, numActions, ctx);
         this.image = new Image();
         this.image.src = pic
-        this.size = 200;
         this.grid = grid;
         this.type = type;
         this.size = 35;
-        this.target = false;
+        this.targeted = false;
 
         this.destinationX = this.posX;
         this.destinationY = this.posY;
@@ -86,7 +85,7 @@ export default class Zombie extends Piece {
             this.posX--;
         }
 
-        if (this.target) {
+        if (this.targeted) {
             this.ctx.strokeStyle = 'red';
             this.ctx.beginPath();
             this.ctx.arc(this.posX, this.posY, this.size/1.5, 0, 2 * Math.PI);

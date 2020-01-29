@@ -4,6 +4,8 @@ import Player from '../piece/player';
 import EquipmentDeck from '../deck/equipment_deck';
 import ItemItem from '../item/item_item';
 
+import './game.css';
+
 export default function Game(props) {
     const [board, setBoard] = useState();
     const [players, setPlayers] = useState([]);
@@ -13,6 +15,8 @@ export default function Game(props) {
     const [searched, setSearched] = useState(false);
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
     const [weapon, setWeapon] = useState();
+    const [targets, setTargets] = useState(0);
+    const [dice, setDice] = useState([]);
 
     // const { preset } = props;
 
@@ -34,7 +38,7 @@ export default function Game(props) {
         player4.addItem(startingItemsArr[3]);
         player5.addItem(startingItemsArr[4]);
         player6.addItem(startingItemsArr[5]);
-        setWeapon(player1.items[0]);
+        // setWeapon(player1.items[0]);
         let playersArr = [player1, player2, player3, player4, player5, player6];
         setPlayers(playersArr);
         let canvas = new Board(2, playersArr, ctx);
@@ -55,7 +59,12 @@ export default function Game(props) {
                 for (let i = 0; i < targetCell.zombies.length; i++) {
                     let zombie = targetCell.zombies[i];
                     if (zombie.contains(x,y)) {
-                        zombie.target = !zombie.target;
+                        zombie.targeted = !zombie.targeted;
+                        if (zombie.targeted) {
+                            setTargets(prevState => prevState+1);
+                        } else {
+                            setTargets(prevState => prevState-1);
+                        }
                     }
                 }
             }
@@ -91,7 +100,8 @@ export default function Game(props) {
     const nextTurn = () => {
         currentPlayer.reset();
         setSearched(false);
-        setWeapon(players[(currentPlayerIdx + 1) % players.length].items[0]);
+        board.resetTargeted();
+        // setWeapon(players[(currentPlayerIdx + 1) % players.length].items[0]);
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
         setCurrentPlayerIdx((currentPlayerIdx + 1) % players.length);
     }
@@ -128,6 +138,38 @@ export default function Game(props) {
         setSearched(true);
     }
 
+    const attack = () => {
+        setNumActions(--currentPlayer.numActions);
+        let diceArr = currentPlayer.attack();
+        let result = diceArr.pop();
+        setDice(diceArr);
+        if (result) board.killZombies();
+    }
+
+    const displayDice = () => {
+        if (dice.length === 0) return; 
+        return dice.map((die, i) => displayDie(die, i));
+    }
+
+    const displayDie = (die, i) => {
+        switch (die) {
+            case 1:
+                return <i key={i} className="fas fa-dice-one die"></i>;
+            case 2:
+                return <i key={i} className="fas fa-dice-two die"></i>
+            case 3:
+                return <i key={i} className="fas fa-dice-three die"></i>
+            case 4:
+                return <i key={i} className="fas fa-dice-four die"></i>
+            case 5:
+                return <i key={i} className="fas fa-dice-five die"></i>
+            case 6:
+                return <i key={i} className="fas fa-dice-six die"></i>
+            default:
+                break;
+        }
+    }
+
     const displaySearchBtn = () => {
         if (!board || searched) return;
         let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
@@ -154,6 +196,12 @@ export default function Game(props) {
             default:
                 break;
         }
+    }
+
+    const displayAttack = () => {
+        return (
+            <button onClick={attack}>Attack</button>
+        )
     }
 
     const displayDirectionBtns = () => {
@@ -208,6 +256,7 @@ export default function Game(props) {
                 {displayDirectionBtns()}
                 {displaySearchBtn()}
                 {displayDoorBtn()}
+                {displayAttack()}
                 <button onClick={moveZombies}>Move Zombies</button>
                 <button onClick={nextTurn}>End Turn</button>
             </div>
@@ -228,6 +277,9 @@ export default function Game(props) {
             </div>
             <div>
                 {displayItems()}
+            </div>
+            <div>
+                {displayDice()}
             </div>
         </div>
     )

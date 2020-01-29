@@ -3,4 +3,9 @@ export default class Item {
         this.name = name;
         this.type = type;
     }
+
+    remove() {
+        this.owner = null;
+        return this.owner.remove(this);
+    }
 }

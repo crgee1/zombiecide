@@ -42,7 +42,18 @@ export default class Player extends Piece {
         if (name === 'slayer') this.items = [new Weapon('pistol', 0, 1, 1, 4, 1, true, false)];
     }
 
+    remove(item) {
+        for (let i = this.items.length - 1; i >= 0; i--) {
+            if (item.name === this.items[i]) {
+                let removedItem = this.items[i];
+                delete this.items[i];
+                return removedItem;
+            }
+        }
+    }
+
     addItem(item) {
+        item.owner = this;
         this.items.push(item);
     }
 
@@ -115,5 +126,9 @@ export default class Player extends Piece {
             this.col -= 1;
             this.addToCell();
         }
+    }
+
+    attack() {
+        return this.items[0].attack();
     }
 }

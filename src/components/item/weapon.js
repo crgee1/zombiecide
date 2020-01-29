@@ -19,8 +19,8 @@ export default class Weapon extends Item {
         for (let i = 0; i < this.dice; i++) {
             roll.push(this.rollDie());
         }
-
-        return roll.some(die => die >= this.hit);
+        let result = roll.some(die => die >= this.hit);
+        return [...roll, result];
     }
 
     rollDie() {

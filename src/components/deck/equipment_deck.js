@@ -45,7 +45,7 @@ export default class EquipmentDeck extends Deck {
         for (let i = 0; i < this.deck.length; i++) {
             let weapon = this.deck[i];
             if (weapon.name === pair.name) {
-                return this.deck.splice(i, 1);
+                return this.deck.splice(i, 1)[0];
             }
         }
         return null;

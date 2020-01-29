@@ -1,6 +1,7 @@
 import Grid from "./grid";
 import Zombie from "../piece/zombie";
 import Player from "../piece/player";
+import Blood from "../piece/blood";
 
 export default class Board {
     constructor(preset, players, ctx) { 
@@ -8,6 +9,7 @@ export default class Board {
         this.ctx = ctx;
         this.grid = new Grid(preset, this.ctx);
         this.zombies = [];
+        this.bloods = [];
         this.players = players;
         this.setup(preset);
         this.playerIdx = 0;
@@ -56,6 +58,7 @@ export default class Board {
         this.grid.draw();
         this.zombies.forEach(zombie => zombie.draw());
         this.players.forEach(player => player.draw());
+        this.bloods.forEach(blood => blood.draw());
     }
 
     placePlayers(x, y, gridX, gridY, name) {
@@ -79,17 +82,19 @@ export default class Board {
     }
 
     nextTurn() {
-        let layout = this.grid.layout
-        for (let row = 0; row < layout.length; row++) {
-            for (let col = 0; col < layout[0].length; col++) {
-                let cell = layout[row][col];
-                if (cell.zombies.length > 0) {
-                    this.zombies.forEach(zombie => {
-                        zombie.reset();
-                    })
-                }
-            }
-        }
+        this.zombies.forEach(zombie => zombie.reset());
+        this.bloods = [];
+        // let layout = this.grid.layout
+        // for (let row = 0; row < layout.length; row++) {
+        //     for (let col = 0; col < layout[0].length; col++) {
+        //         let cell = layout[row][col];
+        //         if (cell.zombies.length > 0) {
+        //             this.zombies.forEach(zombie => {
+        //                 zombie.reset();
+        //             })
+        //         }
+        //     }
+        // }
     }
 
     moveZombies() {
@@ -251,5 +256,31 @@ export default class Board {
             }
         }
         return cellArr;
+    }
+
+    killZombies() {
+        for (let i = 0; i < this.zombies.length; i++) {
+            let zombie = this.zombies[i];
+            if (zombie.targeted) {
+                this.grid.layout[zombie.row][zombie.col].killZombies();
+                this.bloods.push(new Blood(zombie.posX, zombie.posY, zombie.row, zombie.col, this.ctx, this.grid));
+                this.zombies.splice(i,1);
+                i--;
+            }
+        }
+    }
+
+    resetNoise() {
+        this.grid.layout.forEach(row => {
+            row.forEach(cell => {
+                cell.resetNoise();
+            })
+        })
+    }
+
+    resetTargeted() {
+        this.zombies.forEach(zombie => {
+            zombie.targeted = false;
+        })
     }
 }
