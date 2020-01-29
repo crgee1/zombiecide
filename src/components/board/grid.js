@@ -206,7 +206,7 @@ export default class Grid {
         return new Cell(...input, row, col, type)
     }
 
-    makeGraphAndPath(startCell, endCell) {
+    nextDirection(startCell, endCell) {
         if (startCell === endCell) return 'attack';
         let result = {finish: {}};
         let queue = [startCell];
@@ -215,7 +215,7 @@ export default class Grid {
             let obj = {};
             let name;
 
-            if (cell.up && cell.up !== 'doorClose') {
+            if (cell.up) {
                 name = `cell${cell.row-1}${cell.col}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';
@@ -223,7 +223,7 @@ export default class Grid {
                 
                 if (!result[name]) queue.push(this.layout[cell.row-1][cell.col])
             }
-            if (cell.right && cell.right !== 'doorClose') {
+            if (cell.right) {
                 name = `cell${cell.row}${cell.col+1}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';
@@ -231,7 +231,7 @@ export default class Grid {
                 
                 if (!result[name]) queue.push(this.layout[cell.row][cell.col+1])
             }
-            if (cell.down && cell.down !== 'doorClose') {
+            if (cell.down) {
                 name = `cell${cell.row+1}${cell.col}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';
@@ -239,7 +239,7 @@ export default class Grid {
                 
                 if (!result[name]) queue.push(this.layout[cell.row+1][cell.col])
             }
-            if (cell.left && cell.left !== 'doorClose') {
+            if (cell.left) {
                 name = `cell${cell.row}${cell.col-1}`;
                 if (name === startCell.name) name = 'start';
                 if (name === endCell.name) name = 'finish';

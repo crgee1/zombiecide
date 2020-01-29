@@ -2,6 +2,7 @@ import Grid from "./grid";
 import Zombie from "../piece/zombie";
 import Player from "../piece/player";
 import Blood from "../piece/blood";
+import Spawn from "../piece/spawn";
 
 export default class Board {
     constructor(preset, players, ctx) { 
@@ -10,6 +11,8 @@ export default class Board {
         this.grid = new Grid(preset, this.ctx);
         this.zombies = [];
         this.bloods = [];
+        this.spawns = [];
+        this.roomSpawns = [];
         this.players = players;
         this.setup(preset);
         this.playerIdx = 0;
@@ -37,25 +40,25 @@ export default class Board {
     }
 
     preset1() {
-        this.spawnZombie(110, 10, 0, 1);
-        this.spawnZombie(150, 10, 0, 1);
-        this.spawnZombie(35, 260, 2, 0);
+        this.spawnZombie(0, 1);
+        this.spawnZombie(0, 1);
+        this.spawnZombie(2, 0);
         this.placePlayers(30, 350, 3, 0);
-        
     }
 
     preset2() {
-        this.spawnZombie(340,120,1,3);
-        this.spawnZombie(370,270,2,3);
-        this.spawnZombie(250,230,2,2);
+        this.spawnZombie(340,3);
+        this.spawnZombie(370,3);
+        this.spawnZombie(250,2);
         this.spawnZombie(320,380,3,3);
     }
 
     preset3() {
-        this.spawnZombie(260,480,4,2);
-        // this.spawnZombie(370,270,2,3);
-        // this.spawnZombie(250,230,2,2);
-        // this.spawnZombie(420,380,3,4);
+        this.spawnZombie(4,2);
+        this.spawnZombie(2,3);
+        this.spawnZombie(2,2);
+        this.spawnZombie(3,4);
+        this.spawnSpawn(450,650,6,4)
     }
 
     clear() {
@@ -69,27 +72,35 @@ export default class Board {
         this.zombies.forEach(zombie => zombie.draw());
         this.players.forEach(player => player.draw());
         this.bloods.forEach(blood => blood.draw());
+        this.spawns.forEach(spawn => spawn.draw());
     }
 
-    placePlayers(x, y, gridX, gridY, name) {
-        const player = new Player(x, y, gridX, gridY, this.ctx, name);
-        this.grid.layout[gridX][gridY].add(player);
+    placePlayers(x, y, row, col, name) {
+        const player = new Player(x, y, row, col, this.ctx, name);
+        this.grid.layout[row][col].add(player);
         this.players.push(player);
     }
 
-    spawnZombie(x, y, gridX, gridY) {
-        let zombie = new Zombie(x, y, gridX, gridY, this.ctx, this.grid);
-        this.grid.layout[gridX][gridY].add(zombie);
+    spawnZombie(row, col) {
+        let randomX = Math.random() * 80 + 10 + col * 100;
+        let randomY = Math.random() * 80 + 10 + row * 100;
+        let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid);
+        this.grid.layout[row][col].add(zombie);
         this.zombies.push(zombie);
+    }
+
+    spawnSpawn(x, y, row, col) {
+        let spawn = new Spawn(x, y, row, col, this.ctx, this.grid);
+        this.spawns.push(spawn);
     }
 
     activePlayer() {
         return this.players[this.playerIdx];
     }
 
-    nextDirection(startRow, startCol, endRow, endCol) {
-        return this.grid.makeGraphAndPath(this.grid.layout[startRow][startCol], this.grid.layout[endRow][endCol])
-    }
+    // nextDirection(startRow, startCol, endRow, endCol) {
+    //     return this.grid.makeGraphAndPath(this.grid.layout[startRow][startCol], this.grid.layout[endRow][endCol])
+    // }
 
     nextTurn() {
         this.zombies.forEach(zombie => zombie.reset());
@@ -116,7 +127,9 @@ export default class Board {
                 let length = cell.zombies.length;
                 if (length > 0) {
                     let target = this.findTarget(cell);
-                    let direction = this.nextDirection(row, col, target.row, target.col);
+                    let start = this.grid.layout[row][col];
+                    let end = this.grid.layout[target.row][target.col]
+                    let direction = this.grid.nextDirection(start, end);
     
                     switch (direction) {
                         case 'up':

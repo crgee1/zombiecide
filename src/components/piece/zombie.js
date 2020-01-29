@@ -34,7 +34,7 @@ export default class Zombie extends Piece {
     }
 
     moveDown() {
-        if (this.numActions > 0) {
+        if (this.numActions > 0 && this.grid.layout[this.row][this.col].down !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
             this.destinationY = this.posY + 100;
@@ -43,7 +43,7 @@ export default class Zombie extends Piece {
         }
     }
     moveRight() {
-        if (this.numActions > 0) {
+        if (this.numActions > 0 && this.grid.layout[this.row][this.col].right !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
             this.destinationX = this.posX + 100;
@@ -52,7 +52,7 @@ export default class Zombie extends Piece {
         }
     }
     moveUp() {
-        if (this.numActions > 0) {
+        if (this.numActions > 0 && this.grid.layout[this.row][this.col].up !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
             this.destinationY = this.posY - 100;
@@ -61,7 +61,7 @@ export default class Zombie extends Piece {
         }
     }
     moveLeft() {
-        if (this.numActions > 0) {
+        if (this.numActions > 0 && this.grid.layout[this.row][this.col].left !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
             this.destinationX = this.posX - 100;
