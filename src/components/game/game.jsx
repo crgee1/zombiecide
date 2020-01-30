@@ -11,12 +11,9 @@ export default function Game(props) {
     const [players, setPlayers] = useState([]);
     // const [items, setItems] = useState();
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
-    const [targets, setTargets] = useState(0);
+    const [targeted, setTargeted] = useState(false);
     
-    const { start } = props;
-
     useEffect(() => {
-        
         let ctx = document.getElementById('canvas').getContext('2d');
 
         const player1 = new Player(350, 330, 3, 3, ctx, 'slayer');
@@ -41,46 +38,49 @@ export default function Game(props) {
         playersArr.forEach(player => player.addGrid(canvas.grid));
         canvas.animate();
         setBoard(canvas);
+    }, []);
 
-        document.getElementById('canvas').addEventListener('click', function (e) {
+    const handleCanvasClick = () => {
+        return e => {
             let y = e.clientY + window.scrollY;
             let x = e.clientX + window.scrollX;
-            let row = Math.floor(y/100);
-            let col = Math.floor(x/100);
-            let player = canvas.activePlayer();
+            let row = Math.floor(y / 100);
+            let col = Math.floor(x / 100);
+            let player = board.activePlayer();
             let weapon = player.items[0];
-            console.log(targets)
-            let rangeArr = canvas.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
-            let targetCell = canvas.grid.layout[row][col];
+            let rangeArr = board.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
+            let targetCell = board.grid.layout[row][col];
             if (rangeArr.includes(targetCell)) {
                 for (let i = 0; i < targetCell.zombies.length; i++) {
                     let zombie = targetCell.zombies[i];
-                    if (zombie.contains(x,y)) {
-                        zombie.targeted = !zombie.targeted;
-                        if (zombie.targeted) {
-                            setTargets(prevState => prevState+1);
-                        } else {
-                            setTargets(prevState => prevState-1);
+                    if (zombie.contains(x, y)) {
+                        if (targeted && zombie.targeted) {
+                            zombie.targeted = false;
+                            setTargeted(false);
+                        } 
+                        if (!targeted && !zombie.targeted) {
+                            zombie.targeted = true;
+                            setTargeted(true);
                         }
-                        break
+                        break;
                     }
                 }
             }
-        })
-    }, []);
+        }
+    }
 
     return (
-        <div id='game'>
-            <div style={{ position: "absolute", width: 700, height: 700, top: 0 }} onClick={() => console.log(start)}></div>
+        <div id="game">
+            <div className="plane" onClick={handleCanvasClick()}></div>
             <Interface 
-            equipmentDeck={equipmentDeck}
-            setEquipmentDeck={setEquipmentDeck}
-            board={board}
-            players={players}
-            setPlayers={setPlayers}
-            targets={targets}
+                equipmentDeck={equipmentDeck}
+                setEquipmentDeck={setEquipmentDeck}
+                board={board}
+                players={players}
+                setPlayers={setPlayers}
+                setTargeted={setTargeted}
+                targeted={targeted}
             />
-            <canvas width='100' height='100' style={{backgroundColor: 'black'}} onClick={() => console.log(targets)}></canvas>
         </div>
     )
 }

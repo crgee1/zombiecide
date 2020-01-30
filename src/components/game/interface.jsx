@@ -7,7 +7,7 @@ export default function Interface(props) {
     const [searched, setSearched] = useState(false);
     const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
 
-    const { board, players, setPlayers, equipmentDeck, setEquipmentDeck, targets } = props;
+    const { board, players, setPlayers, equipmentDeck, setEquipmentDeck, targeted, setTargeted } = props;
 
     const currentPlayer = players[currentPlayerIdx];
 
@@ -48,6 +48,8 @@ export default function Interface(props) {
         if (currentPlayerIdx === players.length - 1) oneRevolution();
         currentPlayer.reset();
         setSearched(false);
+        setTargeted(false);
+        setDice([]);
         board.resetTargeted();
         // setWeapon(players[(currentPlayerIdx + 1) % players.length].items[0]);
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
@@ -91,7 +93,10 @@ export default function Interface(props) {
         let diceArr = currentPlayer.attack();
         let result = diceArr.pop();
         setDice(diceArr);
-        if (result) board.killZombies();
+        if (result) {
+            board.killZombies();
+            setTargeted(false);
+        }
     }
 
     const makeNoise = () => {
@@ -152,7 +157,7 @@ export default function Interface(props) {
     }
 
     const displayAttack = () => {
-        if (targets < 1) return;
+        if (!targeted) return;
         return (
             <button onClick={attack}>Attack</button>
         )

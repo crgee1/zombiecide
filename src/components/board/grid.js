@@ -93,7 +93,7 @@ export default class Grid {
             if (!door) {
                 this.ctx.setLineDash([]);
             } else {
-                this.ctx.setLineDash([5, 15]);
+                this.ctx.setLineDash([5, 25]);
             }
             switch (side) {
                 case 'up':
