@@ -1,4 +1,5 @@
 import pic from '../../assets/images/models/spawn.png'
+import Zombie from './zombie';
 
 export default class Spawn {
     constructor(x, y, row, col, ctx, grid) {
@@ -11,6 +12,18 @@ export default class Spawn {
         this.ctx = ctx;
         this.grid = grid;
         this.size = 30;
+    }
+
+    spawnZombie(num, type) {
+        let zombies = [];
+        for (let i = 0; i < num; i++) {
+            let randomY = Math.random() * 80 + 10 + this.row * 100;
+            let randomX = Math.random() * 80 + 10 + this.col * 100;
+            let zombie = new Zombie(randomX, randomY, this.row, this.col, this.ctx, this.grid, type);
+            this.grid.layout[this.row][this.col].add(zombie);
+            zombies.push(zombie);
+        }
+        return zombies;
     }
 
     draw() {

@@ -11,7 +11,6 @@ export default function Game(props) {
     const [players, setPlayers] = useState([]);
     // const [items, setItems] = useState();
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
-    const [weapon, setWeapon] = useState();
     const [targets, setTargets] = useState(0);
     
     // const { preset } = props;
@@ -43,12 +42,13 @@ export default function Game(props) {
         setBoard(canvas);
 
         document.getElementById('canvas').addEventListener('click', function (e) {
-            let y = e.clientY;
-            let x = e.clientX;
+            let y = e.clientY + window.scrollY;
+            let x = e.clientX + window.scrollX;
             let row = Math.floor(y/100);
             let col = Math.floor(x/100);
             let player = canvas.activePlayer();
             let weapon = player.items[0];
+            console.log(weapon);
             let rangeArr = canvas.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
             let targetCell = canvas.grid.layout[row][col];
             if (rangeArr.includes(targetCell)) {
@@ -75,6 +75,7 @@ export default function Game(props) {
             board={board}
             players={players}
             setPlayers={setPlayers}
+            targets={targets}
             />
         </div>
     )

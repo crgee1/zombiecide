@@ -5,7 +5,7 @@ import rougePic from '../../assets/images/models/rouge.png'
 import amazonPic from '../../assets/images/models/amazon.png'
 import bardPic from '../../assets/images/models/bard.png'
 import warriorPic from '../../assets/images/models/warrior.png'
-import Weapon from '../item/weapon';
+import Weapon from '../card/weapon';
 
 export default class Player extends Piece {
     constructor(x, y, row, col, ctx, name, numActions = 3) {

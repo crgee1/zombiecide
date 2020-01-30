@@ -4,7 +4,7 @@ import runner from '../../assets/images/models/runner1.png'
 
 
 export default class Zombie extends Piece {
-    constructor(x, y, row, col, ctx, grid, type = 'walker') {
+    constructor(x, y, row, col, ctx, grid, type) {
         let numActions = type === 'runner' ? 2 : 1;
         super(x, y, row, col, numActions, ctx);
         this.image = new Image();
@@ -25,7 +25,6 @@ export default class Zombie extends Piece {
             default:
                 break;
         }
-        
 
     }
 

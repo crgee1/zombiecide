@@ -1,7 +1,7 @@
 export default class Deck {
     constructor() {
         this.deck = [];
-        this.discard = [];
+        this.discardPile = [];
     }
 
     shuffle() {
@@ -14,17 +14,19 @@ export default class Deck {
     }
 
     addDiscardToDeck() {
-        this.deck = [...this.discard];
-        this.discard = [];
+        this.deck = [...this.discardPile];
+        this.discardPile = [];
         this.shuffle();
     }
 
     draw() {
-        return this.deck.pop()
+        let card = this.deck.pop();
+        if (this.deck.length === 0) this.addDiscardToDeck();
+        return card;
     }
 
     discard(card) {
-        this.discard.push(card);
+        this.discardPile.push(card);
     }
 
     length() {

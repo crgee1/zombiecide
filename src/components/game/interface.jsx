@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ItemItem from '../item/item_item';
+import ItemItem from '../card/item_item';
 
 export default function Interface(props) {
     const [dice, setDice] = useState([]);
@@ -7,7 +7,7 @@ export default function Interface(props) {
     const [searched, setSearched] = useState(false);
     const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
 
-    const { board, players, setPlayers, equipmentDeck, setEquipmentDeck } = props;
+    const { board, players, setPlayers, equipmentDeck, setEquipmentDeck, targets } = props;
 
     const currentPlayer = players[currentPlayerIdx];
 
@@ -32,9 +32,10 @@ export default function Interface(props) {
         setNumActions(currentPlayer.numActions);
     }
 
-    const moveZombies = () => {
+    const oneRevolution = () => {
         let playerArr = [...players];
         let firstPlayer = playerArr.shift();
+        board.players = [...playerArr, firstPlayer];
         setPlayers([...playerArr, firstPlayer])
         board.moveZombies();
         setTimeout(() => {
@@ -44,7 +45,7 @@ export default function Interface(props) {
     }
 
     const nextTurn = () => {
-        if (currentPlayerIdx === players.length - 1) moveZombies();
+        if (currentPlayerIdx === players.length - 1) oneRevolution();
         currentPlayer.reset();
         setSearched(false);
         board.resetTargeted();
@@ -151,6 +152,7 @@ export default function Interface(props) {
     }
 
     const displayAttack = () => {
+        if (targets < 1) return;
         return (
             <button onClick={attack}>Attack</button>
         )
@@ -167,25 +169,38 @@ export default function Interface(props) {
         )
     }
 
-    const displayDoorBtn = () => {
+    const displayDoorBtns = () => {
         if (!board) return;
         let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
         if (!Object.values(cell).some(value => value === 'doorClose')) return;
         let direction;
+        let text;
+        let doorArr = [];
 
         if (cell.up === 'doorClose') {
-            direction = 'up'
-        } else if (cell.right === 'doorClose') {
-            direction = 'right'
-        } else if (cell.down === 'doorClose') {
-            direction = 'down'
-        } else if (cell.left === 'doorClose') {
-            direction = 'left'
+            direction = 'up';
+            text = 'Open Top Door';
+            doorArr.push(<button key={1} onClick={openDoor(direction)}>{text}</button>)
+        } 
+        if (cell.right === 'doorClose') {
+            direction = 'right';
+            text = 'Open Right Door';
+            doorArr.push(<button key={2} onClick={openDoor(direction)}>{text}</button>)
+        } 
+        if (cell.down === 'doorClose') {
+            direction = 'down';
+            text = 'Open Bottom Door';
+            doorArr.push(<button key={3} onClick={openDoor(direction)}>{text}</button>)
+        } 
+        if (cell.left === 'doorClose') {
+            direction = 'left';
+            text = 'Open Left Door';
+            doorArr.push(<button key={4} onClick={openDoor(direction)}>{text}</button>)
         }
 
         return (
             <React.Fragment>
-                <button onClick={openDoor(direction)}>Open Door</button>
+                {doorArr}
             </React.Fragment>
         )
     }
@@ -199,7 +214,19 @@ export default function Interface(props) {
                     item={item}
                 />
             )
-        })
+        });
+        let slots = 5 - displayArr.length
+        if (slots > 0) {
+            for (let i = slots; i > 0; i--) {
+
+                let text = i === 5 || i === 4 ? 'In Hand' : 'Reserve'
+                displayArr.push(
+                    <div className="item-container" key={i+5}>
+                        {text}
+                    </div>
+                );
+            }
+        }
         return displayArr;
     }
 
@@ -208,7 +235,7 @@ export default function Interface(props) {
             <div className="toolbar">
                 {displayDirectionBtns()}
                 {displaySearchBtn()}
-                {displayDoorBtn()}
+                {displayDoorBtns()}
                 {displayAttack()}
                 <button onClick={makeNoise}>Make Noise</button>
                 <button onClick={nextTurn}>End Turn</button>

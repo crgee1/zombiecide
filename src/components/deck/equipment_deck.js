@@ -1,4 +1,4 @@
-import Weapon from "../item/weapon";
+import Weapon from "../card/weapon";
 import Deck from "./deck";
 
 export default class EquipmentDeck extends Deck {

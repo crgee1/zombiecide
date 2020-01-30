@@ -3,12 +3,14 @@ import Zombie from "../piece/zombie";
 import Player from "../piece/player";
 import Blood from "../piece/blood";
 import Spawn from "../piece/spawn";
+import SpawnDeck from "../deck/spawn_deck";
 
 export default class Board {
     constructor(preset, players, ctx) { 
         this.canvas = document.getElementById('canvas');
         this.ctx = ctx;
         this.grid = new Grid(preset, this.ctx);
+        this.spawnDeck = new SpawnDeck();
         this.zombies = [];
         this.bloods = [];
         this.spawns = [];
@@ -55,11 +57,14 @@ export default class Board {
     }
 
     preset3() {
-        this.spawnZombie(4,2);
-        this.spawnZombie(2,3);
-        this.spawnZombie(2,2);
-        this.spawnZombie(3,4);
-        this.spawnSpawn(6,4)
+        // this.spawnZombie(4,2);
+        // this.spawnZombie(2,3);
+        // this.spawnZombie(2,2);
+        // this.spawnZombie(3,4);
+        this.spawnSpawn(6,4);
+        this.spawnSpawn(0,2);
+        this.spawnSpawn(2,5);
+        this.spawnSpawn(4,0);
     }
 
     clear() {
@@ -70,10 +75,24 @@ export default class Board {
         this.frame = requestAnimationFrame(this.animate);
         this.clear();
         this.grid.draw();
+        this.spawns.forEach(spawn => spawn.draw());
         this.zombies.forEach(zombie => zombie.draw());
         this.players.forEach(player => player.draw());
         this.bloods.forEach(blood => blood.draw());
-        this.spawns.forEach(spawn => spawn.draw());
+    }
+
+    spawnZombies() {
+        let highestLevel = this.players.reduce((acc, player) => {
+            return acc > player.level ? acc : player.level;
+        });
+
+        this.spawns.forEach(spawn => {
+            let card = this.spawnDeck.draw();
+            let result = card.actions[String(highestLevel)];
+            if (result.length > 0) {
+                this.zombies.push(...spawn.spawnZombie(result[0], result[1]));
+            }
+        });
     }
 
     placePlayers(x, y, row, col, name) {
@@ -82,7 +101,7 @@ export default class Board {
         this.players.push(player);
     }
 
-    spawnZombie(row, col, type = 'runner') {
+    spawnZombie(row, col, type = 'walker') {
         let randomX = Math.random() * 80 + 10 + col * 100;
         let randomY = Math.random() * 80 + 10 + row * 100;
         let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid, type);
@@ -105,6 +124,7 @@ export default class Board {
         this.zombies.forEach(zombie => zombie.reset());
         this.bloods = [];
         this.resetNoise();
+        this.spawnZombies();
         // let layout = this.grid.layout
         // for (let row = 0; row < layout.length; row++) {
         //     for (let col = 0; col < layout[0].length; col++) {
