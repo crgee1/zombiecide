@@ -1,5 +1,5 @@
 import Piece from "./piece";
-import pic from '../../assets/images/model/blood.png'
+import pic from '../../assets/images/models/blood.png'
 
 export default class Blood extends Piece {
     constructor(x, y, row, col, ctx, grid) {

@@ -1,10 +1,10 @@
 import Piece from './piece';
-import slayerPic from '../../assets/images/model/slayer.png'
-import magePic from '../../assets/images/model/mage.png'
-import rougePic from '../../assets/images/model/rouge.png'
-import amazonPic from '../../assets/images/model/amazon.png'
-import bardPic from '../../assets/images/model/bard.png'
-import warriorPic from '../../assets/images/model/warrior.png'
+import slayerPic from '../../assets/images/models/slayer.png'
+import magePic from '../../assets/images/models/mage.png'
+import rougePic from '../../assets/images/models/rouge.png'
+import amazonPic from '../../assets/images/models/amazon.png'
+import bardPic from '../../assets/images/models/bard.png'
+import warriorPic from '../../assets/images/models/warrior.png'
 import Weapon from '../item/weapon';
 
 export default class Player extends Piece {

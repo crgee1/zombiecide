@@ -12,6 +12,7 @@ export default class Board {
         this.zombies = [];
         this.bloods = [];
         this.spawns = [];
+        this.objectives = [];
         this.roomSpawns = [];
         this.players = players;
         this.setup(preset);
@@ -58,7 +59,7 @@ export default class Board {
         this.spawnZombie(2,3);
         this.spawnZombie(2,2);
         this.spawnZombie(3,4);
-        this.spawnSpawn(450,650,6,4)
+        this.spawnSpawn(6,4)
     }
 
     clear() {
@@ -81,15 +82,17 @@ export default class Board {
         this.players.push(player);
     }
 
-    spawnZombie(row, col) {
+    spawnZombie(row, col, type = 'runner') {
         let randomX = Math.random() * 80 + 10 + col * 100;
         let randomY = Math.random() * 80 + 10 + row * 100;
-        let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid);
+        let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid, type);
         this.grid.layout[row][col].add(zombie);
         this.zombies.push(zombie);
     }
 
-    spawnSpawn(x, y, row, col) {
+    spawnSpawn(row, col) {
+        let x = col * 100 + 50;
+        let y = row * 100 + 50;
         let spawn = new Spawn(x, y, row, col, this.ctx, this.grid);
         this.spawns.push(spawn);
     }
@@ -97,10 +100,6 @@ export default class Board {
     activePlayer() {
         return this.players[this.playerIdx];
     }
-
-    // nextDirection(startRow, startCol, endRow, endCol) {
-    //     return this.grid.makeGraphAndPath(this.grid.layout[startRow][startCol], this.grid.layout[endRow][endCol])
-    // }
 
     nextTurn() {
         this.zombies.forEach(zombie => zombie.reset());
@@ -173,7 +172,6 @@ export default class Board {
         for (let row = 0; row < this.grid.rows; row++) {
             for (let col = 0; col < this.grid.cols; col++) {
                 let cell = this.grid.layout[row][col];
-                if (cell.calculateNoise() > 1) console.log('here')
                 if (cell.calculateNoise() > loudestCell.calculateNoise()) loudestCell = cell;
             }
         }

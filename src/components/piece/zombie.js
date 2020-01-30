@@ -1,18 +1,32 @@
 import Piece from "./piece";
-import pic from '../../assets/images/model/zombie.png'
+import walker from '../../assets/images/models/zombie.png'
+import runner from '../../assets/images/models/runner1.png'
+
 
 export default class Zombie extends Piece {
-    constructor(x, y, row, col, ctx, grid, type = 'walker', numActions = 1) {
+    constructor(x, y, row, col, ctx, grid, type = 'walker') {
+        let numActions = type === 'runner' ? 2 : 1;
         super(x, y, row, col, numActions, ctx);
         this.image = new Image();
-        this.image.src = pic
         this.grid = grid;
         this.type = type;
-        this.size = 35;
+        
         this.targeted = false;
 
-        this.destinationX = this.posX;
-        this.destinationY = this.posY;
+        switch (type) {
+            case 'walker':
+                this.size = 35;
+                this.image.src = walker;
+                break;
+            case 'runner':
+                this.size = 45;
+                this.image.src = runner;
+                break;
+            default:
+                break;
+        }
+        
+
     }
 
     removeFromCell() {
@@ -24,13 +38,7 @@ export default class Zombie extends Piece {
     }
 
     reset() {
-        switch (this.type) {
-            case 'walker':
-                this.numActions = 1;
-                break;
-            default:
-                break;
-        }
+        this.numActions = this.maxActions;
     }
 
     moveDown() {

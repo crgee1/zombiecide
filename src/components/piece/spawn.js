@@ -1,4 +1,4 @@
-import pic from '../../assets/images/model/spawn.png'
+import pic from '../../assets/images/models/spawn.png'
 
 export default class Spawn {
     constructor(x, y, row, col, ctx, grid) {

@@ -50,8 +50,6 @@ export default function ItemItem(props) {
                 return machete
             case 'pistol':
                 return pistol
-            case 'machete':
-                return machete
             case 'rifle':
                 return rifle
             case 'sawed off':

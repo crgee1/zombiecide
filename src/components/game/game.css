@@ -2,3 +2,8 @@
     font-size: 28px;
     margin: 5px;
 }
+
+.dice-container {
+    display: flex;
+    flex-direction: column;
+}

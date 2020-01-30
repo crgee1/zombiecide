@@ -5,8 +5,11 @@ export default class Piece {
         this.row = row;
         this.col = col;
         this.numActions = numActions;
+        this.maxActions = numActions;
         this.ctx = ctx;
         this.size = 35;
+        this.destinationX = x;
+        this.destinationY = y;
     }
 
     move(direction) {
