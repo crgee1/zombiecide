@@ -13,9 +13,10 @@ export default function Game(props) {
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
     const [targets, setTargets] = useState(0);
     
-    // const { preset } = props;
+    const { start } = props;
 
     useEffect(() => {
+        
         let ctx = document.getElementById('canvas').getContext('2d');
 
         const player1 = new Player(350, 330, 3, 3, ctx, 'slayer');
@@ -48,7 +49,7 @@ export default function Game(props) {
             let col = Math.floor(x/100);
             let player = canvas.activePlayer();
             let weapon = player.items[0];
-            console.log(weapon);
+            console.log(targets)
             let rangeArr = canvas.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
             let targetCell = canvas.grid.layout[row][col];
             if (rangeArr.includes(targetCell)) {
@@ -61,6 +62,7 @@ export default function Game(props) {
                         } else {
                             setTargets(prevState => prevState-1);
                         }
+                        break
                     }
                 }
             }
@@ -69,6 +71,7 @@ export default function Game(props) {
 
     return (
         <div id='game'>
+            <div style={{ position: "absolute", width: 700, height: 700, top: 0 }} onClick={() => console.log(start)}></div>
             <Interface 
             equipmentDeck={equipmentDeck}
             setEquipmentDeck={setEquipmentDeck}
@@ -77,6 +80,7 @@ export default function Game(props) {
             setPlayers={setPlayers}
             targets={targets}
             />
+            <canvas width='100' height='100' style={{backgroundColor: 'black'}} onClick={() => console.log(targets)}></canvas>
         </div>
     )
 }
