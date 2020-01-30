@@ -15,7 +15,7 @@ export default class Player extends Piece {
         this.size = 45;
         this.exp = 0;
         this.level = 1;
-        this.items = [];
+        this.items = ['empty', 'empty', 'empty', 'empty', 'empty',];
         this.wounds = 0;
         this.name = name;
         switch (name) {
@@ -40,7 +40,7 @@ export default class Player extends Piece {
             default:
                 break;
         }
-        if (name === 'slayer') this.items = [new Weapon('pistol', 0, 1, 1, 4, 1, true, false)];
+        // if (name === 'slayer') this.addItem(new Weapon('pistol', 0, 1, 1, 4, 1, true, false));
     }
 
     remove(item) {
@@ -53,9 +53,17 @@ export default class Player extends Piece {
         }
     }
 
-    addItem(item) {
-        item.owner = this;
-        this.items.push(item);
+    addItem(item, idx) {
+        if (!idx) {
+            item.owner = this;
+            let items = this.items.reduce((acc, item) => {
+                return item !== 'empty' ? ++acc : acc;
+            }, 0);
+            this.items.splice(items, 0, item);
+            this.items = this.items.slice(0, 5)
+        } else {
+            this.items.splice(idx, 0, item);
+        }
     }
 
     onHandWeapon() {

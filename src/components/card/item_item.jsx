@@ -24,6 +24,7 @@ import scope from '../../assets/images/equipment/scope.jpg';
 import shotgun from '../../assets/images/equipment/shotgun.jpg';
 import subMg from '../../assets/images/equipment/sub-mg.jpg';
 import water from '../../assets/images/equipment/water.jpg';
+import Weapon from './weapon';
 
 export default function ItemItem(props) {
     const { item } = props;
@@ -83,11 +84,20 @@ export default function ItemItem(props) {
         }
     }
 
-    return (
+    if (item instanceof Weapon) {
+        return (
         <div className="item-container">
             <div className="item">
                 <img className="card" src={source()} alt=""/>
             </div>
         </div>
-    )
+    )} else {
+        return (
+            <div className="item-container">
+                <div className="item">
+                    Empty
+                </div>
+            </div>
+        )
+    }
 }

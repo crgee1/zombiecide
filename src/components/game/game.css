@@ -14,3 +14,14 @@
     height: 700px;
     top: 0;
 }
+
+.item-card {
+    display: inline-block;
+}
+
+.item-drop-area {
+    width: 936px;
+    height: 253px;
+    background-color: red;
+    display: flex;
+}

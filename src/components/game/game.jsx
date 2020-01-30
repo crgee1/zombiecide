@@ -25,11 +25,11 @@ export default function Game(props) {
         const equipment = new EquipmentDeck();
         let startingItemsArr = equipment.dealStartingItems();
         setEquipmentDeck(equipment);
-        // player1.addItem(startingItemsArr[0]);
-        // player2.addItem(startingItemsArr[1]);
-        // player3.addItem(startingItemsArr[2]);
-        // player4.addItem(startingItemsArr[3]);
-        // player5.addItem(startingItemsArr[4]);
+        player1.addItem(startingItemsArr[0]);
+        player2.addItem(startingItemsArr[1]);
+        player3.addItem(startingItemsArr[2]);
+        player4.addItem(startingItemsArr[3]);
+        player5.addItem(startingItemsArr[4]);
         player6.addItem(startingItemsArr[5]);
         // setWeapon(player1.items[0]);
         let playersArr = [player1, player2, player3, player4, player5, player6];
