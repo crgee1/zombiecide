@@ -102,7 +102,8 @@ export default function Interface(props) {
             <div className="item-card" key={idx} style={{backgroundColor: style}}>
                 <span className="title">On Hand</span>
                 <span className="name">{player.name[0].toUpperCase()+player.name.slice(1)}</span> 
-                <span>Exp: {player.exp}</span>
+                <span className="level">Lvl: {player.level}</span>
+                <span>Exp Points Needed: {player.pointsUntilLevelUp()}</span>
                 <Droppable droppableId={`${idx}`} key={`${idx}`} direction="horizontal"> 
                 {(provided, snapshot) => {
                     return (

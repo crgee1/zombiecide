@@ -109,6 +109,20 @@ export default class Player extends Piece {
         } 
     }
 
+    pointsUntilLevelUp() {
+        let result = 7 - this.exp;
+
+        if (this.exp >= 43) {
+            result = 'Max Level'
+        } else if (this.exp >= 19) {
+            result = 43 - this.exp;
+        } else if (this.exp >= 7) {
+            result = 19 - this.exp;
+            this.maxActions++;
+        } 
+        return result;
+    }
+
     addGrid(grid) {
         this.grid = grid;
     }

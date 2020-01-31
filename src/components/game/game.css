@@ -22,6 +22,10 @@
     /* margin-bottom: 10px; */
 }
 
+.item-card > span:not(:first-child) {
+    margin-right: 5px;
+}
+
 .item-drop-area {
     width: 936px;
     height: 253px;
@@ -30,10 +34,6 @@
 
 .title {
     margin: 0 318px 0 152px;
-}
-
-.name {
-  margin-right: 5px;  
 }
 
 .discard {
