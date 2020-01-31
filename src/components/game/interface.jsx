@@ -125,6 +125,7 @@ export default function Interface(props) {
     const displayDiscard = () => {
         return (
             <div className="discard">
+                <header>Discard</header>
                 <Droppable droppableId="discard" key="discard">
                     {(provided, snapshot) => {
                         return (
@@ -134,7 +135,6 @@ export default function Interface(props) {
                                 ref={provided.innerRef}
                                 style={{ minHeight: 275 }}
                             >
-                                Discard
                                 {provided.placeholder}
                             </div>
                         )

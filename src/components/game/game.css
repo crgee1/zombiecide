@@ -19,7 +19,7 @@
     /* display: inline-block; */
     height: 285px;
     background-color: red;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .item-drop-area {
@@ -37,8 +37,9 @@
 }
 
 .discard {
-    left: 755px;
+    left: 748px;
     position: absolute;
+    text-align: center;
 }
 
 .playing-cards {

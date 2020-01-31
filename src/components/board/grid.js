@@ -256,9 +256,7 @@ export default class Grid {
 
         let dijkstraObj = dijkstra(result);
         let distance = dijkstraObj.distances;
-        let row;
-        let col;
-        let direction;
+        let row, col, direction;
 
         if (distance === 1) {
             row = endCell.name[4];
@@ -268,7 +266,6 @@ export default class Grid {
             row = nextStep[4];
             col = nextStep[5];
         }
-
         
         if (row > startCell.row) direction = 'down';
         if (row < startCell.row) direction = 'up';
@@ -276,5 +273,48 @@ export default class Grid {
         if (col > startCell.col) direction = 'right';
 
         return direction;
+    }
+
+    connectingRooms(startCell) {
+        let queue = [startCell];
+        let result = [startCell];
+        let visited = {[startCell.name]: true}
+        while (queue.length > 0) {
+            let cell = queue.pop();
+
+            if (cell.up) {
+                let cellUp = this.layout[cell.row - 1][cell.col];
+                if (cellUp.type === 'room' && !visited[cellUp.name]) {
+                    visited[cellUp.name] = true;
+                    result.push(cellUp);
+                    queue.push(cellUp);
+                }
+            }
+            if (cell.right) {
+                let cellRight = this.layout[cell.row][cell.col+1];
+                if (cellRight.type === 'room' && !visited[cellRight.name]) {
+                    visited[cellRight.name] = true;
+                    result.push(cellRight);
+                    queue.push(cellRight);
+                }
+            }
+            if (cell.down) {
+                let cellDown = this.layout[cell.row + 1][cell.col];
+                if (cellDown.type === 'room' && !visited[cellDown.name]) {
+                    visited[cellDown.name] = true;
+                    result.push(cellDown);
+                    queue.push(cellDown);
+                }
+            }
+            if (cell.left) {
+                let cellLeft = this.layout[cell.row][cell.col - 1];
+                if (cellLeft.type === 'room' && !visited[cellLeft.name]) {
+                    visited[cellLeft.name] = true;
+                    result.push(cellLeft);
+                    queue.push(cellLeft);
+                }
+            }
+        }
+        return result;
     }
 }

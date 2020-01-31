@@ -32,7 +32,6 @@ export default function Game(props) {
         player4.addItem(startingItemsArr[3]);
         player5.addItem(startingItemsArr[4]);
         player6.addItem(startingItemsArr[5]);
-        // setWeapon(player1.items[0]);
         let playersArr = [player1, player2, player3, player4, player5, player6];
         setPlayers(playersArr);
         let canvas = new Board(3, playersArr, ctx);

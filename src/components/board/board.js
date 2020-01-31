@@ -15,7 +15,6 @@ export default class Board {
         this.bloods = [];
         this.spawns = [];
         this.objectives = [];
-        this.roomSpawns = [];
         this.players = players;
         this.setup(preset);
         this.playerIdx = 0;
@@ -95,6 +94,23 @@ export default class Board {
         });
     }
 
+    roomSpawns(startCell) {
+        if (startCell.type === 'street') return;
+        let highestLevel = this.players.reduce((acc, player) => {
+            return acc > player.level ? acc : player.level;
+        });
+
+        let rooms = this.grid.connectingRooms(startCell);
+        rooms = rooms.map(cell => new Spawn(cell.row, cell.col, this.ctx, this.grid))
+        rooms.forEach(spawn => {
+            let card = this.spawnDeck.draw();
+            let result = card.actions[String(highestLevel)];
+            if (result.length > 0) {
+                this.zombies.push(...spawn.spawnZombie(result[0], result[1]));
+            }
+        });
+    }
+
     placePlayers(x, y, row, col, name) {
         const player = new Player(x, y, row, col, this.ctx, name);
         this.grid.layout[row][col].add(player);
@@ -102,7 +118,6 @@ export default class Board {
     }
 
     spawnZombie(row, col, type = 'walker') {
-        console.log('here')
         let randomX = Math.random() * 80 + 10 + col * 100;
         let randomY = Math.random() * 80 + 10 + row * 100;
         let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid, type);
@@ -111,9 +126,7 @@ export default class Board {
     }
 
     spawnSpawn(row, col) {
-        let x = col * 100 + 50;
-        let y = row * 100 + 50;
-        let spawn = new Spawn(x, y, row, col, this.ctx, this.grid);
+        let spawn = new Spawn(row, col, this.ctx, this.grid);
         this.spawns.push(spawn);
     }
 
@@ -126,17 +139,6 @@ export default class Board {
         this.bloods = [];
         this.resetNoise();
         this.spawnZombies();
-        // let layout = this.grid.layout
-        // for (let row = 0; row < layout.length; row++) {
-        //     for (let col = 0; col < layout[0].length; col++) {
-        //         let cell = layout[row][col];
-        //         if (cell.zombies.length > 0) {
-        //             this.zombies.forEach(zombie => {
-        //                 zombie.reset();
-        //             })
-        //         }
-        //     }
-        // }
     }
 
     moveZombies() {

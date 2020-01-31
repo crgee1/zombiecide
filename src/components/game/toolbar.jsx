@@ -42,7 +42,6 @@ export default function Toolbar(props) {
         setTargeted(false);
         setDice([]);
         board.resetTargeted();
-        // setWeapon(players[(currentPlayerIdx + 1) % players.length].items[0]);
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
         setCurrentPlayerIdx(prevState => (prevState + 1) % players.length);
     }
@@ -55,16 +54,20 @@ export default function Toolbar(props) {
             cell[direction] = 'doorOpen';
             switch (direction) {
                 case 'up':
-                    board.grid.layout[currentPlayer.row - 1][currentPlayer.col].down = 'doorOpen'
+                    board.grid.layout[currentPlayer.row - 1][currentPlayer.col].down = 'doorOpen';
+                    board.roomSpawns(board.grid.layout[currentPlayer.row - 1][currentPlayer.col]);
                     break;
                 case 'right':
-                    board.grid.layout[currentPlayer.row][currentPlayer.col + 1].left = 'doorOpen'
+                    board.grid.layout[currentPlayer.row][currentPlayer.col + 1].left = 'doorOpen';
+                    board.roomSpawns(board.grid.layout[currentPlayer.row][currentPlayer.col + 1]);
                     break;
                 case 'down':
-                    board.grid.layout[currentPlayer.row + 1][currentPlayer.col].up = 'doorOpen'
+                    board.grid.layout[currentPlayer.row + 1][currentPlayer.col].up = 'doorOpen';
+                    board.roomSpawns(board.grid.layout[currentPlayer.row + 1][currentPlayer.col]);
                     break;
                 case 'left':
-                    board.grid.layout[currentPlayer.row][currentPlayer.col - 1].right = 'doorOpen'
+                    board.grid.layout[currentPlayer.row][currentPlayer.col - 1].right = 'doorOpen';
+                    board.roomSpawns(board.grid.layout[currentPlayer.row][currentPlayer.col - 1]);
                     break;
                 default:
                     break;
@@ -79,10 +82,6 @@ export default function Toolbar(props) {
         currentPlayer.addItem(item);
         setNumActions(--currentPlayer.numActions);
         setSearched(true);
-
-        // let playerArr = [...players];
-        // playerArr.splice(currentPlayerIdx, 1, currentPlayer);
-        // setPlayers(playerArr);
     }
 
     const attack = () => {
@@ -142,9 +141,9 @@ export default function Toolbar(props) {
         return (
             <React.Fragment>
                 {displayDirectionBtn('up')}
+                {displayDirectionBtn('left')}
                 {displayDirectionBtn('right')}
                 {displayDirectionBtn('down')}
-                {displayDirectionBtn('left')}
             </React.Fragment>
         )
     }
@@ -163,6 +162,11 @@ export default function Toolbar(props) {
             text = 'Open Top Door';
             doorArr.push(<button key={1} onClick={openDoor(direction)}>{text}</button>)
         }
+        if (cell.left === 'doorClose') {
+            direction = 'left';
+            text = 'Open Left Door';
+            doorArr.push(<button key={4} onClick={openDoor(direction)}>{text}</button>)
+        }
         if (cell.right === 'doorClose') {
             direction = 'right';
             text = 'Open Right Door';
@@ -172,11 +176,6 @@ export default function Toolbar(props) {
             direction = 'down';
             text = 'Open Bottom Door';
             doorArr.push(<button key={3} onClick={openDoor(direction)}>{text}</button>)
-        }
-        if (cell.left === 'doorClose') {
-            direction = 'left';
-            text = 'Open Left Door';
-            doorArr.push(<button key={4} onClick={openDoor(direction)}>{text}</button>)
         }
 
         return (

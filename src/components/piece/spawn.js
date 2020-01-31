@@ -2,9 +2,9 @@ import pic from '../../assets/images/models/spawn.png'
 import Zombie from './zombie';
 
 export default class Spawn {
-    constructor(x, y, row, col, ctx, grid) {
-        this.posX = x;
-        this.posY = y;
+    constructor(row, col, ctx, grid) {
+        this.posX = col * 100 + 50;
+        this.posY = row * 100 + 50;
         this.row = row;
         this.col = col;
         this.image = new Image();
