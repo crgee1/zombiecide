@@ -4,6 +4,7 @@ import Player from "../piece/player";
 import Blood from "../piece/blood";
 import Spawn from "../piece/spawn";
 import SpawnDeck from "../deck/spawn_deck";
+import Objective from "../piece/objective";
 
 export default class Board {
     constructor(preset, players, ctx) { 
@@ -56,10 +57,12 @@ export default class Board {
     }
 
     preset3() {
-        // this.spawnZombie(4,2);
-        // this.spawnZombie(2,3);
-        // this.spawnZombie(2,2);
-        // this.spawnZombie(3,4);
+        this.spawnObjective(0,0);
+        this.spawnObjective(0,3);
+        this.spawnObjective(0,5);
+        this.spawnObjective(3,1);
+        this.spawnObjective(5,0);
+        this.spawnObjective(6,5);
         this.spawnSpawn(6,4);
         this.spawnSpawn(0,2);
         this.spawnSpawn(2,5);
@@ -78,6 +81,7 @@ export default class Board {
         this.zombies.forEach(zombie => zombie.draw());
         this.players.forEach(player => player.draw());
         this.bloods.forEach(blood => blood.draw());
+        this.objectives.forEach(objective => objective.draw());
     }
 
     spawnZombies() {
@@ -123,6 +127,12 @@ export default class Board {
         let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid, type);
         this.grid.layout[row][col].add(zombie);
         this.zombies.push(zombie);
+    }
+    
+    spawnObjective(row, col) {
+        let objective = new Objective(row, col, this.ctx);
+        this.grid.layout[row][col].add(objective);
+        this.objectives.push(objective);
     }
 
     spawnSpawn(row, col) {

@@ -100,7 +100,20 @@ export default function Toolbar(props) {
     const makeNoise = () => {
         setNumActions(--currentPlayer.numActions);
         currentPlayer.makeNoise()    
-}
+    }
+
+    const takeObjective = () => {
+        let row = currentPlayer.row;
+        let col = currentPlayer.col
+        setNumActions(--currentPlayer.numActions);
+        currentPlayer.gainExp(5);
+        board.objectives.forEach((objective, i) => {
+            if (objective.row === row && objective.col === col) {
+                board.objectives.splice(i,1);
+                board.grid.layout[row][col].remove(objective);
+            }
+        });
+    }
 
     const displaySearchBtn = () => {
         if (!board || searched) return;
@@ -109,6 +122,15 @@ export default function Toolbar(props) {
 
         return (
             <button onClick={search}>Search</button>
+        )
+    }
+
+    const displayObjective = () => {
+        if (!board) return;
+        if (board.grid.layout[currentPlayer.row][currentPlayer.col].objectives.length <= 0) return;
+
+        return (
+            <button onClick={takeObjective}>Take Objective</button>
         )
     }
 
@@ -216,6 +238,7 @@ export default function Toolbar(props) {
                 {displaySearchBtn()}
                 {displayDoorBtns()}
                 {displayAttack()}
+                {displayObjective()}
                 <button onClick={makeNoise}>Make Noise</button>
                 <button onClick={nextTurn}>End Turn</button>
             </React.Fragment>
