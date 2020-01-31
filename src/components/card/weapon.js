@@ -23,11 +23,6 @@ export default class Weapon {
         return [...roll, result];
     }
 
-    remove() {
-        this.owner = null;
-        return this.owner.remove(this);
-    }
-
     rollDie() {
         return Math.floor(Math.random() * 6) + 1;
     }

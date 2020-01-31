@@ -16,11 +16,11 @@ export default function Game(props) {
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
 
-        const player1 = new Player(350, 330, 3, 3, ctx, 'slayer');
-        const player2 = new Player(320, 330, 3, 3, ctx, 'amazon');
-        const player3 = new Player(360, 380, 3, 3, ctx, 'rouge');
-        const player4 = new Player(385, 330, 3, 3, ctx, 'mage');
-        const player5 = new Player(320, 380, 3, 3, ctx, 'bard');
+        const player1 = new Player(320, 330, 3, 3, ctx, 'slayer');
+        const player2 = new Player(350, 330, 3, 3, ctx, 'amazon');
+        const player3 = new Player(385, 330, 3, 3, ctx, 'mage');
+        const player4 = new Player(320, 380, 3, 3, ctx, 'bard');
+        const player5 = new Player(360, 380, 3, 3, ctx, 'rouge');
         const player6 = new Player(390, 380, 3, 3, ctx, 'warrior');
         const equipment = new EquipmentDeck();
         let startingItemsArr = equipment.dealStartingItems();

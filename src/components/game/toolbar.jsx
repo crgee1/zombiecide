@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 
 export default function Toolbar(props) {
     const [searched, setSearched] = useState(false);
+    const [dice, setDice] = useState([]);
 
-    const { currentPlayer, setNumActions, setDice, players, setPlayers, board, currentPlayerIdx, setTargeted, setCurrentPlayerIdx, equipmentDeck, setEquipmentDeck, targeted, numActions } = props;
+    const { currentPlayer, setNumActions, players, setPlayers, board, currentPlayerIdx, setTargeted, setCurrentPlayerIdx, equipmentDeck, setEquipmentDeck, targeted, numActions } = props;
 
     const moveUp = () => {
         currentPlayer.moveUp();
@@ -147,6 +148,7 @@ export default function Toolbar(props) {
     const displayDoorBtns = () => {
         if (!board) return;
         let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
+        if (currentPlayer.openDoorQuiet() === null) return
         if (!Object.values(cell).some(value => value === 'doorClose')) return;
         let direction;
         let text;
@@ -180,23 +182,52 @@ export default function Toolbar(props) {
         )
     }
 
+    const displayDice = () => {
+        if (dice.length === 0) return;
+        return dice.map((die, i) => displayDie(die, i));
+    }
+
+    const displayDie = (die, i) => {
+        switch (die) {
+            case 1:
+                return <i key={i} className="fas fa-dice-one die"></i>;
+            case 2:
+                return <i key={i} className="fas fa-dice-two die"></i>
+            case 3:
+                return <i key={i} className="fas fa-dice-three die"></i>
+            case 4:
+                return <i key={i} className="fas fa-dice-four die"></i>
+            case 5:
+                return <i key={i} className="fas fa-dice-five die"></i>
+            case 6:
+                return <i key={i} className="fas fa-dice-six die"></i>
+            default:
+                break;
+        }
+    }
+
     const displayToolbar = () => {
         if (numActions > 0) return (
-            <div className="toolbar">
+            <React.Fragment>
                 {displayDirectionBtns()}
                 {displaySearchBtn()}
                 {displayDoorBtns()}
                 {displayAttack()}
                 <button onClick={makeNoise}>Make Noise</button>
                 <button onClick={nextTurn}>End Turn</button>
-            </div>
+            </React.Fragment>
         );
         return (
-            <div className="toolbar">
+            <React.Fragment>
                 <button onClick={nextTurn}>End Turn</button>
-            </div>
+            </React.Fragment>
         )
     }
 
-    return displayToolbar();
+    return (<div className="toolbar">
+        {displayToolbar()}
+        <div className="dice-container">
+            {displayDice()}
+        </div>
+    </div>);
 }

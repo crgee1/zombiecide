@@ -5,7 +5,6 @@
 
 .dice-container {
     display: flex;
-    flex-direction: column;
 }
 
 .plane {
@@ -20,6 +19,7 @@
     /* display: inline-block; */
     height: 285px;
     background-color: red;
+    margin-bottom: 10px;
 }
 
 .item-drop-area {
@@ -29,7 +29,12 @@
 }
 
 .title {
-    margin: 0 401px 0 152px;
+    margin: 0 321px 0 152px;
+}
+
+.discard {
+    left: 755px;
+    position: absolute;
 }
 
 .playing-cards {

@@ -15,9 +15,9 @@ export default class Player extends Piece {
         this.size = 45;
         this.exp = 0;
         this.level = 1;
-        this.items = [{name: 'Empty', id: name+'1'}, {name: 'Empty', id: name+'2'}, {name: 'Empty', id: name+'3'}, {name: 'Empty', id: name+'4'}, {name: 'Empty', id: name+'5'},];
-        this.wounds = 0;
         this.name = name;
+        this.items = [{name: 'Empty', id: this.name+'1'}, {name: 'Empty', id: this.name+'2'}, {name: 'Empty', id: this.name+'3'}, {name: 'Empty', id: this.name+'4'}, {name: 'Empty', id: this.name+'5'},];
+        this.wounds = 0;
         switch (name) {
             case 'slayer':
                 this.image.src = slayerPic;
@@ -53,17 +53,42 @@ export default class Player extends Piece {
         }
     }
 
+    splice(idx, amt) {
+        let [item] = this.items.splice(idx, amt);
+        while (this.items.length < 5) {
+            this.items.push({ name: 'Empty', id: this.name + `${Math.random()}` })
+        }
+        return item;
+    }
+
     addItem(item, idx=null) {
+        let itemsIdx = this.items.reduce((acc, item) => {
+            return item.name !== 'Empty' ? ++acc : acc;
+        }, 0);
         if (idx === null) {
-            item.owner = this;
-            let itemsIdx = this.items.reduce((acc, item) => {
-                return item.name !== 'Empty' ? ++acc : acc;
-            }, 0);
             this.items.splice(itemsIdx, 0, item);
             this.items = this.items.slice(0, 5)
         } else {
             this.items.splice(idx, 0, item);
+            let emptyCount = this.items.reduce((acc, item) => {
+                return item.name === 'Empty' ? ++acc : acc;
+            }, 0);
+            if (this.items.length > 5 && emptyCount > 0) {
+                for (let i = this.items.length-1; i >= 0; i--) {
+                    if (this.items[i].name === 'Empty') {
+                        this.items.splice(i,1);
+                        break;
+                    }
+                }
+            }
         }
+    }
+
+    openDoorQuiet() {
+        let canOpen = null;
+        if (this.items[0].silentDoor === false || this.items[1].silentDoor === false) canOpen = false;
+        if (this.items[0].silentDoor || this.items[1].silentDoor) canOpen = true;
+        return canOpen
     }
 
     onHandWeapon() {

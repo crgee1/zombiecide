@@ -4,7 +4,6 @@ import ItemItem from "../card/item_item";
 import Toolbar from "./toolbar";
 
 export default function Interface(props) {
-    const [dice, setDice] = useState([]);
     const [numActions, setNumActions] = useState(3);
     const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
 
@@ -20,47 +19,29 @@ export default function Interface(props) {
         if (!result.destination) return;
         const { source, destination } = result;
         let playerArr = [...players];
-        if (source.droppableId === destination.droppableId) {
-            let [item] = currentPlayer.items.splice(source.index,1);
-            currentPlayer.addItem(item, destination.index);
+        if (destination.droppableId === 'discard') {
+            let item = currentPlayer.splice(source.index, 1);
+            equipmentDeck.discard(item);
         } else {
-            let otherIdx = String(currentPlayerIdx) === destination.droppableId ? source.droppableId : destination.droppableId
-            let otherPlayer = players[otherIdx];
-            if (String(currentPlayerIdx) === destination.droppableId) {
-                let [item] = otherPlayer.items.splice(source.index, 1);
-                currentPlayer.items.splice(destination.index, 0, item);
+            if (source.droppableId === destination.droppableId) {
+                // setNumActions(--currentPlayer.numActions);
+                let item = currentPlayer.splice(source.index,1);
+                currentPlayer.addItem(item, destination.index);
             } else {
-                let [item] = currentPlayer.items.splice(source.index, 1);
-                otherPlayer.items.splice(destination.index, 0, item);
+                let otherIdx = String(currentPlayerIdx) === destination.droppableId ? source.droppableId : destination.droppableId
+                let otherPlayer = players[otherIdx];
+                if (String(currentPlayerIdx) === destination.droppableId) {
+                    let item = otherPlayer.splice(source.index, 1);
+                    currentPlayer.addItem(item, destination.index);
+                } else {
+                    let item = currentPlayer.splice(source.index, 1);
+                    otherPlayer.addItem(item, destination.index);
+                }
+                playerArr.splice(otherIdx, 1, otherPlayer);
             }
-            playerArr.splice(otherIdx, 1, otherPlayer);
+            playerArr.splice(currentPlayerIdx, 1, currentPlayer);
         }
-        playerArr.splice(currentPlayerIdx, 1, currentPlayer);
         setPlayers(playerArr);
-    }
-
-    const displayDice = () => {
-        if (dice.length === 0) return;
-        return dice.map((die, i) => displayDie(die, i));
-    }
-
-    const displayDie = (die, i) => {
-        switch (die) {
-            case 1:
-                return <i key={i} className="fas fa-dice-one die"></i>;
-            case 2:
-                return <i key={i} className="fas fa-dice-two die"></i>
-            case 3:
-                return <i key={i} className="fas fa-dice-three die"></i>
-            case 4:
-                return <i key={i} className="fas fa-dice-four die"></i>
-            case 5:
-                return <i key={i} className="fas fa-dice-five die"></i>
-            case 6:
-                return <i key={i} className="fas fa-dice-six die"></i>
-            default:
-                break;
-        }
     }
 
     const displayItems = (player, idx) => {
@@ -109,28 +90,50 @@ export default function Interface(props) {
         //         );
         //     }
         // }
+        let style = idx === players.length - 1 ? 'darkred' : 'red' 
         return (
-            <div className="item-card" key={idx}>
-                
-                <span className="title">On Hand</span> <span>On Reserve</span>
-                    <Droppable droppableId={`${idx}`} key={`${idx}`} direction="horizontal"> 
+            <div className="item-card" key={idx} style={{backgroundColor: style}}>
+                <span className="title">On Hand</span>
+                <span className="name">{player.name[0].toUpperCase()+player.name.slice(1)}</span> 
+                <Droppable droppableId={`${idx}`} key={`${idx}`} direction="horizontal"> 
+                {(provided, snapshot) => {
+                    return (
+                        <div 
+                            className="item-drop-area"
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={{minHeight: 275}}
+                        >
+                            {displayArr}
+                            {provided.placeholder}
+                        </div>
+                    )
+                }}
+                </Droppable>
+            </div>
+            );
+    }
+
+    const displayDiscard = () => {
+        return (
+            <div className="discard">
+                <Droppable droppableId="discard" key="discard">
                     {(provided, snapshot) => {
                         return (
-                            <div 
-                                className="item-drop-area"
+                            <div
+                                className="item-container"
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
-                                style={{minHeight: 275}}
+                                style={{ minHeight: 275 }}
                             >
-                                {displayArr}
+                                Discard
                                 {provided.placeholder}
                             </div>
                         )
                     }}
-                    </Droppable>
-                
+                </Droppable>
             </div>
-            );
+        );
     }
 
     const displayOtherPlayers = () => {
@@ -153,7 +156,6 @@ export default function Interface(props) {
                     setCurrentPlayerIdx={setCurrentPlayerIdx}
                     setNumActions={setNumActions}
                     numActions={numActions}
-                    setDice={setDice}
                     players={players}
                     setPlayers={setPlayers}
                     board={board}
@@ -166,10 +168,8 @@ export default function Interface(props) {
                 <header>{numActions}</header>
                 <div className="playing-cards">
                     {displayItems(currentPlayer, currentPlayerIdx)}
-                    <div className="dice-container">
-                        {displayDice()}
-                    </div>
                 </div>
+                {displayDiscard()}
             </div>
             </DragDropContext>
         </React.Fragment>
