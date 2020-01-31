@@ -18,23 +18,30 @@ export default function Interface(props) {
     const handleDrop = result => {
         if (!result.destination) return;
         const { source, destination } = result;
-        let playerArr = [...players];
+        let playerArr = [...players], item;
         if (destination.droppableId === 'discard') {
-            let item = currentPlayer.splice(source.index, 1);
+            let idx = Number(source.droppableId);
+            let player = players[idx];
+            item = player.splice(source.index, 1);
             equipmentDeck.discard(item);
         } else {
+            let otherIdx = String(currentPlayerIdx) === destination.droppableId ? source.droppableId : destination.droppableId
+            let otherPlayer = players[otherIdx];
             if (source.droppableId === destination.droppableId) {
-                // setNumActions(--currentPlayer.numActions);
-                let item = currentPlayer.splice(source.index,1);
-                currentPlayer.addItem(item, destination.index);
-            } else {
-                let otherIdx = String(currentPlayerIdx) === destination.droppableId ? source.droppableId : destination.droppableId
-                let otherPlayer = players[otherIdx];
-                if (String(currentPlayerIdx) === destination.droppableId) {
-                    let item = otherPlayer.splice(source.index, 1);
+                if (currentPlayerIdx === source.droppableId) {
+                    item = currentPlayer.splice(source.index,1);
                     currentPlayer.addItem(item, destination.index);
                 } else {
-                    let item = currentPlayer.splice(source.index, 1);
+                    item = otherPlayer.splice(source.index, 1);
+                    otherPlayer.addItem(item, destination.index);
+                }
+                // setNumActions(--currentPlayer.numActions);
+            } else {
+                if (String(currentPlayerIdx) === destination.droppableId) {
+                    item = otherPlayer.splice(source.index, 1);
+                    currentPlayer.addItem(item, destination.index);
+                } else {
+                    item = currentPlayer.splice(source.index, 1);
                     otherPlayer.addItem(item, destination.index);
                 }
                 playerArr.splice(otherIdx, 1, otherPlayer);
