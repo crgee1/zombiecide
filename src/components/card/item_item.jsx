@@ -25,6 +25,7 @@ import shotgun from '../../assets/images/equipment/shotgun.jpg';
 import subMg from '../../assets/images/equipment/sub-mg.jpg';
 import water from '../../assets/images/equipment/water.jpg';
 import Weapon from './weapon';
+import wounded from '../../assets/images/cards/wounded.jpeg';
 import Item from './item';
 
 export default function ItemItem(props) {
@@ -80,12 +81,15 @@ export default function ItemItem(props) {
                 return crowbar
             case 'aaahh':
                 return aaahh
+            case 'wounded':
+                return wounded
             default:
                 break;
         }
     }
+    let style = item.name === 'wounded' ? 'wound' : 'card'; 
     let isItem = item instanceof Weapon || item instanceof Item;
-    let display = isItem ? <img className="card" src={source()} alt="" /> : 'Empty'
+    let display = isItem ? <img className={style} src={source()} alt="" /> : 'Empty'
 
     return (
         <div className="item-container">

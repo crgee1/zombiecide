@@ -4,7 +4,7 @@ export default function Toolbar(props) {
     const [searched, setSearched] = useState(false);
     const [dice, setDice] = useState([]);
 
-    const { currentPlayer, setNumActions, players, setPlayers, board, currentPlayerIdx, setTargeted, setCurrentPlayerIdx, equipmentDeck, setEquipmentDeck, targeted, numActions } = props;
+    const { currentPlayer, setNumActions, players, setPlayers, board, currentPlayerIdx, setTargets, setCurrentPlayerIdx, equipmentDeck, setEquipmentDeck, targets, numActions, setZombieTargets, zombieTargets } = props;
 
     const moveUp = () => {
         currentPlayer.moveUp();
@@ -39,7 +39,7 @@ export default function Toolbar(props) {
         if (currentPlayerIdx === players.length - 1) oneRevolution();
         currentPlayer.reset();
         setSearched(false);
-        setTargeted(false);
+        setTargets(false);
         setDice([]);
         board.resetTargeted();
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
@@ -92,7 +92,7 @@ export default function Toolbar(props) {
         setDice(diceArr);
         if (result) {
             board.killZombies();
-            setTargeted(false);
+            setTargets(false);
             currentPlayer.gainExp(1);
         }
     }
@@ -153,7 +153,7 @@ export default function Toolbar(props) {
     }
 
     const displayAttack = () => {
-        if (!targeted) return;
+        if (!targets) return;
         return (
             <button onClick={attack}>Attack</button>
         )

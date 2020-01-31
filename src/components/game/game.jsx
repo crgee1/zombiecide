@@ -10,9 +10,9 @@ import Weapon from '../card/weapon';
 export default function Game(props) {
     const [board, setBoard] = useState();
     const [players, setPlayers] = useState([]);
-    // const [items, setItems] = useState();
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
-    const [targeted, setTargeted] = useState(false);
+    const [targets, setTargets] = useState(0);
+    const [zombieTargets, setZombieTargets] = useState(null);
     
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
@@ -52,23 +52,43 @@ export default function Game(props) {
             let rangeArr = board.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
             let targetCell = board.grid.layout[row][col];
             if (rangeArr.includes(targetCell)) {
-                for (let i = 0; i < targetCell.zombies.length; i++) {
-                    let zombie = targetCell.zombies[i];
-                    if (zombie.contains(x, y, weapon.damage)) {
-                        if (targeted && zombie.targeted) {
-                            zombie.targeted = false;
-                            setTargeted(false);
-                        } 
-                        if (!targeted && !zombie.targeted) {
-                            zombie.targeted = true;
-                            setTargeted(true);
-                        }
-                        break;
-                    }
+                if (targetCell.targeted) {
+                    targetCell.targeted = false
+                    setZombieTargets(null)
+                } 
+                if (!Array.isArray(zombieTargets)) {
+                    targetCell.targeted = true
+                    setZombieTargets(targetCell.zombies)
                 }
+                // for (let i = 0; i < targetCell.zombies.length; i++) {
+                //     let zombie = targetCell.zombies[i];
+                //     if (zombie.contains(x, y, weapon.damage)) {
+                //         let zombieArr = [...zombieTargets];
+                //         if (targets && zombie.targeted) {
+                //             zombieArr.forEach((target, i) => {
+                //                 if (zombie === target) {
+                //                     zombieArr.splice(i,1);
+                //                 }
+                //             })
+                //             zombie.targeted = false;
+                //             setTargets(false);
+                //         } 
+                //         if (!targets && !zombie.targeted) {
+                //             zombie.targeted = true;
+                //             zombieArr.push(zombie);
+                //             setTargets(true);
+                //         }
+                //         setZombieTargets(zombieArr);
+                //         break;
+                //     }
+                // }
             }
         }
     }
+
+    // useEffect(() => {
+    //     console.log(zombieTargets)
+    // }, [zombieTargets])
 
     return (
         <div className="game">
@@ -79,8 +99,10 @@ export default function Game(props) {
                 board={board}
                 players={players}
                 setPlayers={setPlayers}
-                setTargeted={setTargeted}
-                targeted={targeted}
+                zombieTargets={zombieTargets}
+                setZombieTargets={setZombieTargets}
+                setTargets={setTargets}
+                targets={targets}
             />
         </div>
     )

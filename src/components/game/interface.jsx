@@ -7,7 +7,7 @@ export default function Interface(props) {
     const [numActions, setNumActions] = useState(3);
     const [currentPlayerIdx, setCurrentPlayerIdx] = useState(0);
 
-    const { board, players, setPlayers, equipmentDeck, setEquipmentDeck, targeted, setTargeted } = props;
+    const { board, players, setPlayers, equipmentDeck, setEquipmentDeck, targets, setTargets, zombieTargets, setZombieTargets } = props;
 
     const currentPlayer = players[currentPlayerIdx];
 
@@ -170,8 +170,10 @@ export default function Interface(props) {
                     board={board}
                     equipmentDeck={equipmentDeck}
                     setEquipmentDeck={setEquipmentDeck}
-                    targeted={targeted}
-                    setTargeted={setTargeted}
+                    targets={targets}
+                    setTargets={setTargets}
+                    setZombieTargets={setZombieTargets}
+                    zombieTargets={zombieTargets}
                 />
                 <header>Number of Actions Left: {numActions}</header>
                 <div className="playing-cards">

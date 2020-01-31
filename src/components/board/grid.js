@@ -12,14 +12,13 @@ export default class Grid {
         this.cols = this.layout[0].length;
     }
 
-    drawSide(side, door, x ,y) {
+    drawSide(side, door, x ,y, targetColor) {
         if (door === 'doorOpen' || door === 'doorClose') {
             let color = door === 'doorOpen' ? 'yellow' : 'red';
             this.ctx.setLineDash([]);
-            
             switch (side) {
                 case 'up':
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x, y)
                     this.ctx.lineTo(x + 33, y);
@@ -29,14 +28,14 @@ export default class Grid {
                     this.ctx.moveTo(x + 33, y);
                     this.ctx.lineTo(x + 66, y);
                     this.ctx.stroke();
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x + 66, y);
                     this.ctx.lineTo(x + 100, y);
                     this.ctx.stroke();
                     break;
                 case 'right':
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x + 100, y);
                     this.ctx.lineTo(x + 100, y + 33);
@@ -46,14 +45,14 @@ export default class Grid {
                     this.ctx.moveTo(x + 100, y + 33);
                     this.ctx.lineTo(x + 100, y + 66);
                     this.ctx.stroke();
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x + 100, y + 66);
                     this.ctx.lineTo(x + 100, y + 100);
                     this.ctx.stroke();
                     break;
                 case 'down':
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x + 100, y + 100);
                     this.ctx.lineTo(x + 66, y + 100);
@@ -63,14 +62,15 @@ export default class Grid {
                     this.ctx.moveTo(x + 66, y + 100);
                     this.ctx.lineTo(x + 33, y + 100);
                     this.ctx.stroke();
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x + 33, y + 100);
                     this.ctx.lineTo(x, y + 100);
                     this.ctx.stroke();
+                    this.ctx.strokeStyle = targetColor;
                     break;
                 case 'left':
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x, y + 100);
                     this.ctx.lineTo(x, y + 66);
@@ -80,7 +80,7 @@ export default class Grid {
                     this.ctx.moveTo(x, y + 66);
                     this.ctx.lineTo(x, y + 33);
                     this.ctx.stroke();
-                    this.ctx.strokeStyle = 'black';
+                    this.ctx.strokeStyle = targetColor;
                     this.ctx.beginPath();
                     this.ctx.moveTo(x, y + 33);
                     this.ctx.lineTo(x, y);
@@ -90,6 +90,10 @@ export default class Grid {
                     break;
             }
         } else {
+            // if (x === 300 && y === 300) {
+            //     console.log(targetColor)
+            // }
+            this.ctx.strokeStyle = targetColor;
             if (!door) {
                 this.ctx.setLineDash([]);
             } else {
@@ -132,12 +136,17 @@ export default class Grid {
             row.forEach((cell, j) => {
                 let x = j * 100;
                 let y = i * 100;
-                
-                this.ctx.strokeStyle = 'black';
-                this.drawSide('up', cell.up, x, y);
-                this.drawSide('right', cell.right, x, y);
-                this.drawSide('down', cell.down, x, y);
-                this.drawSide('left', cell.left, x, y);
+                let targetedColor = 'black';
+                targetedColor = cell.targeted ? 'blue' : 'black';
+                if (this.layout[i-1] && this.layout[i-1][j]) targetedColor = cell.targeted || this.layout[i - 1][j].targeted ? 'blue' : 'black'
+                this.drawSide('up', cell.up, x, y, targetedColor);
+                if (this.layout[i] && this.layout[i][j+1]) targetedColor = cell.targeted || this.layout[i][j+1].targeted ? 'blue' : 'black'
+                this.drawSide('right', cell.right, x, y, targetedColor);
+                if (this.layout[i+1] && this.layout[i+1][j]) targetedColor = cell.targeted || this.layout[i+1][j].targeted ? 'blue' : 'black'
+                this.drawSide('down', cell.down, x, y, targetedColor);
+                if (this.layout[i] && this.layout[i][j-1]) targetedColor = cell.targeted || this.layout[i][j-1].targeted ? 'blue' : 'black'
+                // if (x === 400 && y === 300) console.log(this.layout[i]);
+                this.drawSide('left', cell.left, x, y, targetedColor);
             })
         });
     }

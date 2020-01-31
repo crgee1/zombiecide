@@ -12,6 +12,7 @@ export default class Cell {
         this.col = col;
         this.name = 'cell'+row+col;
         this.type = type;
+        this.targeted = false;
 
         this.players = [];
         this.zombies = [];
