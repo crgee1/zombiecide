@@ -152,46 +152,30 @@ export default class Board {
     }
 
     moveZombies() {
-        let layout = this.grid.layout;
-        for (let row = 0; row < layout.length; row++) {
-            for (let col = 0; col < layout[0].length; col++) {
-                let cell = layout[row][col];
-                let length = cell.zombies.length;
-                if (length > 0) {
-                    let target = this.findTarget(cell);
-                    let start = this.grid.layout[row][col];
-                    let end = this.grid.layout[target.row][target.col]
-                    let direction = this.grid.nextDirection(start, end);
-    
-                    switch (direction) {
-                        case 'up':
-                            for (let i = 0; i < length; i++) {
-                                cell.zombies[0].moveUp()
-                            }
-                            break;
-                        case 'right':
-                            for (let i = 0; i < length; i++) {
-                                cell.zombies[0].moveRight()
-                            }
-                            break;
-                        case 'down':
-                            for (let i = 0; i < length; i++) {
-                                cell.zombies[0].moveDown()
-                            }
-                            break;
-                        case 'left':
-                            for (let i = 0; i < length; i++) {
-                                cell.zombies[0].moveLeft()
-                            }
-                            break;
-                        case 'attack':
-                            break;
-                        default:
-                            break;
-                    }
-                }
+        this.zombies.forEach(zombie => {
+            let start = this.grid.layout[zombie.row][zombie.col];
+            let target = this.findTarget(start);
+            let end = this.grid.layout[target.row][target.col]
+            let direction = this.grid.nextDirection(start, end);
+            switch (direction) {
+                case 'up':
+                    zombie.moveUp()
+                    break;
+                case 'right':
+                    zombie.moveRight()
+                    break;
+                case 'down':
+                    zombie.moveDown()
+                    break;
+                case 'left':
+                    zombie.moveLeft()
+                    break;
+                case 'attack':
+                    break;
+                default:
+                    break;
             }
-        }
+        });
     }
 
     findTarget(startCell) {

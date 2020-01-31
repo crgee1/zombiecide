@@ -31,12 +31,6 @@ export default class Piece {
         }
     }
 
-    contains(x,y) {
-        var distancesquared = (x - this.posX) * (x - this.posX) + (y - this.posY) * (y - this.posY);
-        let radius = this.size / 2;
-        return distancesquared <= radius * radius;
-    }
-
     draw() {
         this.ctx.drawImage(this.image, this.posX - this.size / 2, this.posY - this.size / 2, this.size, this.size);
         if (this.destinationY < this.posY) {

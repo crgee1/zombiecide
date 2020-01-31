@@ -54,7 +54,7 @@ export default function Game(props) {
             if (rangeArr.includes(targetCell)) {
                 for (let i = 0; i < targetCell.zombies.length; i++) {
                     let zombie = targetCell.zombies[i];
-                    if (zombie.contains(x, y)) {
+                    if (zombie.contains(x, y, weapon.damage)) {
                         if (targeted && zombie.targeted) {
                             zombie.targeted = false;
                             setTargeted(false);
