@@ -25,6 +25,7 @@ import shotgun from '../../assets/images/equipment/shotgun.jpg';
 import subMg from '../../assets/images/equipment/sub-mg.jpg';
 import water from '../../assets/images/equipment/water.jpg';
 import Weapon from './weapon';
+import Item from './item';
 
 export default function ItemItem(props) {
     const { item } = props;
@@ -83,8 +84,8 @@ export default function ItemItem(props) {
                 break;
         }
     }
-
-    let display = item instanceof Weapon ? <img className="card" src={source()} alt="" /> : 'Empty'
+    let isItem = item instanceof Weapon || item instanceof Item;
+    let display = isItem ? <img className="card" src={source()} alt="" /> : 'Empty'
 
     return (
         <div className="item-container">

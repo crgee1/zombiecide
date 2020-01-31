@@ -95,6 +95,7 @@ export default function Interface(props) {
             <div className="item-card" key={idx} style={{backgroundColor: style}}>
                 <span className="title">On Hand</span>
                 <span className="name">{player.name[0].toUpperCase()+player.name.slice(1)}</span> 
+                <span>Exp: {player.exp}</span>
                 <Droppable droppableId={`${idx}`} key={`${idx}`} direction="horizontal"> 
                 {(provided, snapshot) => {
                     return (
@@ -164,8 +165,8 @@ export default function Interface(props) {
                     targeted={targeted}
                     setTargeted={setTargeted}
                 />
-                <header>{currentPlayer ? currentPlayer.name : null}</header>
-                <header>{numActions}</header>
+                <header>{currentPlayer ? currentPlayer.name[0].toUpperCase() + currentPlayer.name.slice(1) : null}</header>
+                <header>Number of Actions Left: {numActions}</header>
                 <div className="playing-cards">
                     {displayItems(currentPlayer, currentPlayerIdx)}
                 </div>

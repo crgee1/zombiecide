@@ -50,6 +50,7 @@ export default function Toolbar(props) {
     const openDoor = (direction) => {
         return () => {
             setNumActions(--currentPlayer.numActions);
+            if (!currentPlayer.openDoorQuietly()) currentPlayer.makeNoise();
             let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
             cell[direction] = 'doorOpen';
             switch (direction) {
@@ -73,6 +74,7 @@ export default function Toolbar(props) {
 
     const search = () => {
         let item = equipmentDeck.draw();
+        if (item.name === 'aaahh') board.spawnZombie(currentPlayer.row, currentPlayer.col);
         setEquipmentDeck(equipmentDeck);
         currentPlayer.addItem(item);
         setNumActions(--currentPlayer.numActions);
@@ -85,19 +87,21 @@ export default function Toolbar(props) {
 
     const attack = () => {
         setNumActions(--currentPlayer.numActions);
+        if (!currentPlayer.items[0].silentKill) currentPlayer.makeNoise();
         let diceArr = currentPlayer.attack();
         let result = diceArr.pop();
         setDice(diceArr);
         if (result) {
             board.killZombies();
             setTargeted(false);
+            currentPlayer.gainExp(1);
         }
     }
 
     const makeNoise = () => {
         setNumActions(--currentPlayer.numActions);
-        board.grid.layout[currentPlayer.row][currentPlayer.col].noise++;
-    }
+        currentPlayer.makeNoise()    
+}
 
     const displaySearchBtn = () => {
         if (!board || searched) return;
@@ -148,7 +152,7 @@ export default function Toolbar(props) {
     const displayDoorBtns = () => {
         if (!board) return;
         let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
-        if (currentPlayer.openDoorQuiet() === null) return
+        if (currentPlayer.openDoorQuietly() === null) return
         if (!Object.values(cell).some(value => value === 'doorClose')) return;
         let direction;
         let text;
@@ -224,10 +228,12 @@ export default function Toolbar(props) {
         )
     }
 
-    return (<div className="toolbar">
-        {displayToolbar()}
-        <div className="dice-container">
-            {displayDice()}
+    return (
+        <div className="toolbar">
+            {displayToolbar()}
+            <div className="dice-container">
+                {displayDice()}
+            </div>
         </div>
-    </div>);
+    );
 }

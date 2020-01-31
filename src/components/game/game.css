@@ -29,7 +29,11 @@
 }
 
 .title {
-    margin: 0 321px 0 152px;
+    margin: 0 318px 0 152px;
+}
+
+.name {
+  margin-right: 5px;  
 }
 
 .discard {

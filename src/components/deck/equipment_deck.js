@@ -51,17 +51,17 @@ export default class EquipmentDeck extends Deck {
         this.deck.push(new Item(42,'scope')); 
         this.deck.push(new Item(43,'water')); 
         this.deck.push(new Item(44,'water')); 
-        this.deck.push(new Item(44,'water')); 
-        this.deck.push(new Item(44,'aaahh')); 
-        this.deck.push(new Item(44,'aaahh')); 
-        this.deck.push(new Item(44,'aaahh')); 
-        this.deck.push(new Item(44,'aaahh')); 
-        this.deck.push(new Item(44,'plenty of ammo')); 
-        this.deck.push(new Item(44,'plenty of ammo')); 
-        this.deck.push(new Item(44,'plenty of ammo')); 
-        this.deck.push(new Item(44,'plenty of shells')); 
-        this.deck.push(new Item(44,'plenty of shells')); 
-        this.deck.push(new Item(44,'plenty of shells')); 
+        this.deck.push(new Item(45,'water')); 
+        this.deck.push(new Item(46,'aaahh')); 
+        this.deck.push(new Item(47,'aaahh')); 
+        this.deck.push(new Item(48,'aaahh')); 
+        this.deck.push(new Item(49,'aaahh')); 
+        this.deck.push(new Item(50,'plenty of ammo')); 
+        this.deck.push(new Item(51,'plenty of ammo')); 
+        this.deck.push(new Item(52,'plenty of ammo')); 
+        this.deck.push(new Item(53,'plenty of shells')); 
+        this.deck.push(new Item(54,'plenty of shells')); 
+        this.deck.push(new Item(55,'plenty of shells')); 
 
         this.shuffle();
     }

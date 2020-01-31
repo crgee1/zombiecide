@@ -5,6 +5,7 @@ import EquipmentDeck from '../deck/equipment_deck';
 
 import './game.css';
 import Interface from './interface';
+import Weapon from '../card/weapon';
 
 export default function Game(props) {
     const [board, setBoard] = useState();
@@ -16,7 +17,7 @@ export default function Game(props) {
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
 
-        const player1 = new Player(320, 330, 3, 3, ctx, 'slayer');
+        const player1 = new Player(315, 330, 3, 3, ctx, 'slayer');
         const player2 = new Player(350, 330, 3, 3, ctx, 'amazon');
         const player3 = new Player(385, 330, 3, 3, ctx, 'mage');
         const player4 = new Player(320, 380, 3, 3, ctx, 'bard');
@@ -48,6 +49,7 @@ export default function Game(props) {
             let col = Math.floor(x / 100);
             let player = board.activePlayer();
             let weapon = player.items[0];
+            if (!(weapon instanceof Weapon)) return;
             let rangeArr = board.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
             let targetCell = board.grid.layout[row][col];
             if (rangeArr.includes(targetCell)) {

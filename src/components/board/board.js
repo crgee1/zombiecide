@@ -102,6 +102,7 @@ export default class Board {
     }
 
     spawnZombie(row, col, type = 'walker') {
+        console.log('here')
         let randomX = Math.random() * 80 + 10 + col * 100;
         let randomY = Math.random() * 80 + 10 + row * 100;
         let zombie = new Zombie(randomX, randomY, row, col, this.ctx, this.grid, type);

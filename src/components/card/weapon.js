@@ -23,6 +23,15 @@ export default class Weapon {
         return [...roll, result];
     }
 
+    dual() {
+        let roll = [];
+        for (let i = 0; i < this.dice * 2; i++) {
+            roll.push(this.rollDie());
+        }
+        let result = roll.some(die => die >= this.hit);
+        return [...roll, result];
+    }
+
     rollDie() {
         return Math.floor(Math.random() * 6) + 1;
     }

@@ -5,7 +5,6 @@ import rougePic from '../../assets/images/models/rouge.png'
 import amazonPic from '../../assets/images/models/amazon.png'
 import bardPic from '../../assets/images/models/bard.png'
 import warriorPic from '../../assets/images/models/warrior.png'
-import Weapon from '../card/weapon';
 
 export default class Player extends Piece {
     constructor(x, y, row, col, ctx, name, numActions = 3) {
@@ -20,6 +19,7 @@ export default class Player extends Piece {
         this.wounds = 0;
         switch (name) {
             case 'slayer':
+                this.size = 55;
                 this.image.src = slayerPic;
                 break;
             case 'mage':
@@ -84,7 +84,7 @@ export default class Player extends Piece {
         }
     }
 
-    openDoorQuiet() {
+    openDoorQuietly() {
         let canOpen = null;
         if (this.items[0].silentDoor === false || this.items[1].silentDoor === false) canOpen = false;
         if (this.items[0].silentDoor || this.items[1].silentDoor) canOpen = true;
@@ -97,13 +97,13 @@ export default class Player extends Piece {
 
     gainExp(exp) {
         let oldExp = this.exp;
-        let newExp = this.exp + exp;
+        this.exp = this.exp + exp;
 
-        if (oldExp < 43 && newExp >= 43) {
+        if (oldExp < 43 && this.exp >= 43) {
             this.level++;
-        } else if (oldExp < 19 && newExp >= 19) {
+        } else if (oldExp < 19 && this.exp >= 19) {
             this.level++;
-        } else if (oldExp < 7 && newExp >= 7) {
+        } else if (oldExp < 7 && this.exp >= 7) {
             this.level++;
             this.maxActions++;
         } 
@@ -119,6 +119,10 @@ export default class Player extends Piece {
 
     addToCell() {
         this.grid.layout[this.row][this.col].add(this);
+    }
+
+    makeNoise() {
+        this.grid.layout[this.row][this.col].noise++;
     }
 
     reset() {
@@ -163,6 +167,7 @@ export default class Player extends Piece {
     }
 
     attack() {
+        if (this.items[0].name === this.items[1].name && this.items[0].dualWield) return this.items[0].dual();
         return this.items[0].attack();
     }
 }

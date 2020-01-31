@@ -26,7 +26,7 @@ export default class Zombie extends Piece {
                 this.image.src = runner;
                 break;
             case 'fatty':
-                this.size = 35;
+                this.size = 45;
                 this.health = 2;
                 this.image.src = fatty;
                 break;
