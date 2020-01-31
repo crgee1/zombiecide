@@ -12,16 +12,41 @@
     position: absolute;
     width: 700px;
     height: 700px;
+    left: 0;
     top: 0;
 }
 
 .item-card {
     display: inline-block;
+    height: 285px;
+    background-color: red;
 }
 
 .item-drop-area {
     width: 936px;
     height: 253px;
-    background-color: red;
     display: flex;
+}
+
+.title {
+    margin: 0 401px 0 152px;
+}
+
+.playing-cards {
+    display: flex;
+}
+
+.playing-container {
+    position: absolute;
+    left: 0;
+    top: 700px;
+}
+
+.game {
+    margin-left: 245px
+}
+
+.other-players-container {
+    display: flex;
+    flex-direction: column;
 }

@@ -5,9 +5,11 @@ import Game from './components/game/game';
 function App() {
   return (
     <div className="App">
-      <canvas id='canvas' height="700" width="700">
-      </canvas>
-      <Game/>
+      <div className="app-container">
+        <canvas id='canvas' height="700" width="700">
+        </canvas>
+        <Game/>
+      </div>
     </div>
   );
 }

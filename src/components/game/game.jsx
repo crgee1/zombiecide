@@ -70,7 +70,7 @@ export default function Game(props) {
     }
 
     return (
-        <div id="game">
+        <div className="game">
             <div className="plane" onClick={handleCanvasClick()}></div>
             <Interface 
                 equipmentDeck={equipmentDeck}

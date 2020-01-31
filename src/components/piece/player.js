@@ -56,10 +56,10 @@ export default class Player extends Piece {
     addItem(item, idx) {
         if (!idx) {
             item.owner = this;
-            let items = this.items.reduce((acc, item) => {
+            let itemsIdx = this.items.reduce((acc, item) => {
                 return item !== 'empty' ? ++acc : acc;
             }, 0);
-            this.items.splice(items, 0, item);
+            this.items.splice(itemsIdx, 0, item);
             this.items = this.items.slice(0, 5)
         } else {
             this.items.splice(idx, 0, item);

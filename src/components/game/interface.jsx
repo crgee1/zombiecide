@@ -19,11 +19,8 @@ export default function Interface(props) {
     const handleDrop = result => {
         if (!result.destination) return;
         const { source, destination } = result;
-        // console.log(currentPlayer.items)
         let [item] = currentPlayer.items.splice(source.index,1);
-        // console.log(currentPlayer.items)
-        currentPlayer.addItem(item, destination.index);
-        // console.log(currentPlayer.items)
+        currentPlayer.items.splice(destination.index, 0, item);
         let playerArr = [...players];
         playerArr.splice(currentPlayerIdx, 1, currentPlayer);
         setPlayers(playerArr);
@@ -53,9 +50,9 @@ export default function Interface(props) {
         }
     }
 
-    const displayItems = () => {
-        if (!currentPlayer) return;
-        let displayArr = currentPlayer.items.map((item, i) => {
+    const displayItems = (player, idx) => {
+        if (!player) return;
+        let displayArr = player.items.map((item, i) => {
             return (
                 <Draggable key={String(i)} draggableId={String(i)} index={i}>
                     {(provided, snapshot) => {
@@ -100,7 +97,9 @@ export default function Interface(props) {
         //     }
         // }
         return (
-            <div className="item-card">
+            <div className="item-card" key={idx}>
+                
+                <span className="title">On Hand</span> <span>On Reserve</span>
                 <DragDropContext onDragEnd={handleDrop}>
                     <Droppable droppableId="1" key={"1"} direction="horizontal"> 
                     {(provided, snapshot) => {
@@ -121,11 +120,18 @@ export default function Interface(props) {
             );
     }
 
+    const displayOtherPlayers = () => {
+        return players.map((player, i) => {
+            return displayItems(player, i);
+        }).filter((player, idx) => idx !== currentPlayerIdx);
+    }
+
     return (
         <React.Fragment>
-            <div>
-                <header>{currentPlayer ? currentPlayer.name : null}</header>
-                <header>{numActions}</header>
+            <div className="other-players-container">
+                {displayOtherPlayers()}
+            </div>
+            <div className="playing-container">
                 <Toolbar
                     currentPlayer={currentPlayer}
                     currentPlayerIdx={currentPlayerIdx}
@@ -141,11 +147,13 @@ export default function Interface(props) {
                     targeted={targeted}
                     setTargeted={setTargeted}
                 />
-            </div>
-            <div className="container" style={{display: 'flex'}}>
-                {displayItems()}
-                <div className="dice-container">
-                    {displayDice()}
+                <header>{currentPlayer ? currentPlayer.name : null}</header>
+                <header>{numActions}</header>
+                <div className="playing-cards">
+                    {displayItems(currentPlayer, currentPlayerIdx)}
+                    <div className="dice-container">
+                        {displayDice()}
+                    </div>
                 </div>
             </div>
         </React.Fragment>

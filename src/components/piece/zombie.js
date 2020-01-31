@@ -1,6 +1,7 @@
 import Piece from "./piece";
 import walker from '../../assets/images/models/zombie.png'
 import runner from '../../assets/images/models/runner1.png'
+import fatty from '../../assets/images/models/fatty.png'
 
 
 export default class Zombie extends Piece {
@@ -16,11 +17,18 @@ export default class Zombie extends Piece {
         switch (type) {
             case 'walker':
                 this.size = 35;
+                this.health = 1;
                 this.image.src = walker;
                 break;
             case 'runner':
                 this.size = 45;
+                this.health = 1;
                 this.image.src = runner;
+                break;
+            case 'fatty':
+                this.size = 35;
+                this.health = 2;
+                this.image.src = fatty;
                 break;
             default:
                 break;

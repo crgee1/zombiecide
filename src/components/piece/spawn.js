@@ -23,6 +23,11 @@ export default class Spawn {
             this.grid.layout[this.row][this.col].add(zombie);
             zombies.push(zombie);
         }
+        if (type === 'fatty') {
+            for (let i = 0; i < num; i++) {
+                zombies.push(...this.spawnZombie(2, 'walker'))
+            }
+        }
         return zombies;
     }
 
