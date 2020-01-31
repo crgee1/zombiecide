@@ -1,5 +1,6 @@
 import Weapon from "../card/weapon";
 import Deck from "./deck";
+import Item from "../card/item";
 
 export default class EquipmentDeck extends Deck {
     constructor() {
@@ -33,7 +34,35 @@ export default class EquipmentDeck extends Deck {
         this.deck.push(new Weapon(25,'shotgun', 0, 1, 2, 4, 2, false, false));    
         this.deck.push(new Weapon(26,'shotgun', 0, 1, 2, 4, 2, false, false));    
         this.deck.push(new Weapon(27,'sub mg', 0, 1, 3, 5, 1, true, false));    
-        this.deck.push(new Weapon(28,'sub mg', 0, 1, 3, 5, 1, true, false));    
+        this.deck.push(new Item(28,'canned food')); 
+        this.deck.push(new Item(29,'canned food')); 
+        this.deck.push(new Item(30,'canned food')); 
+        this.deck.push(new Item(31,'bag of rice')); 
+        this.deck.push(new Item(32,'bag of rice')); 
+        this.deck.push(new Item(33,'bag of rice')); 
+        this.deck.push(new Item(34,'flash light')); 
+        this.deck.push(new Item(35,'flash light')); 
+        this.deck.push(new Item(36,'gasoline')); 
+        this.deck.push(new Item(37,'gasoline')); 
+        this.deck.push(new Item(38,'glass bottle')); 
+        this.deck.push(new Item(39,'glass bottle')); 
+        this.deck.push(new Item(40,'goalie mask')); 
+        this.deck.push(new Item(41,'scope')); 
+        this.deck.push(new Item(42,'scope')); 
+        this.deck.push(new Item(43,'water')); 
+        this.deck.push(new Item(44,'water')); 
+        this.deck.push(new Item(44,'water')); 
+        this.deck.push(new Item(44,'aaahh')); 
+        this.deck.push(new Item(44,'aaahh')); 
+        this.deck.push(new Item(44,'aaahh')); 
+        this.deck.push(new Item(44,'aaahh')); 
+        this.deck.push(new Item(44,'plenty of ammo')); 
+        this.deck.push(new Item(44,'plenty of ammo')); 
+        this.deck.push(new Item(44,'plenty of ammo')); 
+        this.deck.push(new Item(44,'plenty of shells')); 
+        this.deck.push(new Item(44,'plenty of shells')); 
+        this.deck.push(new Item(44,'plenty of shells')); 
+
         this.shuffle();
     }
 
