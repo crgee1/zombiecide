@@ -14,18 +14,9 @@ export default class Weapon {
         this.silentDoor = silentDoor;
     }
 
-    attack() {
+    attack(multiple=1) {
         let roll = [];
-        for (let i = 0; i < this.dice; i++) {
-            roll.push(this.rollDie());
-        }
-        let result = roll.some(die => die >= this.hit);
-        return [...roll, result];
-    }
-
-    dual() {
-        let roll = [];
-        for (let i = 0; i < this.dice * 2; i++) {
+        for (let i = 0; i < this.dice * multiple; i++) {
             roll.push(this.rollDie());
         }
         let result = roll.some(die => die >= this.hit);

@@ -165,7 +165,6 @@ export default function Interface(props) {
                     targeted={targeted}
                     setTargeted={setTargeted}
                 />
-                <header>{currentPlayer ? currentPlayer.name[0].toUpperCase() + currentPlayer.name.slice(1) : null}</header>
                 <header>Number of Actions Left: {numActions}</header>
                 <div className="playing-cards">
                     {displayItems(currentPlayer, currentPlayerIdx)}

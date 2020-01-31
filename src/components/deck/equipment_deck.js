@@ -11,7 +11,7 @@ export default class EquipmentDeck extends Deck {
         this.starting.push(new Weapon(3,'pan', 0, 0, 1, 6, 1, false, true));    
         this.starting.push(new Weapon(4,'fire axe', 0, 0, 1, 4, 2, false, true, false));    
         this.starting.push(new Weapon(5,'crowbar', 0, 0, 1, 4, 1, false, true, true));    
-        this.starting.push(new Weapon(6,'pistol', 0, 1, 4, 4, 1, true, false));  
+        this.starting.push(new Weapon(6,'pistol', 0, 1, 1, 4, 1, true, false));  
     
         this.deck.push(new Weapon(7,'baseball bat', 0, 0, 1, 3, 1, false, true));    
         this.deck.push(new Weapon(8,'baseball bat', 0, 0, 1, 3, 1, false, true));    

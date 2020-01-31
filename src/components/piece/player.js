@@ -67,18 +67,18 @@ export default class Player extends Piece {
         }, 0);
         if (idx === null) {
             this.items.splice(itemsIdx, 0, item);
-            this.items = this.items.slice(0, 5)
+            // this.items = this.items.slice(0, 5)
         } else {
             this.items.splice(idx, 0, item);
-            let emptyCount = this.items.reduce((acc, item) => {
-                return item.name === 'Empty' ? ++acc : acc;
-            }, 0);
-            if (this.items.length > 5 && emptyCount > 0) {
-                for (let i = this.items.length-1; i >= 0; i--) {
-                    if (this.items[i].name === 'Empty') {
-                        this.items.splice(i,1);
-                        break;
-                    }
+        }
+        let emptyCount = this.items.reduce((acc, item) => {
+            return item.name === 'Empty' ? ++acc : acc;
+        }, 0);
+        if (this.items.length > 5 && emptyCount > 0) {
+            for (let i = this.items.length-1; i >= 0; i--) {
+                if (this.items[i].name === 'Empty') {
+                    this.items.splice(i,1);
+                    break;
                 }
             }
         }
@@ -166,8 +166,21 @@ export default class Player extends Piece {
         }
     }
 
+    hasAmmo() {
+        let rightWeapon = this.items[0].name === 'pistol' || this.items[0] === 'rifle';
+        let rightAmmo = this.items.some(item => item.name === 'plenty of ammo')
+        return rightAmmo && rightWeapon;
+    }
+
+    hasShells() {
+        let rightWeapon = this.items[0].name === 'sawed off' || this.items[0] === 'shotgun';
+        let rightAmmo = this.items.some(item => item.name === 'plenty of shells')
+        return rightAmmo && rightWeapon;
+    }
+
     attack() {
-        if (this.items[0].name === this.items[1].name && this.items[0].dualWield) return this.items[0].dual();
+        if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) && (this.hasAmmo() || this.hasShells())) return this.items[0].attack(4);
+        if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells())) return this.items[0].attack(2);
         return this.items[0].attack();
     }
 }
