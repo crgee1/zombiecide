@@ -19,9 +19,22 @@ export default function Interface(props) {
     const handleDrop = result => {
         if (!result.destination) return;
         const { source, destination } = result;
-        let [item] = currentPlayer.items.splice(source.index,1);
-        currentPlayer.items.splice(destination.index, 0, item);
         let playerArr = [...players];
+        if (source.droppableId === destination.droppableId) {
+            let [item] = currentPlayer.items.splice(source.index,1);
+            currentPlayer.addItem(item, destination.index);
+        } else {
+            let otherIdx = String(currentPlayerIdx) === destination.droppableId ? source.droppableId : destination.droppableId
+            let otherPlayer = players[otherIdx];
+            if (String(currentPlayerIdx) === destination.droppableId) {
+                let [item] = otherPlayer.items.splice(source.index, 1);
+                currentPlayer.items.splice(destination.index, 0, item);
+            } else {
+                let [item] = currentPlayer.items.splice(source.index, 1);
+                otherPlayer.items.splice(destination.index, 0, item);
+            }
+            playerArr.splice(otherIdx, 1, otherPlayer);
+        }
         playerArr.splice(currentPlayerIdx, 1, currentPlayer);
         setPlayers(playerArr);
     }
@@ -54,7 +67,7 @@ export default function Interface(props) {
         if (!player) return;
         let displayArr = player.items.map((item, i) => {
             return (
-                <Draggable key={String(i)} draggableId={String(i)} index={i}>
+                <Draggable key={`${item.id}`} draggableId={`${item.id}`} index={i}>
                     {(provided, snapshot) => {
                         return (
                             <div 
@@ -100,14 +113,14 @@ export default function Interface(props) {
             <div className="item-card" key={idx}>
                 
                 <span className="title">On Hand</span> <span>On Reserve</span>
-                <DragDropContext onDragEnd={handleDrop}>
-                    <Droppable droppableId="1" key={"1"} direction="horizontal"> 
+                    <Droppable droppableId={`${idx}`} key={`${idx}`} direction="horizontal"> 
                     {(provided, snapshot) => {
                         return (
                             <div 
                                 className="item-drop-area"
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
+                                style={{minHeight: 275}}
                             >
                                 {displayArr}
                                 {provided.placeholder}
@@ -115,7 +128,7 @@ export default function Interface(props) {
                         )
                     }}
                     </Droppable>
-                </DragDropContext>
+                
             </div>
             );
     }
@@ -128,6 +141,8 @@ export default function Interface(props) {
 
     return (
         <React.Fragment>
+            <DragDropContext onDragEnd={handleDrop}>
+
             <div className="other-players-container">
                 {displayOtherPlayers()}
             </div>
@@ -156,6 +171,7 @@ export default function Interface(props) {
                     </div>
                 </div>
             </div>
+            </DragDropContext>
         </React.Fragment>
     )
 }

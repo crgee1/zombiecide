@@ -1,8 +1,8 @@
-import Item from "./item";
 
-export default class Weapon extends Item {
-    constructor(name, minRange, maxRange, dice, hit, damage, dualWield, silentKill, silentDoor = null) {
-        super(name);
+export default class Weapon {
+    constructor(id,name, minRange, maxRange, dice, hit, damage, dualWield, silentKill, silentDoor = null) {
+        this.name = name;
+        this.id = id
         this.type = 'weapon';
         this.minRange = minRange;
         this.maxRange = maxRange;
@@ -21,6 +21,11 @@ export default class Weapon extends Item {
         }
         let result = roll.some(die => die >= this.hit);
         return [...roll, result];
+    }
+
+    remove() {
+        this.owner = null;
+        return this.owner.remove(this);
     }
 
     rollDie() {

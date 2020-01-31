@@ -17,7 +17,7 @@
 }
 
 .item-card {
-    display: inline-block;
+    /* display: inline-block; */
     height: 285px;
     background-color: red;
 }
@@ -47,6 +47,6 @@
 }
 
 .other-players-container {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
 }

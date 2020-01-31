@@ -84,20 +84,13 @@ export default function ItemItem(props) {
         }
     }
 
-    if (item instanceof Weapon) {
-        return (
+    let display = item instanceof Weapon ? <img className="card" src={source()} alt="" /> : 'Empty'
+
+    return (
         <div className="item-container">
             <div className="item">
-                <img className="card" src={source()} alt=""/>
+                {display}
             </div>
         </div>
-    )} else {
-        return (
-            <div className="item-container">
-                <div className="item">
-                    Empty
-                </div>
-            </div>
-        )
-    }
+    )
 }

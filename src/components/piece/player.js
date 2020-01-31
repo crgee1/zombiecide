@@ -15,7 +15,7 @@ export default class Player extends Piece {
         this.size = 45;
         this.exp = 0;
         this.level = 1;
-        this.items = ['empty', 'empty', 'empty', 'empty', 'empty',];
+        this.items = [{name: 'Empty', id: name+'1'}, {name: 'Empty', id: name+'2'}, {name: 'Empty', id: name+'3'}, {name: 'Empty', id: name+'4'}, {name: 'Empty', id: name+'5'},];
         this.wounds = 0;
         this.name = name;
         switch (name) {
@@ -53,11 +53,11 @@ export default class Player extends Piece {
         }
     }
 
-    addItem(item, idx) {
-        if (!idx) {
+    addItem(item, idx=null) {
+        if (idx === null) {
             item.owner = this;
             let itemsIdx = this.items.reduce((acc, item) => {
-                return item !== 'empty' ? ++acc : acc;
+                return item.name !== 'Empty' ? ++acc : acc;
             }, 0);
             this.items.splice(itemsIdx, 0, item);
             this.items = this.items.slice(0, 5)
