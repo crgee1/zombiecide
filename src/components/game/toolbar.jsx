@@ -32,7 +32,7 @@ export default function Toolbar(props) {
         setTimeout(() => {
             board.moveZombies();
             board.nextTurn();
-        }, 1200)
+        }, 1600)
     }
 
     const nextTurn = () => {
@@ -93,14 +93,21 @@ export default function Toolbar(props) {
         setDice(diceArr);
         if (result > 0) {
             let zombieArr = [...zombieTargets];
-            zombieArr.sort((a,b) => {
-                return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
-            });
-            for (let i = 0; i < result && i < zombieArr.length; i++) {
+            if (currentPlayer.weapon().maxRange > 0) {
+                zombieArr.sort((a,b) => {
+                    return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
+                });
+            }
+            for (let i = 0; i < zombieArr.length; i++) {
                 let zombie = zombieArr[i];
                 if (zombie.health > currentPlayer.items[0].damage) break;
-                zombie.targeted = true;
-                currentPlayer.gainExp(1);
+                if (result > 0) {
+                    zombie.targeted = true;
+                    currentPlayer.gainExp(1);
+                    result--;
+                } else {
+                    zombie.targeted = false;
+                }
             }
             board.killZombies();
             setTargets(false);
@@ -147,7 +154,7 @@ export default function Toolbar(props) {
     }
 
     const displayDirectionBtn = (direction) => {
-        if (!board) return;
+        if (!board || zombieTargets.length > 0) return;
         let cell = board.grid.layout[currentPlayer.row][currentPlayer.col];
         if (cell[direction] === false || cell[direction] === 'doorClose') return;
         switch (direction) {

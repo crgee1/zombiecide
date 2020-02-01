@@ -94,16 +94,16 @@ export default class Zombie extends Piece {
     draw() {
         this.ctx.drawImage(this.image, this.posX - this.size / 2, this.posY - this.size / 2, this.size, this.size);
         if (this.destinationY < this.posY) {
-            this.posY-=2;
+            this.posY-=1;
         }
         if (this.destinationY > this.posY) {
-            this.posY+=2;
+            this.posY+=1;
         }
         if (this.destinationX > this.posX) {
-            this.posX+=2;
+            this.posX+=1;
         }
         if (this.destinationX < this.posX) {
-            this.posX-=2;
+            this.posX-=1;
         }
 
         if (this.targeted) {

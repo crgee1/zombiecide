@@ -53,6 +53,10 @@ export default class Player extends Piece {
         }
     }
 
+    weapon() {
+        return this.items[0];
+    }
+
     splice(idx, amt) {
         let [item] = this.items.splice(idx, amt);
         while (this.items.length < 5) {
@@ -67,7 +71,6 @@ export default class Player extends Piece {
         }, 0);
         if (idx === null) {
             this.items.splice(itemsIdx, 0, item);
-            // this.items = this.items.slice(0, 5)
         } else {
             this.items.splice(idx, 0, item);
         }
@@ -193,7 +196,6 @@ export default class Player extends Piece {
     }
 
     attack() {
-        console.log((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells()));
         if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) && (this.hasAmmo() || this.hasShells())) return this.items[0].attack(4);
         if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells())) return this.items[0].attack(2);
         return this.items[0].attack();

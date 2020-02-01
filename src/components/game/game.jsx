@@ -52,44 +52,40 @@ export default function Game(props) {
             let rangeArr = board.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
             let targetCell = board.grid.layout[row][col];
             if (rangeArr.includes(targetCell)) {
-                if (targetCell.targeted) {
-                    targetCell.targeted = false
-                    setZombieTargets([])
+                if (weapon.maxRange !== 0) {
+                    if (targetCell.targeted) {
+                        targetCell.targeted = false
+                        setZombieTargets([])
+                    } else {
+                        if (zombieTargets.length <= 0) {
+                            targetCell.targeted = true
+                            setZombieTargets(targetCell.zombies)
+                        }
+                    }
                 } else {
-                    if (zombieTargets.length <= 0) {
-                        targetCell.targeted = true
-                        setZombieTargets(targetCell.zombies)
+                    for (let i = 0; i < targetCell.zombies.length; i++) {
+                        let zombie = targetCell.zombies[i];
+                        if (zombie.contains(x, y, weapon.damage)) {
+                            let zombieArr = [...zombieTargets];
+                            if (zombie.targeted) {
+                                zombieArr.forEach((target, i) => {
+                                    if (zombie === target) {
+                                        zombieArr.splice(i,1);
+                                    }
+                                })
+                                zombie.targeted = false;
+                            } else {
+                                zombie.targeted = true;
+                                zombieArr.push(zombie);
+                            }
+                            setZombieTargets(zombieArr);
+                            break;
+                        }
                     }
                 }
-                // for (let i = 0; i < targetCell.zombies.length; i++) {
-                //     let zombie = targetCell.zombies[i];
-                //     if (zombie.contains(x, y, weapon.damage)) {
-                //         let zombieArr = [...zombieTargets];
-                //         if (targets && zombie.targeted) {
-                //             zombieArr.forEach((target, i) => {
-                //                 if (zombie === target) {
-                //                     zombieArr.splice(i,1);
-                //                 }
-                //             })
-                //             zombie.targeted = false;
-                //             setTargets(false);
-                //         } 
-                //         if (!targets && !zombie.targeted) {
-                //             zombie.targeted = true;
-                //             zombieArr.push(zombie);
-                //             setTargets(true);
-                //         }
-                //         setZombieTargets(zombieArr);
-                //         break;
-                //     }
-                // }
             }
         }
     }
-
-    // useEffect(() => {
-    //     console.log(zombieTargets)
-    // }, [zombieTargets])
 
     return (
         <div className="game">
