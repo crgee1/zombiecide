@@ -23,7 +23,7 @@ export default function Interface(props) {
             let idx = Number(source.droppableId);
             let player = players[idx];
             item = player.splice(source.index, 1);
-            equipmentDeck.discard(item);
+            if (item.name !== 'pan') equipmentDeck.discard(item);
         } else {
             let otherIdx = String(currentPlayerIdx) === destination.droppableId ? source.droppableId : destination.droppableId
             let otherPlayer = players[otherIdx];
@@ -35,7 +35,6 @@ export default function Interface(props) {
                     item = otherPlayer.splice(source.index, 1);
                     otherPlayer.addItem(item, destination.index);
                 }
-                // setNumActions(--currentPlayer.numActions);
             } else {
                 if (String(currentPlayerIdx) === destination.droppableId) {
                     item = otherPlayer.splice(source.index, 1);
@@ -72,31 +71,7 @@ export default function Interface(props) {
                 </Draggable>
             )
         });
-        // let length = displayArr.length
-        // let slots = 5 - length
-        // if (slots > 0) {
-        //     for (let i = slots; i > 0; i--) {
 
-        //         let text = i === 5 || i === 4 ? 'In Hand' : 'Reserve'
-        //         displayArr.push(
-        //             <Draggable key={String(i+length)} draggableId={String(i+length)} index={i+length-1}>
-        //                 {(provided, snapshot) => {
-        //                     return (
-        //                         <div
-        //                             ref={provided.innerRef}
-        //                             {...provided.draggableProps}
-        //                             {...provided.dragHandleProps}
-        //                         >
-        //                             <ItemItem
-        //                                 item={{name: text}}
-        //                             />
-        //                         </div>
-        //                     )
-        //                 }}
-        //             </Draggable>
-        //         );
-        //     }
-        // }
         let style = idx === players.length - 1 ? 'darkred' : 'red' 
         return (
             <div className="item-card" key={idx} style={{backgroundColor: style}}>

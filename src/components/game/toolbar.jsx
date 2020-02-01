@@ -88,8 +88,13 @@ export default function Toolbar(props) {
     const search = () => {
         let item = equipmentDeck.draw();
         if (item.name === 'aaahh') board.spawnZombie(currentPlayer.row, currentPlayer.col);
-        setEquipmentDeck(equipmentDeck);
+        if (currentPlayer.items.some(item => item.name === 'flashlight')) {
+            let item2 = equipmentDeck.draw();
+            if (item2.name === 'aaahh') board.spawnZombie(currentPlayer.row, currentPlayer.col);
+            currentPlayer.addItem(item2);
+        }
         currentPlayer.addItem(item);
+        setEquipmentDeck(equipmentDeck);
         setNumActions(--currentPlayer.numActions);
         setSearched(true);
     }

@@ -40,8 +40,8 @@ export default class EquipmentDeck extends Deck {
         this.deck.push(new Item(31,'bag of rice')); 
         this.deck.push(new Item(32,'bag of rice')); 
         this.deck.push(new Item(33,'bag of rice')); 
-        this.deck.push(new Item(34,'flash light')); 
-        this.deck.push(new Item(35,'flash light')); 
+        this.deck.push(new Item(34,'flashlight')); 
+        this.deck.push(new Item(35,'flashlight')); 
         this.deck.push(new Item(36,'gasoline')); 
         this.deck.push(new Item(37,'gasoline')); 
         this.deck.push(new Item(38,'glass bottle')); 

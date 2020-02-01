@@ -39,7 +39,7 @@ export default function ItemItem(props) {
                 return baseballBat
             case 'canned food':
                 return cannedFood
-            case 'flash light':
+            case 'flashlight':
                 return flashLight
             case 'gasoline':
                 return gasoline
