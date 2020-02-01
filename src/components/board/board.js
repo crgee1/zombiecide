@@ -345,6 +345,11 @@ export default class Board {
     }
 
     resetTargeted() {
+        this.grid.layout.forEach(row => {
+            row.forEach(cell => {
+                cell.resetTargeted();
+            })
+        })
         this.zombies.forEach(zombie => {
             zombie.targeted = false;
         })

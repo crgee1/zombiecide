@@ -90,9 +90,6 @@ export default class Grid {
                     break;
             }
         } else {
-            // if (x === 300 && y === 300) {
-            //     console.log(targetColor)
-            // }
             this.ctx.strokeStyle = targetColor;
             if (!door) {
                 this.ctx.setLineDash([]);
@@ -145,7 +142,6 @@ export default class Grid {
                 if (this.layout[i+1] && this.layout[i+1][j]) targetedColor = cell.targeted || this.layout[i+1][j].targeted ? 'blue' : 'black'
                 this.drawSide('down', cell.down, x, y, targetedColor);
                 if (this.layout[i] && this.layout[i][j-1]) targetedColor = cell.targeted || this.layout[i][j-1].targeted ? 'blue' : 'black'
-                // if (x === 400 && y === 300) console.log(this.layout[i]);
                 this.drawSide('left', cell.left, x, y, targetedColor);
             })
         });

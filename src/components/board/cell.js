@@ -62,4 +62,8 @@ export default class Cell {
     resetNoise() {
         this.noise = 0;
     }
+
+    resetTargeted() {
+        this.targeted = false;
+    }
 }

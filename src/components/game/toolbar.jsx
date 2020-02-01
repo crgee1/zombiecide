@@ -40,6 +40,7 @@ export default function Toolbar(props) {
         currentPlayer.reset();
         setSearched(false);
         setTargets(false);
+        setZombieTargets([]);
         setDice([]);
         board.resetTargeted();
         setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
@@ -90,11 +91,22 @@ export default function Toolbar(props) {
         let diceArr = currentPlayer.attack();
         let result = diceArr.pop();
         setDice(diceArr);
-        if (result) {
+        if (result > 0) {
+            let zombieArr = [...zombieTargets];
+            zombieArr.sort((a,b) => {
+                return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
+            });
+            for (let i = 0; i < result && i < zombieArr.length; i++) {
+                let zombie = zombieArr[i];
+                if (zombie.health > currentPlayer.items[0].damage) break;
+                zombie.targeted = true;
+                currentPlayer.gainExp(1);
+            }
             board.killZombies();
             setTargets(false);
-            currentPlayer.gainExp(1);
         }
+        board.resetTargeted();
+        setZombieTargets([]);
     }
 
     const makeNoise = () => {
@@ -153,7 +165,7 @@ export default function Toolbar(props) {
     }
 
     const displayAttack = () => {
-        if (!targets) return;
+        if (!zombieTargets || zombieTargets.length <= 0) return;
         return (
             <button onClick={attack}>Attack</button>
         )
@@ -234,8 +246,8 @@ export default function Toolbar(props) {
     const displayToolbar = () => {
         if (numActions > 0) return (
             <React.Fragment>
-                {displayDirectionBtns()}
                 {displaySearchBtn()}
+                {displayDirectionBtns()}
                 {displayDoorBtns()}
                 {displayAttack()}
                 {displayObjective()}

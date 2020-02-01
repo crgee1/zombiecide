@@ -181,18 +181,19 @@ export default class Player extends Piece {
     }
 
     hasAmmo() {
-        let rightWeapon = this.items[0].name === 'pistol' || this.items[0] === 'rifle';
+        let rightWeapon = this.items[0].name === 'pistol' || this.items[0].name === 'rifle';
         let rightAmmo = this.items.some(item => item.name === 'plenty of ammo')
         return rightAmmo && rightWeapon;
     }
 
     hasShells() {
-        let rightWeapon = this.items[0].name === 'sawed off' || this.items[0] === 'shotgun';
+        let rightWeapon = this.items[0].name === 'sawed off' || this.items[0].name === 'shotgun';
         let rightAmmo = this.items.some(item => item.name === 'plenty of shells')
         return rightAmmo && rightWeapon;
     }
 
     attack() {
+        console.log((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells()));
         if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) && (this.hasAmmo() || this.hasShells())) return this.items[0].attack(4);
         if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells())) return this.items[0].attack(2);
         return this.items[0].attack();

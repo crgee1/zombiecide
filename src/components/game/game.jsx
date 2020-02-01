@@ -12,7 +12,7 @@ export default function Game(props) {
     const [players, setPlayers] = useState([]);
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
     const [targets, setTargets] = useState(0);
-    const [zombieTargets, setZombieTargets] = useState(null);
+    const [zombieTargets, setZombieTargets] = useState([]);
     
     useEffect(() => {
         let ctx = document.getElementById('canvas').getContext('2d');
@@ -54,11 +54,12 @@ export default function Game(props) {
             if (rangeArr.includes(targetCell)) {
                 if (targetCell.targeted) {
                     targetCell.targeted = false
-                    setZombieTargets(null)
-                } 
-                if (!Array.isArray(zombieTargets)) {
-                    targetCell.targeted = true
-                    setZombieTargets(targetCell.zombies)
+                    setZombieTargets([])
+                } else {
+                    if (zombieTargets.length <= 0) {
+                        targetCell.targeted = true
+                        setZombieTargets(targetCell.zombies)
+                    }
                 }
                 // for (let i = 0; i < targetCell.zombies.length; i++) {
                 //     let zombie = targetCell.zombies[i];

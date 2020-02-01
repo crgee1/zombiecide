@@ -19,7 +19,9 @@ export default class Weapon {
         for (let i = 0; i < this.dice * multiple; i++) {
             roll.push(this.rollDie());
         }
-        let result = roll.some(die => die >= this.hit);
+        let result = roll.reduce((acc, die) => {
+            return die >= this.hit ? acc+1 : acc
+        }, 0);
         return [...roll, result];
     }
 
