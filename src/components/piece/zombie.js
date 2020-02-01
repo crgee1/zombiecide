@@ -2,6 +2,7 @@ import Piece from "./piece";
 import walker from '../../assets/images/models/zombie.png'
 import runner from '../../assets/images/models/runner1.png'
 import fatty from '../../assets/images/models/fatty.png'
+import Item from "../card/item";
 
 
 export default class Zombie extends Piece {
@@ -36,12 +37,23 @@ export default class Zombie extends Piece {
 
     }
 
+    cell() {
+        return this.grid.layout[this.row][this.col]
+    }
+
+    attack() {
+        if (this.numActions > 0) {
+            this.cell().players[0].addItem(new Item(Math.random() * 100, 'wounded'));
+            this.numActions--;
+        }
+    }
+
     removeFromCell() {
-        this.grid.layout[this.row][this.col].remove(this);
+        this.cell().remove(this);
     }
 
     addToCell() {
-        this.grid.layout[this.row][this.col].add(this);
+        this.cell().add(this);
     }
 
     reset() {
@@ -49,25 +61,25 @@ export default class Zombie extends Piece {
     }
 
     moveDown() {
-        if (this.numActions > 0 && this.grid.layout[this.row][this.col].down !== 'doorClose') {
+        if (this.numActions > 0 && this.cell().down !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
-            this.destinationY = this.posY + 100;
+            this.destinationY = this.destinationY + 100;
             this.row += 1; 
             this.addToCell();
         }
     }
     moveRight() {
-        if (this.numActions > 0 && this.grid.layout[this.row][this.col].right !== 'doorClose') {
+        if (this.numActions > 0 && this.cell().right !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
-            this.destinationX = this.posX + 100;
+            this.destinationX = this.destinationX + 100;
             this.col += 1;
             this.addToCell();
         }
     }
     moveUp() {
-        if (this.numActions > 0 && this.grid.layout[this.row][this.col].up !== 'doorClose') {
+        if (this.numActions > 0 && this.cell().up !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
             this.destinationY = this.posY - 100;
@@ -76,7 +88,7 @@ export default class Zombie extends Piece {
         }
     }
     moveLeft() {
-        if (this.numActions > 0 && this.grid.layout[this.row][this.col].left !== 'doorClose') {
+        if (this.numActions > 0 && this.cell().left !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
             this.destinationX = this.posX - 100;

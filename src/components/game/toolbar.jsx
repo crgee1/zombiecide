@@ -4,7 +4,7 @@ export default function Toolbar(props) {
     const [searched, setSearched] = useState(false);
     const [dice, setDice] = useState([]);
 
-    const { currentPlayer, setNumActions, players, setPlayers, board, currentPlayerIdx, setTargets, setCurrentPlayerIdx, equipmentDeck, setEquipmentDeck, targets, numActions, setZombieTargets, zombieTargets } = props;
+    const { currentPlayer, setNumActions, players, setPlayers, board, currentPlayerIdx, setCurrentPlayerIdx, equipmentDeck, setEquipmentDeck, numActions, setZombieTargets, zombieTargets } = props;
 
     const moveUp = () => {
         currentPlayer.moveUp();
@@ -24,27 +24,35 @@ export default function Toolbar(props) {
     }
 
     const oneRevolution = () => {
-        let playerArr = [...players];
-        let firstPlayer = playerArr.shift();
-        board.players = [...playerArr, firstPlayer];
-        setPlayers([...playerArr, firstPlayer])
         board.moveZombies();
         setTimeout(() => {
             board.moveZombies();
-            board.nextTurn();
-        }, 1600)
+            board.oneRevolution();
+            let playerArr = [...players];
+            let firstPlayer = playerArr.shift();
+            board.players = [...playerArr, firstPlayer];
+            setPlayers([...playerArr, firstPlayer]);
+        }, 500)
     }
 
     const nextTurn = () => {
         if (currentPlayerIdx === players.length - 1) oneRevolution();
         currentPlayer.reset();
         setSearched(false);
-        setTargets(false);
         setZombieTargets([]);
         setDice([]);
         board.resetTargeted();
-        setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
-        setCurrentPlayerIdx(prevState => (prevState + 1) % players.length);
+        if (currentPlayer.woundedEnough()) {
+            currentPlayer.removeFromCell();
+            board.players.splice(currentPlayerIdx, 1);
+            if (currentPlayerIdx === players.length-1) {
+                setCurrentPlayerIdx(prevState => (prevState - 1) % players.length);
+            }
+            setPlayers(board.players);
+        } else {
+            setNumActions(players[(currentPlayerIdx + 1) % players.length].numActions);
+            setCurrentPlayerIdx(prevState => (prevState + 1) % players.length);
+        }
     }
 
     const openDoor = (direction) => {
@@ -93,7 +101,7 @@ export default function Toolbar(props) {
         setDice(diceArr);
         if (result > 0) {
             let zombieArr = [...zombieTargets];
-            if (currentPlayer.weapon().maxRange > 0) {
+            if (currentPlayer.items[0].maxRange > 0) {
                 zombieArr.sort((a,b) => {
                     return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
                 });
@@ -110,7 +118,6 @@ export default function Toolbar(props) {
                 }
             }
             board.killZombies();
-            setTargets(false);
         }
         board.resetTargeted();
         setZombieTargets([]);

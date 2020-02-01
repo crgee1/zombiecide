@@ -53,10 +53,6 @@ export default class Player extends Piece {
         }
     }
 
-    weapon() {
-        return this.items[0];
-    }
-
     splice(idx, amt) {
         let [item] = this.items.splice(idx, amt);
         while (this.items.length < 5) {
@@ -150,7 +146,7 @@ export default class Player extends Piece {
         if (this.numActions > 0) {
             this.removeFromCell();
             this.numActions--;
-            this.destinationY = this.posY + 100;
+            this.destinationY += 100;
             this.row += 1;
             this.addToCell();
         }
@@ -159,7 +155,7 @@ export default class Player extends Piece {
         if (this.numActions > 0) {
             this.removeFromCell();
             this.numActions--;
-            this.destinationX = this.posX + 100;
+            this.destinationX += 100;
             this.col += 1;
             this.addToCell();
         }
@@ -168,7 +164,7 @@ export default class Player extends Piece {
         if (this.numActions > 0) {
             this.removeFromCell();
             this.numActions--;
-            this.destinationY = this.posY - 100;
+            this.destinationY -= 100;
             this.row -= 1;
             this.addToCell();
         }
@@ -177,7 +173,7 @@ export default class Player extends Piece {
         if (this.numActions > 0) {
             this.removeFromCell();
             this.numActions--;
-            this.destinationX = this.posX - 100;
+            this.destinationX -= 100;
             this.col -= 1;
             this.addToCell();
         }
@@ -199,5 +195,9 @@ export default class Player extends Piece {
         if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) && (this.hasAmmo() || this.hasShells())) return this.items[0].attack(4);
         if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells())) return this.items[0].attack(2);
         return this.items[0].attack();
+    }
+
+    woundedEnough() {
+        return this.items.reduce((acc, item) => item.name === 'wounded' ? acc + 1 : acc, 0) > 1
     }
 }

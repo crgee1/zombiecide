@@ -144,7 +144,7 @@ export default class Board {
         return this.players[this.playerIdx];
     }
 
-    nextTurn() {
+    oneRevolution() {
         this.zombies.forEach(zombie => zombie.reset());
         this.bloods = [];
         this.resetNoise();
@@ -173,6 +173,7 @@ export default class Board {
                             zombie.moveLeft()
                             break;
                         case 'attack':
+                            zombie.attack()
                             break;
                         default:
                             break;
@@ -197,6 +198,7 @@ export default class Board {
                         zombie.moveLeft()
                         break;
                     case 'attack':
+                        zombie.attack();
                         break;
                     default:
                         break;

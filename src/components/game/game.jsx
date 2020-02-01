@@ -7,11 +7,10 @@ import './game.css';
 import Interface from './interface';
 import Weapon from '../card/weapon';
 
-export default function Game(props) {
+export default function Game() {
     const [board, setBoard] = useState();
     const [players, setPlayers] = useState([]);
     const [equipmentDeck, setEquipmentDeck] = useState(new EquipmentDeck())
-    const [targets, setTargets] = useState(0);
     const [zombieTargets, setZombieTargets] = useState([]);
     
     useEffect(() => {
@@ -98,8 +97,6 @@ export default function Game(props) {
                 setPlayers={setPlayers}
                 zombieTargets={zombieTargets}
                 setZombieTargets={setZombieTargets}
-                setTargets={setTargets}
-                targets={targets}
             />
         </div>
     )
