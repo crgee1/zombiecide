@@ -62,6 +62,7 @@ export default class Player extends Piece {
     }
 
     addItem(item, idx=null) {
+        item.owner = this;
         let itemsIdx = this.items.reduce((acc, item) => {
             return item.name !== 'Empty' ? ++acc : acc;
         }, 0);
@@ -105,6 +106,7 @@ export default class Player extends Piece {
         } else if (oldExp < 7 && this.exp >= 7) {
             this.level++;
             this.maxActions++;
+            this.numActions++;
         } 
     }
 

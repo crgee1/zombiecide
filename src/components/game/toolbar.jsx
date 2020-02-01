@@ -100,7 +100,6 @@ export default function Toolbar(props) {
     }
 
     const attack = () => {
-        setNumActions(--currentPlayer.numActions);
         if (!currentPlayer.items[0].silentKill) currentPlayer.makeNoise();
         let diceArr = currentPlayer.attack();
         let result = diceArr.pop();
@@ -125,6 +124,7 @@ export default function Toolbar(props) {
             }
             board.killZombies();
         }
+        setNumActions(--currentPlayer.numActions);
         board.resetTargeted();
         if (currentPlayer.items[0].name === 'molotov') currentPlayer.splice(0,1);
         setZombieTargets([]);

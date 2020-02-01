@@ -17,10 +17,13 @@ export default class Weapon {
     attack(multiple=1) {
         if (this.name === 'molotov') return [Infinity];
         let roll = [];
-        for (let i = 0; i < this.dice * multiple; i++) {
+        let numDice = this.dice * multiple;
+        if (this.owner.level >= 4) numDice += 1;
+        for (let i = 0; i < numDice; i++) {
             roll.push(this.rollDie());
         }
         let result = roll.reduce((acc, die) => {
+            if (this.owner >= 3) return die >= this.hit-1 ? acc + 1 : acc
             return die >= this.hit ? acc+1 : acc
         }, 0);
         return [...roll, result];
