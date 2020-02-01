@@ -50,8 +50,9 @@ export default function Game() {
             if (!(weapon instanceof Weapon)) return;
             let rangeArr = board.withinRange(weapon.minRange, weapon.maxRange, player.row, player.col);
             let targetCell = board.grid.layout[row][col];
+            let scopedRifle = weapon.name === 'rifle' && player.items.some(item => item.name === 'scope');
             if (rangeArr.includes(targetCell)) {
-                if (weapon.maxRange !== 0) {
+                if (weapon.maxRange !== 0 && !scopedRifle) {
                     if (targetCell.targeted) {
                         targetCell.targeted = false
                         setZombieTargets([])

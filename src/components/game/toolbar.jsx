@@ -107,7 +107,6 @@ export default function Toolbar(props) {
                     return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
                 });
             }
-            // debugger;
             for (let i = 0; i < zombieArr.length; i++) {
                 let zombie = zombieArr[i];
                 if (zombie.health > currentPlayer.items[0].damage) break;

@@ -1,7 +1,8 @@
 import Piece from "./piece";
-import walker from '../../assets/images/models/zombie.png'
-import runner from '../../assets/images/models/runner1.png'
-import fatty from '../../assets/images/models/fatty.png'
+import walker from '../../assets/images/models/zombie.png';
+import runner from '../../assets/images/models/runner1.png';
+import fatty from '../../assets/images/models/fatty.png';
+import abomination from '../../assets/images/models/abomination.png';
 import Item from "../card/item";
 
 
@@ -30,6 +31,11 @@ export default class Zombie extends Piece {
                 this.size = 45;
                 this.health = 2;
                 this.image.src = fatty;
+                break;
+            case 'abomination':
+                this.size = 45;
+                this.health = 2;
+                this.image.src = abomination;
                 break;
             default:
                 break;
@@ -64,7 +70,7 @@ export default class Zombie extends Piece {
         if (this.numActions > 0 && this.cell().down !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
-            this.destinationY = this.destinationY + 100;
+            this.destinationY += 100;
             this.row += 1; 
             this.addToCell();
         }
@@ -73,7 +79,7 @@ export default class Zombie extends Piece {
         if (this.numActions > 0 && this.cell().right !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
-            this.destinationX = this.destinationX + 100;
+            this.destinationX += 100;
             this.col += 1;
             this.addToCell();
         }
