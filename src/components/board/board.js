@@ -63,6 +63,7 @@ export default class Board {
         this.spawnObjective(3,1);
         this.spawnObjective(5,0);
         this.spawnObjective(6,5);
+        this.spawnObjective(6,0);
         this.spawnSpawn(6,4);
         this.spawnSpawn(0,2);
         this.spawnSpawn(2,5);

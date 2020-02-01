@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Weapon from '../card/weapon';
 
 export default function Toolbar(props) {
     const [searched, setSearched] = useState(false);
@@ -106,6 +107,7 @@ export default function Toolbar(props) {
                     return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
                 });
             }
+            // debugger;
             for (let i = 0; i < zombieArr.length; i++) {
                 let zombie = zombieArr[i];
                 if (zombie.health > currentPlayer.items[0].damage) break;
@@ -120,12 +122,24 @@ export default function Toolbar(props) {
             board.killZombies();
         }
         board.resetTargeted();
+        if (currentPlayer.items[0].name === 'molotov') currentPlayer.splice(0,1);
         setZombieTargets([]);
     }
 
     const makeNoise = () => {
         setNumActions(--currentPlayer.numActions);
         currentPlayer.makeNoise()    
+    }
+
+    const makeMolotov = () => {
+        let gasolineIdx, bottleIdx;
+        currentPlayer.addItem(new Weapon(Math.random()*100, 'molotov', 0, 1, 0, 0, 3, false, false));
+        currentPlayer.items.forEach((item, i) => {if (item.name === 'glass bottle') bottleIdx = i});
+        equipmentDeck.discard(currentPlayer.splice(bottleIdx, 1));
+        currentPlayer.items.forEach((item, i) => {if (item.name === 'gasoline') gasolineIdx = i});
+        equipmentDeck.discard(currentPlayer.splice(gasolineIdx, 1));
+        let playersArr = [...players];
+        setPlayers(playersArr);
     }
 
     const takeObjective = () => {
@@ -139,6 +153,13 @@ export default function Toolbar(props) {
                 board.grid.layout[row][col].remove(objective);
             }
         });
+    }
+
+    const displayMakeMolotov = () => {
+        if (!board || !currentPlayer.canMakeMolotov()) return;
+        return (
+            <button onClick={makeMolotov}>Make Molotov</button>
+        )
     }
 
     const displaySearchBtn = () => {
@@ -265,6 +286,7 @@ export default function Toolbar(props) {
                 {displayDoorBtns()}
                 {displayAttack()}
                 {displayObjective()}
+                {displayMakeMolotov()}
                 <button onClick={makeNoise}>Make Noise</button>
                 <button onClick={nextTurn}>End Turn</button>
             </React.Fragment>

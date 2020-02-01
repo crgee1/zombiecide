@@ -15,6 +15,7 @@ export default class Weapon {
     }
 
     attack(multiple=1) {
+        if (this.name === 'molotov') return [Infinity];
         let roll = [];
         for (let i = 0; i < this.dice * multiple; i++) {
             roll.push(this.rollDie());

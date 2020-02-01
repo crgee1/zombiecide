@@ -138,6 +138,12 @@ export default class Player extends Piece {
         this.grid.layout[this.row][this.col].noise++;
     }
 
+    canMakeMolotov() {
+        let hasBottle = this.items.some(item => item.name === 'glass bottle');
+        let hasGasoline = this.items.some(item => item.name === 'gasoline');
+        return hasBottle && hasGasoline;
+    }
+
     reset() {
         this.numActions = this.maxActions;
     }

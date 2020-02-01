@@ -82,7 +82,7 @@ export default class Zombie extends Piece {
         if (this.numActions > 0 && this.cell().up !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
-            this.destinationY = this.posY - 100;
+            this.destinationY -= 100;
             this.row -= 1; 
             this.addToCell();
         }
@@ -91,7 +91,7 @@ export default class Zombie extends Piece {
         if (this.numActions > 0 && this.cell().left !== 'doorClose') {
             this.removeFromCell();
             this.numActions--;
-            this.destinationX = this.posX - 100;
+            this.destinationX -= 100;
             this.col -= 1;
             this.addToCell();
         }
