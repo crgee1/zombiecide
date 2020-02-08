@@ -39,6 +39,12 @@ export default function Game() {
         setBoard(canvas);
     }, []);
 
+    useEffect(() => {
+        window.onbeforeunload = function () {
+            return 'You really want to go ahead?';
+        }
+    }, [])
+
     const handleCanvasClick = () => {
         return e => {
             let y = e.clientY + window.scrollY;

@@ -108,7 +108,7 @@ export default function Toolbar(props) {
             let zombieArr = [...zombieTargets];
             if (currentPlayer.items[0].maxRange > 0) {
                 zombieArr.sort((a,b) => {
-                    return (a.type === 'walker') ? -1 : a.type === 'fatty' ? -1 : 1;
+                    return (a.type === 'walker') ? -1 : a.type === 'fatty' || a.type === 'abomination' ? -1 : 1;
                 });
             }
             for (let i = 0; i < zombieArr.length; i++) {
@@ -285,12 +285,12 @@ export default function Toolbar(props) {
     const displayToolbar = () => {
         if (numActions > 0) return (
             <React.Fragment>
-                {displaySearchBtn()}
-                {displayDirectionBtns()}
-                {displayDoorBtns()}
                 {displayAttack()}
+                {displaySearchBtn()}
                 {displayObjective()}
                 {displayMakeMolotov()}
+                {displayDirectionBtns()}
+                {displayDoorBtns()}
                 <button onClick={makeNoise}>Make Noise</button>
                 <button onClick={nextTurn}>End Turn</button>
             </React.Fragment>
