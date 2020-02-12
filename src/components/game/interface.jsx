@@ -22,6 +22,8 @@ export default function Interface(props) {
         if (destination.droppableId === 'discard') {
             let idx = Number(source.droppableId);
             let player = players[idx];
+            let isWound = player.items[idx].name === 'wounded';
+            if (isWound) return;
             item = player.splice(source.index, 1);
             if (item.name !== 'pan') equipmentDeck.discard(item);
         } else {
