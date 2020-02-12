@@ -292,6 +292,7 @@ export default function Toolbar(props) {
                 {displayDirectionBtns()}
                 {displayDoorBtns()}
                 <button onClick={makeNoise}>Make Noise</button>
+                <button onClick={() => setNumActions(--currentPlayer.numActions)}>Trade</button>
                 <button onClick={nextTurn}>End Turn</button>
             </React.Fragment>
         );
