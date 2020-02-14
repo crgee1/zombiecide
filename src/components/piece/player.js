@@ -200,9 +200,8 @@ export default class Player extends Piece {
     }
 
     attack() {
-        if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) && (this.hasAmmo() || this.hasShells())) return this.items[0].attack(4);
-        if ((this.items[0].name === this.items[1].name && this.items[0].dualWield) || (this.hasAmmo() || this.hasShells())) return this.items[0].attack(2);
-        return this.items[0].attack();
+        if ((this.items[0].name === this.items[1].name && this.items[0].dualWield)) return this.items[0].attack(2, this.hasAmmo() || this.hasShells());
+        return this.items[0].attack(1, this.hasAmmo() || this.hasShells());
     }
 
     woundedEnough() {

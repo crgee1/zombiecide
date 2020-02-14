@@ -14,16 +14,23 @@ export default class Weapon {
         this.silentDoor = silentDoor;
     }
 
-    attack(multiple=1) {
+    attack(multiple=1, ammo=false) {
         if (this.name === 'molotov') return [Infinity];
         let roll = [];
         let numDice = this.dice * multiple;
-        if (this.owner.level >= 4) numDice += 1;
+        if (this.owner.level >= 3) numDice += 1;
         for (let i = 0; i < numDice; i++) {
             roll.push(this.rollDie());
         }
+        if (ammo) {
+            roll = roll.map(die => {
+                if (this.owner.level >= 4 && die < this.hit-1) return this.rollDie();
+                if (die < this.hit) return this.rollDie();
+                return die;
+            })
+        }
         let result = roll.reduce((acc, die) => {
-            if (this.owner >= 3) return die >= this.hit-1 ? acc + 1 : acc
+            if (this.owner.level >= 4) return die >= this.hit-1 ? acc + 1 : acc;
             return die >= this.hit ? acc+1 : acc
         }, 0);
         return [...roll, result];
